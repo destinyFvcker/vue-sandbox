@@ -3,6 +3,8 @@ export default defineNuxtConfig({
 	compatibilityDate: "2025-07-15",
 	devtools: { enabled: true },
 
+	ssr: false,
+
 	modules: [
 		"@nuxt/a11y",
 		"@nuxt/content",
@@ -22,7 +24,7 @@ export default defineNuxtConfig({
 		 * Prefix for all the imported component.
 		 * @default "Ui"
 		 */
-		// prefix: "",
+		prefix: "",
 		/**
 		 * Directory that the component lives in.
 		 * Will respect the Nuxt aliases.
@@ -30,5 +32,11 @@ export default defineNuxtConfig({
 		 * @default "@/components/ui"
 		 */
 		componentDir: "@/components/ui",
+	},
+
+	hooks: {
+		"prerender:routes"({ routes }) {
+			routes.clear(); // Do not generate any routes (except the defaults)
+		},
 	},
 });
