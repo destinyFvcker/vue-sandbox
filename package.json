@@ -18,6 +18,9 @@
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^7.2.0",
+		"@jsonforms/core": "^3.7.0",
+		"@jsonforms/vue": "^3.7.0",
+		"@jsonforms/vue-vanilla": "^3.7.0",
 		"@nuxt/a11y": "1.0.0-alpha.1",
 		"@nuxt/content": "3.11.0",
 		"@nuxt/eslint": "1.13.0",
