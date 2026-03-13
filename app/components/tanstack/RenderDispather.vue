@@ -16,9 +16,11 @@ const determinedRenderer = computed(() => {
 	const renderer = maxBy(rendererState.value.renderers, (r) =>
 		r.tester(rendererState.value.uischema, rendererState.value.schema, testerContext),
 	);
+	const rendererScore =
+		renderer?.tester(rendererState.value.uischema, rendererState.value.schema, testerContext) ?? -1;
 	if (
 		renderer === undefined ||
-		renderer.tester(rendererState.value.uischema, rendererState.value.schema, testerContext) === -1
+		rendererScore === -1
 	) {
 		return FallbackRenderer;
 	} else {

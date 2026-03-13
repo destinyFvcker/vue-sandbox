@@ -1,6 +1,5 @@
-import type { JsonFormsRendererRegistryEntry, JsonSchema7 } from "@jsonforms/core";
+import type { ControlElement, JsonFormsRendererRegistryEntry, JsonSchema7 } from "@jsonforms/core";
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
-import RenderDispather from "./RenderDispather.vue";
 import JsonCell from "./JsonCell.vue";
 
 const columnHelper = createColumnHelper<any>();
@@ -12,15 +11,25 @@ export function genColumnDefs(
 	const columns = getColumnsBySchema(schema);
 
 	return columns.map((column) => {
-		return columnHelper.accessor(prefix ? `${prefix}.${column}` : column, {
+		const accessorKey = prefix ? `${prefix}.${column}` : column;
+		const columnSchema = getColumnSchema(schema, column);
+		const uischema: ControlElement = {
+			type: "Control",
+			scope: "#",
+			label: false,
+		};
+
+		return columnHelper.accessor(accessorKey, {
 			header: column,
-			cell: ({ row }) => {
+			cell: ({ getValue }) => {
+				const cellValue = getValue();
 				return h(
 					"div",
 					{ class: "relative" },
 					h(JsonCell, {
-						data: row.original,
-						schema: schema,
+						data: cellValue,
+						schema: columnSchema,
+						uischema: uischema,
 						renderers: renderers,
 					}),
 				);
@@ -36,4 +45,15 @@ function getColumnsBySchema(schema: JsonSchema7) {
 	}
 	// primitives
 	return [""];
+}
+
+function getColumnSchema(schema: JsonSchema7, column: string): JsonSchema7 {
+	if (schema.type === "object" && typeof schema.properties === "object" && column) {
+		const propertySchema = schema.properties[column];
+		if (propertySchema && typeof propertySchema === "object" && !Array.isArray(propertySchema)) {
+			return propertySchema as JsonSchema7;
+		}
+	}
+	// primitives or unknown property
+	return schema;
 }
