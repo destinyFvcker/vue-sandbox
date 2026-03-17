@@ -1,5 +1,14 @@
 <template>
-  <div class="relative">
+  <div
+    ref="tableRootEl"
+    :style="tableContainerStyle"
+    :class="[
+      'relative',
+      props.innerScroll
+        ? '*:data-[slot=table-container]:max-h-(--tanstack-table-inner-scroll-height) *:data-[slot=table-container]:overflow-y-auto'
+        : '',
+    ]"
+  >
     <slot name="loading" :loading>
       <div
         v-if="loading"
@@ -8,9 +17,13 @@
         <div class="bg-primary size-full origin-left animate-[loading_1.5s_ease-in-out_infinite]" />
       </div>
     </slot>
-
     <UiTable :class="props.class">
-      <UiTableHeader v-if="!hideHeader" class="bg-background/90 sticky top-0 z-10 backdrop-blur-sm">
+      <UiTableHeader
+        v-if="!hideHeader"
+        :class="
+          props.innerScrollHeaderSticky ? 'bg-background/90 sticky top-0 z-10 backdrop-blur-sm' : ''
+        "
+      >
         <UiTableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
           <UiTableHead
             v-for="header in headerGroup.headers"
@@ -426,6 +439,11 @@
       showColumnPinButtons?: boolean;
       /** Additional table options */
       tableOptions?: Partial<TableOptions<T>>;
+      innerScroll?: boolean;
+      /** Inner scroll height (px) */
+      innerScrollHeight?: number;
+      /** Inner scroll header sticky */
+      innerScrollHeaderSticky?: boolean;
       /** Text for "Rows per page" label
        *
        * @default "Rows per page:"
@@ -482,6 +500,9 @@
       enableRowPinning: true,
       enableColumnPinning: false,
       showColumnPinButtons: false,
+      innerScroll: false,
+      innerScrollHeight: 500,
+      innerScrollHeaderSticky: false,
       pageCount: -1,
       rowsPerPageText: "Rows per page:",
       expandCellIconOn: "lucide:chevron-down",
@@ -746,19 +767,40 @@
     } as const;
   };
 
+  const tableRootEl = ref<HTMLElement | null>(null);
+  const tableHeaderEl = computed(
+    () => tableRootEl.value?.querySelector("thead") as HTMLElement | null
+  );
+  const { height: tableHeaderHeight } = useElementSize(tableHeaderEl);
+
+  const tableContainerStyle = computed<Record<string, string>>(() => {
+    const style: Record<string, string> = {};
+
+    if (props.innerScroll) {
+      style["--tanstack-table-inner-scroll-height"] = `${props.innerScrollHeight}px`;
+    }
+
+    const stickyHeaderHeight =
+      props.innerScrollHeaderSticky && !props.hideHeader ? tableHeaderHeight.value : 0;
+    style["--ui-table-header-height"] = `${stickyHeaderHeight}px`;
+
+    return style;
+  });
+
   const getPinnedRowStyle = (row: Row<T>) => {
     const pinned = row.getIsPinned();
     if (!pinned) return undefined;
 
     const index =
       typeof (row as any).getPinnedIndex === "function" ? (row as any).getPinnedIndex() : 0;
+    const headerOffsetVar = "var(--ui-table-header-height, 0px)";
     const offsetVar = "var(--ui-table-row-height, 44px)";
     const offsetValue = `calc(${index} * ${offsetVar})`;
 
     return pinned === "top"
       ? {
           position: "sticky",
-          top: offsetValue,
+          top: `calc(${headerOffsetVar} + ${offsetValue})`,
           zIndex: 5,
           background: "var(--ui-table-pinned-bg, var(--background))",
         }

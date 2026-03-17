@@ -25,11 +25,11 @@ export default defineNuxtConfig({
   ],
 
   vite: {
-    build: {
-      modulePreload: { polyfill: false },
-    },
     optimizeDeps: {
       include: ["@vue/devtools-core", "@vue/devtools-kit", "reka-ui", "tailwind-variants"],
+    },
+    build: {
+      modulePreload: { polyfill: false },
     },
     plugins: [tailwindcss()],
   },
@@ -75,13 +75,16 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      script: [{
-        src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js",
-        defer: true,
-      }, {
-        src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.min.js",
-        defer: true,
-      }],
+      script: [
+        {
+          src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js",
+          defer: true,
+        },
+        {
+          src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.min.js",
+          defer: true,
+        },
+      ],
     },
   },
 });

@@ -5,9 +5,18 @@
       Use the pin menu to choose top, bottom, or unpin.
     </div>
 
-    <!-- <div class="overflow-x-hidden rounded-lg border"> -->
-    <div class="[&>div]:max-h-96">
-      <UiTanStackTable :data="data" :columns="columns" :loading="pending" @row-pin="onRowPin">
+    <div class="m-10 rounded-lg border p-10 [&>div]:max-h-[500px] [&>div]:overflow-y-auto">
+      <UiTanStackTable
+        :data="data"
+        :columns="columns"
+        :loading="pending"
+        :initial-page-size="500"
+        :page-size-options="[500, 1000, 1500, 2000]"
+        :inner-scroll="true"
+        :inner-scroll-height="500"
+        :inner-scroll-header-sticky="true"
+        @row-pin="onRowPin"
+      >
         <template #pin-header>
           <span class="sr-only">Pin</span>
         </template>
@@ -44,7 +53,7 @@
   const { data, pending } = await useAsyncData<User[]>(
     async () => {
       await promiseTimeout(800);
-      return Array.from({ length: 12 }, () => ({
+      return Array.from({ length: 1200 }, () => ({
         id: faker.string.nanoid(6).toUpperCase(),
         name: faker.person.fullName(),
         email: faker.internet.email().toLowerCase(),
