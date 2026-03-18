@@ -55,7 +55,7 @@
   };
 
   const users = ref(
-    Array.from({ length: 10000 }, () => ({
+    Array.from({ length: 100 }, () => ({
       id: { value: faker.string.alphanumeric(10).toUpperCase() },
       name: { first: faker.person.firstName(), last: faker.person.lastName() },
       email: faker.internet.email(),
