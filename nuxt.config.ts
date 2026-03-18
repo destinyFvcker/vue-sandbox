@@ -26,7 +26,25 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ["@vue/devtools-core", "@vue/devtools-kit", "reka-ui", "tailwind-variants"],
+      include: [
+        "@vue/devtools-core",
+        "@vue/devtools-kit",
+        "reka-ui",
+        "tailwind-variants",
+        "datatables.net",
+        "datatables.net-vue3",
+        "jszip", // CJS
+        "datatables.net-buttons-dt",
+        "datatables.net-buttons/js/buttons.colVis.mjs",
+        "datatables.net-buttons/js/buttons.html5.mjs",
+        "datatables.net-buttons/js/buttons.print.mjs",
+        "datatables.net-responsive-dt",
+        "datatables.net-searchbuilder-dt",
+        "datatables.net-select-dt",
+        "datatables.net-fixedcolumns-dt",
+        "datatables.net-fixedheader-dt",
+        "datatables.net-colreorder-dt",
+      ],
     },
     build: {
       modulePreload: { polyfill: false },
