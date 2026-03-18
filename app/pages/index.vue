@@ -1,11 +1,31 @@
 <template>
-  <div class="space-y-4">
+  <div class="m-10 space-y-4 rounded-lg border p-10">
     <div class="text-muted-foreground flex items-center gap-2 text-sm">
       <Icon name="lucide:info" class="size-4" />
       Use the pin menu to choose top, bottom, or unpin.
     </div>
 
-    <div class="m-10 rounded-lg border p-10 [&>div]:max-h-[500px] [&>div]:overflow-y-auto">
+    <div class="flex items-center space-x-2">
+      <UiSwitch id="keep-pinned" v-model="keepPinned" />
+      <UiLabel for="keep-pinned">Keep/Persist Pinned Rows across Pagination and Filtering</UiLabel>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <UiSwitch id="include-leaf-pinned" v-model="includeLeafPinned" />
+      <UiLabel for="include-leaf-pinned">Include Leaf Rows When Pinning Parent</UiLabel>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <UiSwitch id="include-parent-pinned" v-model="includeParentPinned" />
+      <UiLabel for="include-parent-pinned">Include Parent Rows When Pinning Leaf</UiLabel>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <UiSwitch id="copy-pinned" v-model="copyPinned" />
+      <UiLabel for="copy-pinned">Duplicate/Keep Pinned Rows in main table</UiLabel>
+    </div>
+
+    <div class="rounded-lg border p-10 [&>div]:max-h-[500px] [&>div]:overflow-y-auto">
       <UiTanStackTable
         :data="data"
         :columns="columns"
@@ -15,6 +35,10 @@
         :inner-scroll="true"
         :inner-scroll-height="500"
         :inner-scroll-header-sticky="true"
+        :keep-pinned="keepPinned"
+        :include-leaf-pinned="includeLeafPinned"
+        :include-parent-pinned="includeParentPinned"
+        :copy-pinned="copyPinned"
         @row-pin="onRowPin"
       >
         <template #pin-header>
@@ -32,6 +56,10 @@
         </div>
       </div>
     </div>
+
+    <pre class="text-xs">{{ JSON.stringify(rowPinning, null, 2) }}</pre>
+
+    <pre>keepPinned: {{ keepPinned }}</pre>
   </div>
 </template>
 
@@ -65,6 +93,7 @@
   );
 
   const onRowPin = ({ row, pin }: { row: any; pin: "top" | "bottom" | false }) => {
+    console.log("onRowPin", row, pin);
     rowPinning.value = rowPinning.value || {};
     if (pin === false) {
       if (rowPinning.value.top) {
@@ -104,6 +133,11 @@
       size: 50,
     },
     {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ getValue }) => h("span", { class: "font-medium" }, getValue() as string),
+    },
+    {
       accessorKey: "name",
       header: "Name",
       cell: ({ getValue }) => h("span", { class: "font-medium" }, getValue() as string),
@@ -135,4 +169,9 @@
       },
     },
   ];
+
+  const keepPinned = ref(false);
+  const includeLeafPinned = ref(false);
+  const includeParentPinned = ref(false);
+  const copyPinned = ref(false);
 </script>

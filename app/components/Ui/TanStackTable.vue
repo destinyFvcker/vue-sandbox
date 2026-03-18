@@ -133,7 +133,225 @@
 
       <UiTableBody>
         <template v-if="table.getRowModel().rows.length">
-          <template v-for="row in table.getRowModel().rows" :key="row.id">
+          <template v-for="row in table.getTopRows()" :key="row.id">
+            <UiTableRow
+              :data-state="row.getIsSelected() ? 'selected' : undefined"
+              :class="table.options.meta?.class?.tr"
+              :style="getPinnedRowStyle(row)"
+              @contextmenu="(event: MouseEvent) => emit('row-contextmenu', { event, row })"
+            >
+              <UiTableCell
+                v-for="cell in row.getVisibleCells()"
+                :key="cell.id"
+                :class="cell.column.columnDef.meta?.class?.td"
+                :style="getPinnedColumnStyle(cell.column)"
+              >
+                <slot
+                  :name="`${cell.column.id}-cell`"
+                  :cell="cell"
+                  :column="cell.column"
+                  :row="row"
+                  :table="table"
+                  :get-value="() => cell.getValue()"
+                  :render-value="() => cell.renderValue()"
+                >
+                  <template v-if="cell.column.id === 'pin'">
+                    <UiTooltip>
+                      <UiDropdownMenu>
+                        <UiTooltipTrigger as-child>
+                          <UiDropdownMenuTrigger as-child>
+                            <UiButton
+                              variant="ghost"
+                              size="icon-sm"
+                              class="hover:bg-muted"
+                              @click.stop
+                            >
+                              <Icon
+                                :name="row.getIsPinned() ? rowPinIconOn : rowPinIconOff"
+                                :class="[
+                                  'size-4',
+                                  row.getIsPinned() ? 'text-primary' : 'opacity-60',
+                                ]"
+                              />
+                            </UiButton>
+                          </UiDropdownMenuTrigger>
+                        </UiTooltipTrigger>
+                        <UiTooltipContent>
+                          <span>{{ getRowPinTooltipText(row) }}</span>
+                        </UiTooltipContent>
+                        <UiDropdownMenuContent align="start" :side-offset="6">
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel('top')"
+                            :icon="rowPinIconOn"
+                            :disabled="row.getIsPinned() === 'top'"
+                            @select="() => pinRow(row, 'top')"
+                          />
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel('bottom')"
+                            :icon="rowPinIconOn"
+                            :disabled="row.getIsPinned() === 'bottom'"
+                            @select="() => pinRow(row, 'bottom')"
+                          />
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel(false)"
+                            :icon="rowPinIconOff"
+                            :disabled="!row.getIsPinned()"
+                            @select="() => pinRow(row, false)"
+                          />
+                        </UiDropdownMenuContent>
+                      </UiDropdownMenu>
+                    </UiTooltip>
+                  </template>
+                  <template v-else-if="cell.column.id === 'expand'">
+                    <UiTooltip>
+                      <UiTooltipTrigger as-child>
+                        <UiButton
+                          variant="ghost"
+                          size="icon-sm"
+                          class="hover:bg-muted"
+                          @click="row.toggleExpanded()"
+                        >
+                          <Icon
+                            :name="row.getIsExpanded() ? expandCellIconOn : expandCellIconOff"
+                            class="size-4"
+                          />
+                        </UiButton>
+                      </UiTooltipTrigger>
+                      <UiTooltipContent>
+                        <span> {{ row.getIsExpanded() ? "Collapse" : "Expand" }} row </span>
+                      </UiTooltipContent>
+                    </UiTooltip>
+                  </template>
+                  <template v-else>
+                    <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                  </template>
+                </slot>
+              </UiTableCell>
+            </UiTableRow>
+            <UiTableRow v-if="row.getIsExpanded()" :key="`${row.id}-expanded`">
+              <UiTableCell :colspan="row.getVisibleCells().length" class="bg-muted/50 p-0">
+                <slot name="expanded-row" :row="row" :table="table">
+                  <div class="p-4">
+                    <p class="text-muted-foreground text-sm">
+                      Expanded content for row {{ row.id }}
+                    </p>
+                  </div>
+                </slot>
+              </UiTableCell>
+            </UiTableRow>
+          </template>
+
+          <template
+            v-for="row in copyPinned ? table.getRowModel().rows : table.getCenterRows()"
+            :key="row.id"
+          >
+            <UiTableRow
+              :data-state="row.getIsSelected() ? 'selected' : undefined"
+              :class="table.options.meta?.class?.tr"
+              @contextmenu="(event: MouseEvent) => emit('row-contextmenu', { event, row })"
+            >
+              <UiTableCell
+                v-for="cell in row.getVisibleCells()"
+                :key="cell.id"
+                :class="cell.column.columnDef.meta?.class?.td"
+                :style="getPinnedColumnStyle(cell.column)"
+              >
+                <slot
+                  :name="`${cell.column.id}-cell`"
+                  :cell="cell"
+                  :column="cell.column"
+                  :row="row"
+                  :table="table"
+                  :get-value="() => cell.getValue()"
+                  :render-value="() => cell.renderValue()"
+                >
+                  <template v-if="cell.column.id === 'pin'">
+                    <UiTooltip>
+                      <UiDropdownMenu>
+                        <UiTooltipTrigger as-child>
+                          <UiDropdownMenuTrigger as-child>
+                            <UiButton
+                              variant="ghost"
+                              size="icon-sm"
+                              class="hover:bg-muted"
+                              @click.stop
+                            >
+                              <Icon
+                                :name="row.getIsPinned() ? rowPinIconOn : rowPinIconOff"
+                                :class="[
+                                  'size-4',
+                                  row.getIsPinned() ? 'text-primary' : 'opacity-60',
+                                ]"
+                              />
+                            </UiButton>
+                          </UiDropdownMenuTrigger>
+                        </UiTooltipTrigger>
+                        <UiTooltipContent>
+                          <span>{{ getRowPinTooltipText(row) }}</span>
+                        </UiTooltipContent>
+                        <UiDropdownMenuContent align="start" :side-offset="6">
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel('top')"
+                            :icon="rowPinIconOn"
+                            :disabled="row.getIsPinned() === 'top'"
+                            @select="() => pinRow(row, 'top')"
+                          />
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel('bottom')"
+                            :icon="rowPinIconOn"
+                            :disabled="row.getIsPinned() === 'bottom'"
+                            @select="() => pinRow(row, 'bottom')"
+                          />
+                          <UiDropdownMenuItem
+                            :title="getRowPinLabel(false)"
+                            :icon="rowPinIconOff"
+                            :disabled="!row.getIsPinned()"
+                            @select="() => pinRow(row, false)"
+                          />
+                        </UiDropdownMenuContent>
+                      </UiDropdownMenu>
+                    </UiTooltip>
+                  </template>
+                  <template v-else-if="cell.column.id === 'expand'">
+                    <UiTooltip>
+                      <UiTooltipTrigger as-child>
+                        <UiButton
+                          variant="ghost"
+                          size="icon-sm"
+                          class="hover:bg-muted"
+                          @click="row.toggleExpanded()"
+                        >
+                          <Icon
+                            :name="row.getIsExpanded() ? expandCellIconOn : expandCellIconOff"
+                            class="size-4"
+                          />
+                        </UiButton>
+                      </UiTooltipTrigger>
+                      <UiTooltipContent>
+                        <span> {{ row.getIsExpanded() ? "Collapse" : "Expand" }} row </span>
+                      </UiTooltipContent>
+                    </UiTooltip>
+                  </template>
+                  <template v-else>
+                    <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                  </template>
+                </slot>
+              </UiTableCell>
+            </UiTableRow>
+            <UiTableRow v-if="row.getIsExpanded()" :key="`${row.id}-expanded`">
+              <UiTableCell :colspan="row.getVisibleCells().length" class="bg-muted/50 p-0">
+                <slot name="expanded-row" :row="row" :table="table">
+                  <div class="p-4">
+                    <p class="text-muted-foreground text-sm">
+                      Expanded content for row {{ row.id }}
+                    </p>
+                  </div>
+                </slot>
+              </UiTableCell>
+            </UiTableRow>
+          </template>
+
+          <template v-for="row in table.getBottomRows()" :key="row.id">
             <UiTableRow
               :data-state="row.getIsSelected() ? 'selected' : undefined"
               :class="table.options.meta?.class?.tr"
@@ -350,6 +568,10 @@
       </div>
     </slot>
   </div>
+
+  <pre>
+    {{ table.options.keepPinnedRows }}
+  </pre>
 </template>
 
 <script lang="ts">
@@ -444,6 +666,14 @@
       innerScrollHeight?: number;
       /** Inner scroll header sticky */
       innerScrollHeaderSticky?: boolean;
+      /** Keep pinned rows/columns across Pagination and Filtering*/
+      keepPinned?: boolean;
+      /** Include Leaf Rows When Pinning Parent */
+      includeLeafPinned?: boolean;
+      /** Include Parent Rows When Pinning Leaf */
+      includeParentPinned?: boolean;
+      /** Duplicate/Keep Pinned Rows in main table */
+      copyPinned?: boolean;
       /** Text for "Rows per page" label
        *
        * @default "Rows per page:"
@@ -503,6 +733,10 @@
       innerScroll: false,
       innerScrollHeight: 500,
       innerScrollHeaderSticky: false,
+      keepPinned: false,
+      includeLeafPinned: false,
+      includeParentPinned: false,
+      copyPinned: false,
       pageCount: -1,
       rowsPerPageText: "Rows per page:",
       expandCellIconOn: "lucide:chevron-down",
@@ -677,8 +911,21 @@
     manualSorting: props.manualSorting,
     manualFiltering: props.manualFiltering,
     pageCount: props.manualPagination ? props.pageCount : undefined,
+    debugAll: true,
     ...props.tableOptions,
   });
+  watch(
+    () => props.keepPinned,
+    (newValue: boolean) => {
+      table.setOptions((prev) => ({
+        ...prev,
+        keepPinnedRows: newValue,
+      }));
+    },
+    {
+      immediate: true,
+    }
+  );
 
   const pageSize = computed({
     get() {
