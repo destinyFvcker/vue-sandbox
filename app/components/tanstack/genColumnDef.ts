@@ -47,7 +47,7 @@ function getColumnsBySchema(schema: JsonSchema7) {
 	return [""];
 }
 
-function getColumnSchema(schema: JsonSchema7, column: string): JsonSchema7 {
+export function getColumnSchema(schema: JsonSchema7, column: string): JsonSchema7 {
 	if (schema.type === "object" && typeof schema.properties === "object" && column) {
 		const propertySchema = schema.properties[column];
 		if (propertySchema && typeof propertySchema === "object" && !Array.isArray(propertySchema)) {
