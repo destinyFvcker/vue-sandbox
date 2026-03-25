@@ -1,4 +1,4 @@
-import type { ControlElement, JsonFormsRendererRegistryEntry, JsonSchema7 } from "@jsonforms/core";
+import type { JsonFormsRendererRegistryEntry, JsonSchema7 } from "@jsonforms/core";
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import JsonCell from "./JsonCell.vue";
 
@@ -13,11 +13,6 @@ export function genColumnDefs(
 	return columns.map((column) => {
 		const accessorKey = prefix ? `${prefix}.${column}` : column;
 		const columnSchema = getColumnSchema(schema, column);
-		const uischema: ControlElement = {
-			type: "Control",
-			scope: "#",
-			label: false,
-		};
 
 		return columnHelper.accessor(accessorKey, {
 			header: column,
@@ -29,7 +24,6 @@ export function genColumnDefs(
 					h(JsonCell, {
 						data: cellValue,
 						schema: columnSchema,
-						uischema: uischema,
 						renderers: renderers,
 					}),
 				);
