@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use fake::Dummy;
 use schemars::{JsonSchema, generate::SchemaSettings};
 use serde::{Deserialize, Serialize};
 
@@ -12,7 +13,7 @@ where
     println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct MyStruct {
     #[serde(rename = "myNumber")]
@@ -23,47 +24,52 @@ pub struct MyStruct {
     pub my_nullable_enum: Option<MyEnum>,
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 #[serde(untagged)]
 pub enum MyEnum {
     StringNewType(String),
     StructVariant { floats: Vec<f32> },
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct FooStruct {
     pub foo_foo: i32,
     pub foo_bar: String,
     pub foo_qux: String,
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct BarStruct {
     pub bar_foo: i32,
     pub bar_bar: String,
     pub bar_qux: String,
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct FooBarStruct {
     pub foo: FooStruct,
     pub bar: Option<BarStruct>,
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
+pub struct FooBazStruct {
+    pub foos: FooStruct,
+}
+
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub enum QuxNormalEnum {
     Foo,
     Bar,
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub enum QuxTupleEnum {
     Write(String),
     Move(i32, i32),
     ChangeColor(u8, u8, u8),
 }
 
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub enum QuxStructEnum {
     Quit,
     Move { x: i32, y: i32 },
@@ -96,6 +102,11 @@ mod tests {
     }
 
     #[test]
+    fn test_ref_structure() {
+        print_json_schema::<FooBazStruct>();
+    }
+
+    #[test]
     fn basic_normal_enum_schema() {
         print_json_schema::<QuxNormalEnum>();
     }
@@ -109,4 +120,5 @@ mod tests {
     fn basic_struct_enum_schema() {
         print_json_schema::<QuxStructEnum>();
     }
+
 }

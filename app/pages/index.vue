@@ -6,49 +6,115 @@ import { genColumnDefs } from "~/components/tanstack/genColumnDef";
 
 const data = [
 	{
-		name: "John Doe",
-		birthDate: "1985-06-02",
-		postalCode: "12345",
+		foo: {
+			foo_foo: 537543802,
+			foo_bar: "730J5pDtNj2AyMiKq",
+			foo_qux: "ywnoXy6ebkrTXTBAryG",
+		},
+		bar: {
+			bar_foo: -2108948213,
+			bar_bar: "f4m6PB",
+			bar_qux: "eq6oemfBLyVG",
+		},
 	},
 	{
-		name: "Steve Jobs",
-		birthDate: "1955-02-24",
-		postalCode: "90210",
+		foo: {
+			foo_foo: -1624478677,
+			foo_bar: "PYSUWd3IvVJetnj",
+			foo_qux: "IVHKSB1wFVYN2e9b",
+		},
+		bar: {
+			bar_foo: 167448755,
+			bar_bar: "Gs7BI",
+			bar_qux: "yRmZj2S",
+		},
 	},
 	{
-		name: "Bill Gates",
-		birthDate: "1955-10-28",
-		postalCode: "90210",
+		foo: {
+			foo_foo: 25297395,
+			foo_bar: "VLkv6HUX",
+			foo_qux: "c9EUkeNdeaLW2HW1",
+		},
+		bar: {
+			bar_foo: 164233856,
+			bar_bar: "xs1wPEpgZ2R6OZ",
+			bar_qux: "QCv99gLgAlcCb8p3k",
+		},
 	},
 	{
-		name: "Elon Musk",
-		birthDate: "1971-06-28",
-		postalCode: "90210",
+		foo: {
+			foo_foo: 846055807,
+			foo_bar: "B5UGKu",
+			foo_qux: "FosBx7QPmYzBu7",
+		},
+		bar: null,
+	},
+	{
+		foo: {
+			foo_foo: 1504104133,
+			foo_bar: "HeWUqMCgko3",
+			foo_qux: "3VQomgBSvGk52HAL",
+		},
+		bar: null,
 	},
 ];
 
 const schema = {
+	$schema: "http://json-schema.org/draft-07/schema#",
+	title: "FooBarStruct",
 	type: "object",
 	properties: {
-		name: {
-			type: "string",
-			minLength: 3,
-			description: "Please enter your name",
-			i18n: "name",
+		bar: {
+			anyOf: [
+				{
+					$ref: "#/definitions/BarStruct",
+				},
+				{
+					type: "null",
+				},
+			],
 		},
-
-		birthDate: {
-			type: "string",
-			format: "date",
-			i18n: "birth",
+		foo: {
+			$ref: "#/definitions/FooStruct",
 		},
-		postalCode: {
-			type: "string",
-			maxLength: 5,
-			i18n: "postal-code",
+	},
+	required: ["foo"],
+	definitions: {
+		BarStruct: {
+			type: "object",
+			properties: {
+				bar_bar: {
+					type: "string",
+				},
+				bar_foo: {
+					type: "integer",
+					format: "int32",
+				},
+				bar_qux: {
+					type: "string",
+				},
+			},
+			required: ["bar_foo", "bar_bar", "bar_qux"],
+		},
+		FooStruct: {
+			type: "object",
+			properties: {
+				foo_bar: {
+					type: "string",
+				},
+				foo_foo: {
+					type: "integer",
+					format: "int32",
+				},
+				foo_qux: {
+					type: "string",
+				},
+			},
+			required: ["foo_foo", "foo_bar", "foo_qux"],
 		},
 	},
 };
+
 const columns = Object.freeze(genColumnDefs(schema, tanstackRenderers));
 </script>
 

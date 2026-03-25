@@ -158,5 +158,11 @@ watch([dataToUse, schemaToUse, uischemaToUse, () => props.validationMode], () =>
 </script>
 
 <template>
-	<DispatchRenderer :schema="jsonforms.core.schema" :uischema="jsonforms.core.uischema" path="" />
+	<DispatchRenderer
+		v-if="jsonforms.core?.schema && jsonforms.core?.uischema"
+		:schema="jsonforms.core.schema"
+		:uischema="jsonforms.core.uischema"
+		path=""
+	/>
+	<span v-else class="text-muted-foreground">{{ dataToUse ?? '' }}</span>
 </template>

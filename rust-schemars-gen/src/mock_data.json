@@ -1,0 +1,329 @@
+{
+  "myStructs": [
+    {
+      "myNumber": 866471062,
+      "myBool": false,
+      "myNullableEnum": null
+    },
+    {
+      "myNumber": 1912047607,
+      "myBool": true,
+      "myNullableEnum": "Yu1UfHzYbdDg00C2hj"
+    },
+    {
+      "myNumber": -1117629973,
+      "myBool": false,
+      "myNullableEnum": {
+        "floats": [
+          0.60700846,
+          0.45018375,
+          0.14954168,
+          0.54763186
+        ]
+      }
+    },
+    {
+      "myNumber": 1270897762,
+      "myBool": true,
+      "myNullableEnum": null
+    },
+    {
+      "myNumber": -1037368040,
+      "myBool": true,
+      "myNullableEnum": {
+        "floats": [
+          0.88352746,
+          0.78691655,
+          0.41970754,
+          0.39548177,
+          0.8749274,
+          0.9103935,
+          0.8128949
+        ]
+      }
+    },
+    {
+      "myNumber": 1019760675,
+      "myBool": false,
+      "myNullableEnum": null
+    },
+    {
+      "myNumber": 590203800,
+      "myBool": false,
+      "myNullableEnum": "G2AmruJP"
+    },
+    {
+      "myNumber": -491762302,
+      "myBool": false,
+      "myNullableEnum": null
+    },
+    {
+      "myNumber": -359024874,
+      "myBool": true,
+      "myNullableEnum": null
+    },
+    {
+      "myNumber": -350093566,
+      "myBool": true,
+      "myNullableEnum": null
+    }
+  ],
+  "fooStructs": [
+    {
+      "foo_foo": 150806262,
+      "foo_bar": "rJ8KoViwI",
+      "foo_qux": "x5AjWLy9WQzDoYg"
+    },
+    {
+      "foo_foo": -969582495,
+      "foo_bar": "zIey8qfvymP",
+      "foo_qux": "b8S2RdjTlJ7w84Iz"
+    },
+    {
+      "foo_foo": -1972697733,
+      "foo_bar": "mmsHapYBr",
+      "foo_qux": "zX1TFNc"
+    },
+    {
+      "foo_foo": -259172294,
+      "foo_bar": "l9OXJrwmuYAPHnls",
+      "foo_qux": "BL61jKaNZzqcXL"
+    },
+    {
+      "foo_foo": -706441015,
+      "foo_bar": "d8TPRhqCxPxNklBXu",
+      "foo_qux": "YpEaP1TUx753x06XMI"
+    },
+    {
+      "foo_foo": 1015726183,
+      "foo_bar": "of7hmxccxn",
+      "foo_qux": "XBmNoxlHYV1"
+    },
+    {
+      "foo_foo": -927510094,
+      "foo_bar": "fstUVe9QC9uTciDP",
+      "foo_qux": "r40z4AuYbmyODPAr"
+    },
+    {
+      "foo_foo": 960610405,
+      "foo_bar": "9syyVAepy0UIlZ",
+      "foo_qux": "NohvVoZ5Vpo0avxQEfL"
+    },
+    {
+      "foo_foo": -1691442831,
+      "foo_bar": "EGcTSGuKoLyG",
+      "foo_qux": "IDuUNKotYxIxUUXG"
+    },
+    {
+      "foo_foo": -2012412309,
+      "foo_bar": "RVsOLC34rR6p2MtcYS2",
+      "foo_qux": "5DY1uYqJGG7zRreN"
+    }
+  ],
+  "barStructs": [
+    {
+      "bar_foo": -1087664872,
+      "bar_bar": "lwdQsGeOcauYmVx",
+      "bar_qux": "54RoOMEheuFj3l81m"
+    },
+    {
+      "bar_foo": -963912624,
+      "bar_bar": "l0C7Ohfy9h6gaRnD0",
+      "bar_qux": "PIJ4D"
+    },
+    {
+      "bar_foo": 832913419,
+      "bar_bar": "z9mjk8y8AcXEzJEeaO",
+      "bar_qux": "pLKkJYIEFUHlr8a"
+    },
+    {
+      "bar_foo": 1071774710,
+      "bar_bar": "x1OPcp7BNtZrQvZJ8",
+      "bar_qux": "0mdgy1QZDOAbV3E"
+    },
+    {
+      "bar_foo": -1516500927,
+      "bar_bar": "t1zMVStuiV9h0cWagNI",
+      "bar_qux": "VrkuuUqeginG8u8E"
+    },
+    {
+      "bar_foo": -1673814835,
+      "bar_bar": "F2jPSNpvAJxuxqoyU",
+      "bar_qux": "nBb5hIPX1n9zK7ds"
+    },
+    {
+      "bar_foo": 1529441453,
+      "bar_bar": "NTK9U2evaVnVLJj5Z",
+      "bar_qux": "F9oY0Z"
+    },
+    {
+      "bar_foo": 1796545077,
+      "bar_bar": "a0jMy155bVjym0zgXC",
+      "bar_qux": "iRf9gOX614ZBLkpiL"
+    },
+    {
+      "bar_foo": -1236790907,
+      "bar_bar": "r5jFaR01PMZMYR",
+      "bar_qux": "6HiFKwifXX5FDUe9txA"
+    },
+    {
+      "bar_foo": 447819823,
+      "bar_bar": "d6j45sLJKg5SHGArqL",
+      "bar_qux": "xpGKvLOPNeesUfsHH"
+    }
+  ],
+  "fooBarStructs": [
+    {
+      "foo": {
+        "foo_foo": 537543802,
+        "foo_bar": "730J5pDtNj2AyMiKq",
+        "foo_qux": "ywnoXy6ebkrTXTBAryG"
+      },
+      "bar": {
+        "bar_foo": -2108948213,
+        "bar_bar": "f4m6PB",
+        "bar_qux": "eq6oemfBLyVG"
+      }
+    },
+    {
+      "foo": {
+        "foo_foo": -1624478677,
+        "foo_bar": "PYSUWd3IvVJetnj",
+        "foo_qux": "IVHKSB1wFVYN2e9b"
+      },
+      "bar": {
+        "bar_foo": 167448755,
+        "bar_bar": "Gs7BI",
+        "bar_qux": "yRmZj2S"
+      }
+    },
+    {
+      "foo": {
+        "foo_foo": 25297395,
+        "foo_bar": "VLkv6HUX",
+        "foo_qux": "c9EUkeNdeaLW2HW1"
+      },
+      "bar": {
+        "bar_foo": 164233856,
+        "bar_bar": "xs1wPEpgZ2R6OZ",
+        "bar_qux": "QCv99gLgAlcCb8p3k"
+      }
+    },
+    {
+      "foo": {
+        "foo_foo": 846055807,
+        "foo_bar": "B5UGKu",
+        "foo_qux": "FosBx7QPmYzBu7"
+      },
+      "bar": null
+    },
+    {
+      "foo": {
+        "foo_foo": 1504104133,
+        "foo_bar": "HeWUqMCgko3",
+        "foo_qux": "3VQomgBSvGk52HAL"
+      },
+      "bar": null
+    }
+  ],
+  "fooBazStructs": [
+    {
+      "foos": {
+        "foo_foo": -1944886512,
+        "foo_bar": "8YkNYdBpSMfRYkYch",
+        "foo_qux": "S736v"
+      }
+    },
+    {
+      "foos": {
+        "foo_foo": 1188274378,
+        "foo_bar": "BDXpIlO9kBgGXYy",
+        "foo_qux": "BVfJL2qx"
+      }
+    },
+    {
+      "foos": {
+        "foo_foo": -1537114579,
+        "foo_bar": "hs5HnqjylwB4h1K",
+        "foo_qux": "4eWU9F2KNlgDkZco5CJ"
+      }
+    },
+    {
+      "foos": {
+        "foo_foo": -698268128,
+        "foo_bar": "FDzVw1NK3",
+        "foo_qux": "6PtVNobgB8QdUjNMfX"
+      }
+    },
+    {
+      "foos": {
+        "foo_foo": 1438773383,
+        "foo_bar": "jEmhF1bBGd",
+        "foo_qux": "Otq8dK"
+      }
+    }
+  ],
+  "quxNormalEnums": [
+    "Foo",
+    "Foo",
+    "Foo",
+    "Bar",
+    "Bar"
+  ],
+  "quxTupleEnums": [
+    {
+      "Write": "nQAcdIjBd39dvH0IljS"
+    },
+    {
+      "Move": [
+        -511542317,
+        1824866044
+      ]
+    },
+    {
+      "Move": [
+        2019920041,
+        948600684
+      ]
+    },
+    {
+      "ChangeColor": [
+        15,
+        200,
+        213
+      ]
+    },
+    {
+      "ChangeColor": [
+        145,
+        81,
+        132
+      ]
+    }
+  ],
+  "quxStructEnums": [
+    {
+      "Write": {
+        "text": "Jx5D3ebzsEJ8pFvR3"
+      }
+    },
+    "Quit",
+    {
+      "Move": {
+        "x": -1293849996,
+        "y": -1911566604
+      }
+    },
+    {
+      "Write": {
+        "text": "tB9cS7FWIGoIKtPK"
+      }
+    },
+    {
+      "Move": {
+        "x": -314577799,
+        "y": -176789315
+      }
+    }
+  ]
+}
