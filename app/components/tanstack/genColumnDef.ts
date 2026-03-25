@@ -8,10 +8,12 @@ import {
 } from "@jsonforms/core";
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import JsonCell from "./JsonCell.vue";
-import { collectSchemaEntries } from "~/lib/schema-resolver";
+import { collectSchemaEntries, partitionSchemaEntries, type SchemaEntry } from "~/lib/schema-resolver";
 import TableTipHeader from "../table/TableTipHeader.vue";
 import TableEmptyCell from "../table/TableEmptyCell.vue";
 import { startCase } from "lodash";
+import { ChevronRight } from "lucide-vue-next";
+import { Badge } from "~/components/ui/badge";
 
 const dumpControlElement: ControlElement = {
 	type: "Control",
@@ -43,12 +45,17 @@ function getNestedValue(obj: any, path: string): unknown {
 	return current;
 }
 
-export function genColumnDefs(schema: JsonSchema7, renderers: JsonFormsRendererRegistryEntry[]): ColumnDef<any, any>[] {
-	const schemaEntries = collectSchemaEntries(schema);
-	console.log(schemaEntries);
+export interface GenColumnDefsResult {
+	columns: ColumnDef<any, any>[];
+	arrayEntries: SchemaEntry[];
+}
+
+export function genColumnDefs(schema: JsonSchema7, renderers: JsonFormsRendererRegistryEntry[]): GenColumnDefsResult {
+	const allEntries = collectSchemaEntries(schema);
+	const { columnEntries, arrayEntries } = partitionSchemaEntries(allEntries);
 	const rootDefinitions = (schema as any).definitions ?? (schema as any).$defs;
 
-	return schemaEntries.map((schemaEntry) => {
+	const dataColumns: ColumnDef<any, any>[] = columnEntries.map((schemaEntry) => {
 		return columnHelper.accessor((row) => getNestedValue(row, schemaEntry.dataPath), {
 			id: schemaEntry.dataPath,
 			header: () => {
@@ -80,4 +87,46 @@ export function genColumnDefs(schema: JsonSchema7, renderers: JsonFormsRendererR
 			},
 		});
 	});
+
+	const columns: ColumnDef<any, any>[] = [];
+
+	if (arrayEntries.length > 0) {
+		columns.push(
+			columnHelper.display({
+				id: "__expand",
+				header: () => "",
+				cell: ({ row }) => {
+					const badges = arrayEntries.map((entry) => {
+						const val = getNestedValue(row.original, entry.dataPath);
+						const count = Array.isArray(val) ? val.length : 0;
+						return h(Badge, { variant: "secondary", class: "text-[10px] px-1.5 py-0" }, () => [
+							h("span", { class: "text-muted-foreground" }, `${startCase(entry.dataPath)}: `),
+							String(count),
+						]);
+					});
+
+					return h(
+						"button",
+						{
+							class: "flex items-center gap-1.5 p-1 rounded hover:bg-muted cursor-pointer",
+							onClick: () => row.toggleExpanded(),
+						},
+						[
+							h(ChevronRight, {
+								class: [
+									"size-4 shrink-0 transition-transform duration-200",
+									row.getIsExpanded() ? "rotate-90" : "",
+								],
+							}),
+							...badges,
+						],
+					);
+				},
+			}),
+		);
+	}
+
+	columns.push(...dataColumns);
+
+	return { columns, arrayEntries };
 }
