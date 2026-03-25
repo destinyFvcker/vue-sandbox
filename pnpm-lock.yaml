@@ -20,6 +20,9 @@ importers:
       '@jsonforms/vue-vanilla':
         specifier: ^3.7.0
         version: 3.7.0(@jsonforms/core@3.7.0)(@jsonforms/vue@3.7.0(@jsonforms/core@3.7.0)(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@lucide/vue':
+        specifier: ^1.6.0
+        version: 1.6.0(vue@3.5.27(typescript@5.9.3))
       '@nuxt/a11y':
         specifier: 1.0.0-alpha.1
         version: 1.0.0-alpha.1(magicast@0.5.2)(vite@7.3.1(@types/node@24.10.10)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.46.0)(yaml@2.8.2))
@@ -1044,6 +1047,11 @@ packages:
 
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+
+  '@lucide/vue@1.6.0':
+    resolution: {integrity: sha512-zgemT9UpOxoNgJA/sw+0rNQF9T7XB/GaTQAMYNT/0GkxDBiKfF5X3CFk62V6e/UorxeO56xT6/dZyIQZqgPA8Q==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   '@mapbox/node-pre-gyp@2.0.3':
     resolution: {integrity: sha512-uwPAhccfFJlsfCxMYTwOdVfOz3xqyj8xYL3zJj8f0pb30tLohnnFPhLuqp4/qoEz8sNxe4SESZedcBojRefIzg==}
@@ -7355,6 +7363,10 @@ snapshots:
       - supports-color
 
   '@kwsites/promise-deferred@1.1.1': {}
+
+  '@lucide/vue@1.6.0(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      vue: 3.5.27(typescript@5.9.3)
 
   '@mapbox/node-pre-gyp@2.0.3':
     dependencies:

@@ -11,10 +11,10 @@ const { control } = useJsonFormsControl(props);
 const display = computed(() => {
 	const v = Number(control.value.data);
 	if (Number.isNaN(v)) {
-		return "";
+		return "NaN";
 	}
 	if (Number.isInteger(v)) {
-		return v.toString();
+		return v.toLocaleString("en-US");
 	} else {
 		return v.toFixed(2);
 	}
@@ -22,7 +22,7 @@ const display = computed(() => {
 </script>
 
 <template>
-	<div class="flex justify-center">
-		<div class="text-right font-mono">{{ display }}</div>
+	<div class="flex justify-end px-2">
+		<div class="text-right font-mono text-xs">{{ display }}</div>
 	</div>
 </template>

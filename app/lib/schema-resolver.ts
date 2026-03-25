@@ -76,6 +76,14 @@ export const collectSchemaEntries = (
 				return r?.properties != null;
 			});
 		}
+		// Handle anyOf/oneOf (e.g. Rust Option<T>: anyOf [{$ref: T}, {type: null}])
+		const variants = [...((s?.oneOf ?? []) as JsonSchema[]), ...((s?.anyOf ?? []) as JsonSchema[])];
+		if (variants.length > 0) {
+			return variants.some((v) => {
+				const r = resolveRef(v);
+				return r != null && hasNestedProperties(r);
+			});
+		}
 		return false;
 	};
 
