@@ -1,5 +1,6 @@
 import {
 	isAnyOfControl,
+	isBooleanControl,
 	isIntegerControl,
 	isLayout,
 	isNumberControl,
@@ -11,6 +12,7 @@ import {
 } from "@jsonforms/core";
 import StringRenderer from "./StringRenderer.vue";
 import NumberRenderer from "./NumberRenderer.vue";
+import BooleanRenderer from "./BooleanRenderer.vue";
 import LayoutCell from "./LayoutCell.vue";
 import AnyOfRenderer from "./AnyOfRenderer.vue";
 import OneOfRenderer from "./OneOfRenderer.vue";
@@ -23,6 +25,10 @@ export const tanstackRenderers: JsonFormsRendererRegistryEntry[] = [
 	{
 		renderer: NumberRenderer,
 		tester: rankWith(10, or(isNumberControl, isIntegerControl)),
+	},
+	{
+		renderer: BooleanRenderer,
+		tester: rankWith(10, isBooleanControl),
 	},
 	{
 		renderer: LayoutCell,
