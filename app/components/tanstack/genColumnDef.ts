@@ -1,53 +1,83 @@
-import type { JsonFormsRendererRegistryEntry, JsonSchema7 } from "@jsonforms/core";
+import {
+	createLabelDescriptionFrom,
+	decode,
+	type ControlElement,
+	type JsonFormsRendererRegistryEntry,
+	type JsonSchema,
+	type JsonSchema7,
+} from "@jsonforms/core";
 import { createColumnHelper, type ColumnDef } from "@tanstack/vue-table";
 import JsonCell from "./JsonCell.vue";
+import { collectSchemaEntries } from "~/lib/schema-resolver";
+import TableTipHeader from "../table/TableTipHeader.vue";
+import TableEmptyCell from "../table/TableEmptyCell.vue";
+import { startCase } from "lodash";
+
+const dumpControlElement: ControlElement = {
+	type: "Control",
+	scope: "#",
+};
+
+const deriveLabel = (controlElement: ControlElement, schemaElement?: JsonSchema): string => {
+	if (schemaElement && typeof schemaElement.title === "string") {
+		return schemaElement.title;
+	}
+	if (typeof controlElement.scope === "string") {
+		const ref = controlElement.scope;
+		const label = decode(ref.substr(ref.lastIndexOf("/") + 1));
+		return startCase(label);
+	}
+
+	return "";
+};
 
 const columnHelper = createColumnHelper<any>();
-export function genColumnDefs(
-	schema: JsonSchema7,
-	renderers: JsonFormsRendererRegistryEntry[],
-	prefix: string = "",
-): ColumnDef<any, any>[] {
-	const columns = getColumnsBySchema(schema);
 
-	return columns.map((column) => {
-		const accessorKey = prefix ? `${prefix}.${column}` : column;
-		const columnSchema = getColumnSchema(schema, column);
+function getNestedValue(obj: any, path: string): unknown {
+	const keys = path.split(".");
+	let current = obj;
+	for (const key of keys) {
+		if (current == null) return undefined;
+		current = current[key];
+	}
+	return current;
+}
 
-		return columnHelper.accessor(accessorKey, {
-			header: column,
+export function genColumnDefs(schema: JsonSchema7, renderers: JsonFormsRendererRegistryEntry[]): ColumnDef<any, any>[] {
+	const schemaEntries = collectSchemaEntries(schema);
+	console.log(schemaEntries);
+	const rootDefinitions = (schema as any).definitions ?? (schema as any).$defs;
+
+	return schemaEntries.map((schemaEntry) => {
+		return columnHelper.accessor((row) => getNestedValue(row, schemaEntry.dataPath), {
+			id: schemaEntry.dataPath,
+			header: () => {
+				const header = deriveLabel(dumpControlElement, schemaEntry.schema);
+				const { text: description } = createLabelDescriptionFrom(dumpControlElement, schemaEntry.schema);
+
+				return h(TableTipHeader, {
+					header: header ? header : schemaEntry.dataPath,
+					description: description ? description : "No description available",
+				});
+			},
 			cell: ({ getValue }) => {
 				const cellValue = getValue();
+				if (cellValue == null) {
+					return h("div", { class: "relative" }, h(TableEmptyCell));
+				}
+				const cellSchema = rootDefinitions
+					? { ...schemaEntry.schema, definitions: rootDefinitions }
+					: schemaEntry.schema;
 				return h(
 					"div",
 					{ class: "relative" },
 					h(JsonCell, {
 						data: cellValue,
-						schema: columnSchema,
+						schema: cellSchema,
 						renderers: renderers,
 					}),
 				);
 			},
 		});
 	});
-}
-
-function getColumnsBySchema(schema: JsonSchema7) {
-	if (schema.type === "object" && typeof schema.properties === "object") {
-		const properties = schema.properties;
-		return Object.keys(properties).filter((prop) => properties[prop]?.type !== "array");
-	}
-	// primitives
-	return [""];
-}
-
-export function getColumnSchema(schema: JsonSchema7, column: string): JsonSchema7 {
-	if (schema.type === "object" && typeof schema.properties === "object" && column) {
-		const propertySchema = schema.properties[column];
-		if (propertySchema && typeof propertySchema === "object" && !Array.isArray(propertySchema)) {
-			return propertySchema as JsonSchema7;
-		}
-	}
-	// primitives or unknown property
-	return schema;
 }

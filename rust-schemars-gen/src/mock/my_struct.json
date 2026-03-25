@@ -1,0 +1,62 @@
+[
+  {
+    "myNumber": -1589263114,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -303859075,
+    "myBool": true,
+    "myNullableEnum": "7lLt2B8zzH"
+  },
+  {
+    "myNumber": 491671718,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1921366571,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 982230932,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 911122495,
+    "myBool": false,
+    "myNullableEnum": {
+      "floats": [
+        0.13471776,
+        0.6564285,
+        0.92038316,
+        0.5272476,
+        0.03654027,
+        0.6114647,
+        0.52285737
+      ]
+    }
+  },
+  {
+    "myNumber": -1932979671,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1121765007,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -2097025908,
+    "myBool": false,
+    "myNullableEnum": "ld48ajb3VN9qC"
+  },
+  {
+    "myNumber": -72799489,
+    "myBool": false,
+    "myNullableEnum": null
+  }
+]
