@@ -1,21 +1,30 @@
 <script setup lang="ts" generic="TData">
 import type { HTMLAttributes } from "vue";
-import type { ColumnDef, ColumnSort, SortingState } from "@tanstack/vue-table";
+import type { ColumnDef, ColumnSort, ExpandedState, SortingState } from "@tanstack/vue-table";
 import {
+	createColumnHelper,
 	FlexRender,
 	getCoreRowModel,
+	getExpandedRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
 	useVueTable,
 } from "@tanstack/vue-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { SchemaEntry } from "~/lib/schema-resolver";
+import type { JsonFormsRendererRegistryEntry } from "@jsonforms/core";
+import { genColumnDefs } from "~/components/tanstack/genColumnDef";
 
 import { ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-vue-next";
 import { cn } from "~/lib/utils";
+import { startCase } from "lodash";
 
 interface Props {
 	data: TData[];
 	columns: ColumnDef<TData, any>[];
+	arrayEntries?: SchemaEntry[];
+	renderers?: JsonFormsRendererRegistryEntry[];
 	paginator?: boolean;
 	paginSiblingCnt?: number;
 	paginatorPosition?: "center" | "start" | "end";
@@ -26,6 +35,8 @@ interface Props {
 const {
 	data,
 	columns,
+	arrayEntries = [],
+	renderers = [],
 	paginator = false,
 	paginatorPosition = "center",
 	paginSiblingCnt = 4,
@@ -34,10 +45,48 @@ const {
 } = defineProps<Props>();
 
 const sorting = ref<SortingState>(initSort ? [initSort] : []);
+const expanded = ref<ExpandedState>({});
 const paginParam = ref({
 	pageIndex: 1,
 	pageSize: 100,
 });
+
+function getNestedValue(obj: any, path: string): unknown {
+	const keys = path.split(".");
+	let current = obj;
+	for (const key of keys) {
+		if (current == null) return undefined;
+		current = current[key];
+	}
+	return current;
+}
+
+function getSubTableColumns(entry: SchemaEntry) {
+	const itemsSchema = entry.schema.items;
+	if (itemsSchema && typeof itemsSchema === "object" && !Array.isArray(itemsSchema) && (itemsSchema as any).properties) {
+		return genColumnDefs(itemsSchema as any, renderers).columns;
+	}
+	// Primitive array: single "Value" column
+	const helper = createColumnHelper<any>();
+	return [
+		helper.accessor((row: any) => row, {
+			id: "value",
+			header: () => startCase(entry.dataPath),
+			cell: ({ getValue }: any) => String(getValue()),
+		}),
+	];
+}
+
+function getSubTableData(rowData: any, entry: SchemaEntry): any[] {
+	const value = getNestedValue(rowData, entry.dataPath);
+	if (!Array.isArray(value)) return [];
+	const itemsSchema = entry.schema.items;
+	if (itemsSchema && typeof itemsSchema === "object" && !Array.isArray(itemsSchema) && (itemsSchema as any).properties) {
+		return value;
+	}
+	// Primitive array: wrap each item for the single-column table
+	return value;
+}
 
 const table = useVueTable({
 	get data() {
@@ -50,6 +99,9 @@ const table = useVueTable({
 		get sorting() {
 			return sorting.value;
 		},
+		get expanded() {
+			return expanded.value;
+		},
 		get pagination() {
 			return {
 				pageIndex: paginParam.value.pageIndex - 1,
@@ -60,6 +112,9 @@ const table = useVueTable({
 	onSortingChange: (updaterOrValue) => {
 		sorting.value = typeof updaterOrValue === "function" ? updaterOrValue(sorting.value) : updaterOrValue;
 	},
+	onExpandedChange: (updaterOrValue) => {
+		expanded.value = typeof updaterOrValue === "function" ? updaterOrValue(expanded.value) : updaterOrValue;
+	},
 	onPaginationChange: (updaterOrValue) => {
 		const newVal = typeof updaterOrValue === "function" ? updaterOrValue(paginParam.value) : updaterOrValue;
 		paginParam.value = {
@@ -68,6 +123,7 @@ const table = useVueTable({
 		};
 	},
 	getCoreRowModel: getCoreRowModel(),
+	getExpandedRowModel: getExpandedRowModel(),
 	getSortedRowModel: getSortedRowModel(),
 	getPaginationRowModel: getPaginationRowModel(),
 });
@@ -111,15 +167,42 @@ const table = useVueTable({
 		</TableHeader>
 		<TableBody>
 			<template v-if="table.getRowModel().rows?.length">
-				<TableRow
-					v-for="row in table.getRowModel().rows"
-					:key="row.id"
-					:data-state="row.getIsSelected() ? 'selected' : undefined"
-				>
-					<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-						<FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
-					</TableCell>
-				</TableRow>
+				<template v-for="row in table.getRowModel().rows" :key="row.id">
+					<TableRow :data-state="row.getIsSelected() ? 'selected' : undefined">
+						<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+							<FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+						</TableCell>
+					</TableRow>
+					<TableRow v-if="row.getIsExpanded() && arrayEntries.length > 0">
+						<TableCell :colspan="columns.length" class="p-0">
+							<div class="max-h-[300px] overflow-auto border-t bg-muted/30 p-3">
+								<Tabs :default-value="arrayEntries[0].dataPath">
+									<TabsList>
+										<TabsTrigger
+											v-for="entry in arrayEntries"
+											:key="entry.dataPath"
+											:value="entry.dataPath"
+										>
+											{{ startCase(entry.dataPath) }}
+										</TabsTrigger>
+									</TabsList>
+									<TabsContent
+										v-for="entry in arrayEntries"
+										:key="entry.dataPath"
+										:value="entry.dataPath"
+									>
+										<TableShellClient
+											:data="getSubTableData(row.original, entry)"
+											:columns="getSubTableColumns(entry)"
+											:renderers="renderers"
+											class="text-xs"
+										/>
+									</TabsContent>
+								</Tabs>
+							</div>
+						</TableCell>
+					</TableRow>
+				</template>
 			</template>
 			<template v-else>
 				<TableRow>

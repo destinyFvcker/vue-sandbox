@@ -115,9 +115,14 @@ const schema = {
 	},
 };
 
-const columns = Object.freeze(genColumnDefs(schema, tanstackRenderers));
+const { columns, arrayEntries } = genColumnDefs(schema, tanstackRenderers);
 </script>
 
 <template>
-	<TableShellClient :data="data" :columns="columns as ColumnDef<any, any>[]" />
+	<TableShellClient
+		:data="data"
+		:columns="columns as ColumnDef<any, any>[]"
+		:array-entries="arrayEntries"
+		:renderers="tanstackRenderers"
+	/>
 </template>

@@ -156,3 +156,30 @@ export const collectSchemaEntries = (
 	collect(schema, "#", "", 0);
 	return results;
 };
+
+export interface PartitionedEntries {
+	/** Entries suitable for table columns (non-array types) */
+	columnEntries: SchemaEntry[];
+	/** Entries with type: "array", to be rendered in expandable row detail */
+	arrayEntries: SchemaEntry[];
+}
+
+/**
+ * Splits schema entries into column entries and array entries.
+ * Array entries (schema.type === "array") are separated out for
+ * expandable row rendering (e.g. tabs with sub-tables).
+ */
+export const partitionSchemaEntries = (entries: SchemaEntry[]): PartitionedEntries => {
+	const columnEntries: SchemaEntry[] = [];
+	const arrayEntries: SchemaEntry[] = [];
+
+	for (const entry of entries) {
+		if (entry.schema.type === "array") {
+			arrayEntries.push(entry);
+		} else {
+			columnEntries.push(entry);
+		}
+	}
+
+	return { columnEntries, arrayEntries };
+};
