@@ -52,7 +52,13 @@
 </script>
 
 <template>
-  <UiTanStackTable :data="data" :columns="columns" :show-footer="false">
+  <UiTanStackTable
+    :data="data"
+    :columns="columns"
+    :show-footer="false"
+    :initial-page-size="50"
+    :page-size-options="[50, 100, 200, 300]"
+  >
     <template v-if="arrayEntries && arrayEntries.length > 0" #expanded-row="{ row }">
       <div class="bg-muted/30 border-t p-2">
         <UiTabs :default-value="arrayEntries[0]!.dataPath">

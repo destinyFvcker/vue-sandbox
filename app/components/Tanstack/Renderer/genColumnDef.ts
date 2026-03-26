@@ -1,7 +1,7 @@
-import Badge from "@/components/Ui/Badge.vue";
-import { createLabelDescriptionFrom, decode } from "@jsonforms/core";
+import { decode } from "@jsonforms/core";
 import { ChevronRight } from "@lucide/vue";
 import { createColumnHelper } from "@tanstack/vue-table";
+import Badge from "~/components/ui/Badge.vue";
 import { collectSchemaEntries, partitionSchemaEntries } from "~/lib/schema-resolver";
 import { startCase } from "lodash";
 import type {
@@ -57,6 +57,8 @@ export function genColumnDefs(
   renderers: JsonFormsRendererRegistryEntry[]
 ): GenColumnDefsResult {
   const allEntries = collectSchemaEntries(schema);
+  console.log(allEntries);
+
   const { columnEntries, arrayEntries } = partitionSchemaEntries(allEntries);
   const rootDefinitions = (schema as any).definitions ?? (schema as any).$defs;
 
@@ -65,14 +67,12 @@ export function genColumnDefs(
       id: schemaEntry.dataPath,
       header: () => {
         const header = deriveLabel(dumpControlElement, schemaEntry.schema);
-        const { text: description } = createLabelDescriptionFrom(
-          dumpControlElement,
-          schemaEntry.schema
-        );
 
         return h(TableTipHeader, {
           header: header ? header : schemaEntry.dataPath,
-          description: description ? description : "No description available",
+          description: schemaEntry.schema.description
+            ? schemaEntry.schema.description
+            : "No description available",
         });
       },
       cell: ({ getValue }) => {

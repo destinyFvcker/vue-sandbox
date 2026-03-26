@@ -1,0 +1,2261 @@
+[
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -634218439,
+        "foo_bar": "cdJ0E5iqpO",
+        "foo_qux": "6TJZNlXSPbRx6uu"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "Vjm3X0Sjzw3gGJjh"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 648558168,
+        "y": -2037828430
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2082362874,
+        "foo_bar": "tuC6llzJxWHIPN",
+        "foo_qux": "ZpjYrlS"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "1Dyv3FhhVZ88TqwLXJS"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -274448721,
+        "foo_bar": "kVOaV",
+        "foo_qux": "gj01iaGdGd"
+      },
+      "bar": {
+        "bar_foo": -1313920213,
+        "bar_bar": "w7Gsxdh5tZ",
+        "bar_qux": "8ZsDcHYak"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "ExuHyAB"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "qrAfhqBGqpShvHhOZOS"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2037149197,
+        "foo_bar": "AyXiM34q52jeSqB2uU",
+        "foo_qux": "2eMb9o675OZ0"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "Wy9ybHRLHJOP"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "D7i5Da8KmFZxf"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1114193241,
+        "foo_bar": "y7Dpt9MJdxwHuQxsg",
+        "foo_qux": "CiFdbyWWNMo9AHY7Rpt"
+      },
+      "bar": {
+        "bar_foo": -1226507856,
+        "bar_bar": "0No41",
+        "bar_qux": "BNGat"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -1867567150,
+        1889510961
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 130836621,
+        "y": 1883167946
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -524380662,
+        "foo_bar": "WSq6duC0t7QFb",
+        "foo_qux": "GxPyrO9c80qRGKKov"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "WdQEN"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -326922897,
+        "y": 832997153
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 904670458,
+        "foo_bar": "4pRoNh",
+        "foo_qux": "FOf6RiXuIS5Z"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        1839321579,
+        369660068
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -343661462,
+        "y": -569194176
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 699253590,
+        "foo_bar": "m7QUVwbdtmnhrDA",
+        "foo_qux": "Rq9QeueI"
+      },
+      "bar": {
+        "bar_foo": 939292071,
+        "bar_bar": "UKULpg6dfcaAcjc",
+        "bar_qux": "FCvIADv5uKWubDs"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1973766,
+        -1914239283,
+        -242979742
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "nEnhUJdHse2iF7"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 800339100,
+        "foo_bar": "j6aYSyO2vFRFK",
+        "foo_qux": "NUcEG73Ry"
+      },
+      "bar": {
+        "bar_foo": -183653272,
+        "bar_bar": "P7OaVSfITBYg",
+        "bar_qux": "ZAGEnrvsG4pj"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        896997478,
+        -1645364767,
+        1292885913
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 1002134462,
+        "y": -1968886633
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1355166525,
+        "foo_bar": "NQ2wyX1ZNAtdi7",
+        "foo_qux": "HpGkOCcmr"
+      },
+      "bar": {
+        "bar_foo": 2055730104,
+        "bar_bar": "Iw2aRM9PYhp0Jbfp",
+        "bar_qux": "lXLJgKLyO4C9Hntm4"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -814719016,
+        -251037839
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1097808633,
+        "foo_bar": "0FPEUzHN0kL",
+        "foo_qux": "uvOKeJaszNf8RmY"
+      },
+      "bar": {
+        "bar_foo": -59051488,
+        "bar_bar": "gO5ZIlJSua",
+        "bar_qux": "6zue8Tiewfi4DPk8h7"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1033425676,
+        -2140889854,
+        -286025242
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1206654939,
+        "y": -1476204360
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1848714263,
+        "foo_bar": "GUpRLci9sIS3zikV",
+        "foo_qux": "8NDrEiE"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "OOKS2"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1055076903,
+        "foo_bar": "24WXPJ5GNmG8Jo0",
+        "foo_qux": "cI9Zh9ToI"
+      },
+      "bar": {
+        "bar_foo": 325094564,
+        "bar_bar": "uf6BhuBs7f",
+        "bar_qux": "lwQM8aDpDbygtf02vLT"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "5J4YVENOyjIysLMrA"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 57046813,
+        "foo_bar": "CamxpAakn6AUm1AF",
+        "foo_qux": "J8pDBErsZ"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1623572895,
+        -848002469,
+        -2100828889
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -692971046,
+        "y": -1104662592
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -359448470,
+        "foo_bar": "6cHoL",
+        "foo_qux": "s6ywVc81Pg"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1474828552,
+        -1430280099,
+        -342597379
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -2143239448,
+        "y": 1830349193
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 262963832,
+        "foo_bar": "p9jQ3",
+        "foo_qux": "79BxIzOnWX"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        1668155851,
+        -1991104373
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1307782456,
+        "foo_bar": "RW4wRgk2IjA3",
+        "foo_qux": "04Z2J5"
+      },
+      "bar": {
+        "bar_foo": -1189697745,
+        "bar_bar": "rwUZp6N0UE3YbfaXb",
+        "bar_qux": "OKGaTqlx0JP"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -672376172,
+        161050688,
+        581623393
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "ppOJTqJ6opeFp60kd0w"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1988691590,
+        "foo_bar": "E4I4TX",
+        "foo_qux": "NIi2koilizdMpIgT"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "kHkvpoUbaeW8KF"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "iGi0RV0F2A8RU67wE"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1954056582,
+        "foo_bar": "Qw3f7W",
+        "foo_qux": "tFJy4M41C"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -510880366,
+        1352721849
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1049327514,
+        "y": 2051885036
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 377249961,
+        "foo_bar": "ulyEI8XNo",
+        "foo_qux": "uU5jw"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "vP6EZ9h75cVRb49"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 120565064,
+        "y": 702264215
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -252183052,
+        "foo_bar": "z6fz2Up",
+        "foo_qux": "5NOxR"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -182395659,
+        323718560,
+        1908049814
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "9w1Av6B3YgSZOQhjyp"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -488742492,
+        "foo_bar": "018Vo5G5zH",
+        "foo_qux": "fRA4L9WMmQSs"
+      },
+      "bar": {
+        "bar_foo": -2033523262,
+        "bar_bar": "BHHcdOlzmtmf8fypJ",
+        "bar_qux": "NYOcCGMG"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        151692705,
+        389074270,
+        -1058539316
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "fBTItnK5c"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1096531871,
+        "foo_bar": "eFLcjrxYP",
+        "foo_qux": "fSMOh9b6CaKpiBcbB"
+      },
+      "bar": {
+        "bar_foo": 298176302,
+        "bar_bar": "FHH2iZlaBQF08y",
+        "bar_qux": "E3w65wW3D"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        1029967745,
+        1553725945,
+        -1196631233
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "hrOgtCUtWkzmfD"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1603909998,
+        "foo_bar": "idObY",
+        "foo_qux": "piP6zu1fRCfgl6GJCoj"
+      },
+      "bar": {
+        "bar_foo": -1442188210,
+        "bar_bar": "vKg5sR7KEnHhe",
+        "bar_qux": "EFQl4x2L"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -2073215740,
+        -1346206081
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1862546479,
+        "foo_bar": "EKWaGO0HYtT9",
+        "foo_qux": "yECIQR1bRAMUtk"
+      },
+      "bar": {
+        "bar_foo": -1588671454,
+        "bar_bar": "VthcwAxCqwpSmYNk",
+        "bar_qux": "xm3VCnO"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        1360574750,
+        -578367421
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1988682311,
+        "y": -210509834
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -345258340,
+        "foo_bar": "RWtVMK",
+        "foo_qux": "m8XffItsS"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -885369076,
+        230209,
+        -9217123
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1540768938,
+        "foo_bar": "vCnPKcY82CZ",
+        "foo_qux": "OWSFZdUDNPE"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "GriZA2wfPT"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -610702992,
+        "foo_bar": "UOBrdwPQiev",
+        "foo_qux": "D4dLBiS"
+      },
+      "bar": {
+        "bar_foo": 127636024,
+        "bar_bar": "JhLXuVuig2Baq",
+        "bar_qux": "m1thvIUb7hlaOJSa"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        73212194,
+        -1442846943
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1922686808,
+        "y": -673452900
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 922073125,
+        "foo_bar": "CQRa02ShEfHts0f",
+        "foo_qux": "EkV6DAB1h91k62"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        1196302278,
+        -1459637116,
+        -135545610
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1281085965,
+        "y": 1913546724
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1005910774,
+        "foo_bar": "6EZ0yPL2LVkU5TZnOqH",
+        "foo_qux": "Uqu1l"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1306083848,
+        374283387,
+        1840574270
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1815966740,
+        "foo_bar": "xOClG4LZFBK120A",
+        "foo_qux": "wm2je"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -718398585,
+        656016113,
+        -377681689
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -575610977,
+        "y": -725308960
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1604499742,
+        "foo_bar": "lLIS7dIdXTAim3nFPc",
+        "foo_qux": "nNa37KId"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        1555543979,
+        -36024473
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1612209717,
+        "foo_bar": "yNQS9NWHbhD82o9c9",
+        "foo_qux": "7T2sSMiJPNMJLUaITTq"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -1211580950,
+        -1431684939
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 688551264,
+        "y": 1977569139
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -306703905,
+        "foo_bar": "nJ3n4J81JKWkY",
+        "foo_qux": "iP0rxRHQR8rp"
+      },
+      "bar": {
+        "bar_foo": 387773031,
+        "bar_bar": "srtioMAO",
+        "bar_qux": "0q4bnVnuf0uzM0fH1"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -794132255,
+        -561883660,
+        414150621
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1459639734,
+        "foo_bar": "6v3V8wRvdAURAaR",
+        "foo_qux": "K3yfNXgMQp2JKzJRf"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "c5F5izLP"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 718995660,
+        "y": -1155708575
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1628829627,
+        "foo_bar": "xPu5rbNxn7tBiz2l",
+        "foo_qux": "hEeu7GjBsag1yNRQOVQ"
+      },
+      "bar": {
+        "bar_foo": 1877936730,
+        "bar_bar": "MDzLgqPS1DxYyA9QA",
+        "bar_qux": "fdNVy3hxNdba"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -1478051303,
+        -1897469082
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -285624743,
+        "foo_bar": "g9qKrWITqe4cKCy4dh",
+        "foo_qux": "nK8TIj"
+      },
+      "bar": {
+        "bar_foo": 286636263,
+        "bar_bar": "wpIFiU3WSh",
+        "bar_qux": "OCLDTLjuIr7l3"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -1669662898,
+        735239257
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1923448183,
+        "foo_bar": "7EDdopzU",
+        "foo_qux": "bUWPkWwps9"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1826261187,
+        1087680801,
+        -1135872572
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "gRxX5olFrEHd5JIAb"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1617654059,
+        "foo_bar": "qdQkQKHBlr9",
+        "foo_qux": "VLS6Gb"
+      },
+      "bar": {
+        "bar_foo": -1476988888,
+        "bar_bar": "UbzN3h",
+        "bar_qux": "zj36vNGRHnGs3"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -4340702,
+        1868481901,
+        -843035047
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1311712291,
+        "foo_bar": "ZnBnc08MEoOevPr",
+        "foo_qux": "1fHKDri"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        1103747664,
+        -2100444568
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1883659135,
+        "foo_bar": "K9ss9mD4UDLA5mIFWcl",
+        "foo_qux": "IR6Kiqhr2"
+      },
+      "bar": {
+        "bar_foo": 610219116,
+        "bar_bar": "1CncoRsGjuPHNz",
+        "bar_qux": "g890h49"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1546968431,
+        -218105558,
+        2104989165
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 1758940152,
+        "y": -1548149961
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 973020245,
+        "foo_bar": "cmZwLSAAOyXlw",
+        "foo_qux": "0RjOXEq"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        429991592,
+        -764435000
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "3qFYJv"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1322282616,
+        "foo_bar": "Kw5NZBEamrBob",
+        "foo_qux": "r5ljZYRt8YJ1cfOKat"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "aXpi41"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1026282270,
+        "foo_bar": "frQeqA3skjsK7nO",
+        "foo_qux": "9NZSz3xj"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1812786471,
+        -1916860169,
+        -2054290396
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1894289954,
+        "foo_bar": "sqjesxqNtvyK8evro",
+        "foo_qux": "eswaOcs94wqHpdpLa"
+      },
+      "bar": {
+        "bar_foo": -1573251305,
+        "bar_bar": "Ut6Q7wNSM451",
+        "bar_qux": "spDoYTwalf7"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "9yG7g"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1124802334,
+        "y": -317769410
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 416296965,
+        "foo_bar": "TRBiuRRtVWHa",
+        "foo_qux": "1hbH8GlB"
+      },
+      "bar": {
+        "bar_foo": -572851915,
+        "bar_bar": "V4RqvhC2V5F71",
+        "bar_qux": "LBa62HYP63vZxXga"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -131816941,
+        213415157
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "TXeNf6Db5"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -783814918,
+        "foo_bar": "AN0etxRKw3",
+        "foo_qux": "1mmBRsz9Ds"
+      },
+      "bar": {
+        "bar_foo": 1799703502,
+        "bar_bar": "0cTVis8fLK5XcomP3",
+        "bar_qux": "u322d"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1672019405,
+        977032627,
+        -1291097185
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "8f8jbys"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2048785357,
+        "foo_bar": "so4GMA3",
+        "foo_qux": "i4g9t3kSksB"
+      },
+      "bar": {
+        "bar_foo": -1801683403,
+        "bar_bar": "xhpEBO6ArxgQdeDtmf4",
+        "bar_qux": "GeBdFN93FhJc"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        3775964,
+        1111541565
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "CgEck3mukno6V4HXfi"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -469297160,
+        "foo_bar": "ZJObK30VCwxk7",
+        "foo_qux": "E9d9EH"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "wlnIHc33f"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -361876328,
+        "foo_bar": "hiJmYzico",
+        "foo_qux": "xteBIxZ3sFAlLt"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        222351852,
+        904844430,
+        1393666121
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "JFIW7sSEcNzb"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1132376650,
+        "foo_bar": "27RH2iV26lvUQlrob",
+        "foo_qux": "KyevGaybtdOTq"
+      },
+      "bar": {
+        "bar_foo": 532140058,
+        "bar_bar": "LuoETFs4IP",
+        "bar_qux": "N9saMUzfHTfr"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "fmSJHDM"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 393244573,
+        "y": -1795581663
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -208445642,
+        "foo_bar": "asadhmSPLdu9uy33",
+        "foo_qux": "f0IMz"
+      },
+      "bar": {
+        "bar_foo": 154492042,
+        "bar_bar": "0k5h8grg",
+        "bar_qux": "9PUAHxK0N8cpgY"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        -1044943819,
+        1486932849
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "bDlkIgA"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1639762753,
+        "foo_bar": "Y2fXxe6Xs5h",
+        "foo_qux": "E2C2VyNuKtjeBrS"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "Aoeeds"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 493488497,
+        "foo_bar": "jhPQMuaPnro",
+        "foo_qux": "z5SQQHyml2SQ"
+      },
+      "bar": {
+        "bar_foo": -1472296810,
+        "bar_bar": "t4qiZd1DjpLOtAowwxx",
+        "bar_qux": "dFfeWOZIe"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "U3CBXDtJxY"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -933846967,
+        "foo_bar": "nIZE8iFaaQxK8XIVP",
+        "foo_qux": "qjUTZNvKx"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        1836359079,
+        267238514
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 746360934,
+        "y": -1879463711
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2040199070,
+        "foo_bar": "tvmqCiAaWXurQHxM9",
+        "foo_qux": "J7EZ5dkpms6Rr5"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1871762431,
+        -259557663,
+        1233925667
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "7yCHvvXHubwFZ"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 498756965,
+        "foo_bar": "PKfxHDwP6",
+        "foo_qux": "Rs0C0Jo4oe25"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1930675199,
+        1338398477,
+        -56280232
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1865098389,
+        "foo_bar": "er1P4C1Gfb",
+        "foo_qux": "sMbqmm7Id"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        643049590,
+        -1520459444
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "jdruMBb65xQbM3cgZf"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -17647824,
+        "foo_bar": "RiIuluNV9RpTzfYk8",
+        "foo_qux": "lVbwEQFPNB1C"
+      },
+      "bar": {
+        "bar_foo": 1288990530,
+        "bar_bar": "6WY3lcX7Z4Bh9At",
+        "bar_qux": "BkKcuv7GOibUdS"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "dd6lpuil"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "vHAsE"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1289896273,
+        "foo_bar": "td7DHykMkbi2VP3H",
+        "foo_qux": "o7S9vbcYphHhbXy"
+      },
+      "bar": {
+        "bar_foo": 788874180,
+        "bar_bar": "a2WHSrj3vTC1OMkJr",
+        "bar_qux": "6LJqlQS"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1929521187,
+        1873982945,
+        -274272859
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "gPTiIyUW0QsjSdx"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 970830097,
+        "foo_bar": "B8RhuNTuPm7VMSXwEGC",
+        "foo_qux": "5IuLANLe2NYZy71od"
+      },
+      "bar": {
+        "bar_foo": -1464331436,
+        "bar_bar": "cFscUmRPFgPQ2lHdD",
+        "bar_qux": "J43Z9oWcSbE"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        426570207,
+        1385850769
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 389702965,
+        "y": -1462131760
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 278709973,
+        "foo_bar": "wsz8b",
+        "foo_qux": "CJvHb0ycRyRgP5Zu"
+      },
+      "bar": {
+        "bar_foo": -2131126683,
+        "bar_bar": "LKoloWIswl8Qc4",
+        "bar_qux": "orbRSaKGI"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "VHbMmQZY"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -108301583,
+        "foo_bar": "iWslDjWcA",
+        "foo_qux": "iJTKt6Hre6yDl"
+      },
+      "bar": {
+        "bar_foo": 90186101,
+        "bar_bar": "tfW7DVhDUx8fyPEd",
+        "bar_qux": "hVCgRDUQJiR7sFCxUKE"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -976827113,
+        240847313,
+        -1284128685
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2074525442,
+        "foo_bar": "34u0YfPe3G0SstEpi1f",
+        "foo_qux": "6bCnb3gY7aPR"
+      },
+      "bar": {
+        "bar_foo": 1507123721,
+        "bar_bar": "H1ovmlLad",
+        "bar_qux": "uvmXjZoNB9A3kFC"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -809074242,
+        -2036132113,
+        77961647
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 334138098,
+        "y": -1108521838
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 762486789,
+        "foo_bar": "to54Tx0I",
+        "foo_qux": "NiHpI5A2osVsl"
+      },
+      "bar": {
+        "bar_foo": 1682839933,
+        "bar_bar": "FDpcq2e22eg1",
+        "bar_qux": "ZppH3Y1wQfwM"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1872107356,
+        416733294,
+        96356855
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "Eyt6LtNWPAc6EuI"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 25161828,
+        "foo_bar": "MDpFd8g2G",
+        "foo_qux": "7vZ996bCQNuI56Zg"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        324747218,
+        1306404270,
+        -1014892544
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "piebpKXI3g"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -888295199,
+        "foo_bar": "ASeVuAwvTzyzIGR",
+        "foo_qux": "ODRnVsw"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1374776186,
+        1814143067,
+        1869860344
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1867173936,
+        "foo_bar": "ljugWhYo8",
+        "foo_qux": "IQGCKmc8ly331Q"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        583162562,
+        1254242827,
+        -2104156034
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1590199514,
+        "foo_bar": "542LWz3cHNI",
+        "foo_qux": "zIcw8jVLjjB"
+      },
+      "bar": {
+        "bar_foo": 480545595,
+        "bar_bar": "CtkCVKBy4lzAVlzUIz",
+        "bar_qux": "dH6OK96ztuwwmtw"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "5ApfhgV"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1875912690,
+        "y": -706943182
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1463920687,
+        "foo_bar": "nUYJBLnHsKQRapqO0ny",
+        "foo_qux": "8WGdg"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        1007751221,
+        -193702376,
+        -775043111
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "x9ObR6HBFewP"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 2033780073,
+        "foo_bar": "jWNt5yx4Eqo3IWp0x",
+        "foo_qux": "b16xIzfrGH"
+      },
+      "bar": {
+        "bar_foo": -1756591002,
+        "bar_bar": "IYE2taBNTbG6fO1",
+        "bar_qux": "QurhNCGX0Rfhx"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "GpjVEhcBCQtFl1KSTXZ"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "vrbKNDnRLaOHsE"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -489538249,
+        "foo_bar": "tupMJhhInl2qj",
+        "foo_qux": "lnBZ6BwWtgYI"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1731510015,
+        -792414271,
+        -468697172
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 1665979643,
+        "y": 293028147
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -51225731,
+        "foo_bar": "Y6t7blL3mGzjqRWC",
+        "foo_qux": "jzFXlis7iig"
+      },
+      "bar": {
+        "bar_foo": 1105588297,
+        "bar_bar": "nQKgnr",
+        "bar_qux": "qTVZ4CZTYi"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "VaOqJiyypAy8"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "oa6X075ieKvzqdx"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1221355488,
+        "foo_bar": "YyB4mvm7bstGqTs9",
+        "foo_qux": "Ivx9Q"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        1347895174,
+        -1115252997
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -1396398678,
+        "y": -493421780
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2004602189,
+        "foo_bar": "JL7a6rvRlFP",
+        "foo_qux": "0uUlV"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        57722753,
+        2131339272
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "TEsORcjuEs9rZVKc"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1127050538,
+        "foo_bar": "bYc3JDadYRcReDjr",
+        "foo_qux": "vtnc8KbAl0R0h"
+      },
+      "bar": {
+        "bar_foo": -1616592684,
+        "bar_bar": "9yR6s7EI91Gm",
+        "bar_qux": "egoI4WvRdgI4TBie8H"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1156303679,
+        14993904,
+        -919335945
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 737220438,
+        "y": 215712074
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -88045095,
+        "foo_bar": "T2uBDgvnJrdSRLR8oX",
+        "foo_qux": "s6kICdJjGX"
+      },
+      "bar": {
+        "bar_foo": -959142530,
+        "bar_bar": "wgJNmDBY3j5Z3mf",
+        "bar_qux": "Ufcq9542kJCc"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "EQQPZjxTlhbOQjAJ"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -2114045959,
+        "y": -1697212553
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1888825806,
+        "foo_bar": "6wIJB",
+        "foo_qux": "Qf5fvmbhD"
+      },
+      "bar": {
+        "bar_foo": -207376679,
+        "bar_bar": "sZafSj0381FS",
+        "bar_qux": "j0QxD"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        251381632,
+        -43182517,
+        -732988719
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1414681353,
+        "foo_bar": "Tulv9GPYeAAY",
+        "foo_qux": "DMaI6IWMz2jJu5hh"
+      },
+      "bar": {
+        "bar_foo": -301115133,
+        "bar_bar": "iriFXZYN9xYuxpG3x",
+        "bar_qux": "UhGFDuR5tZsNZNX"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "9JneLhdPB"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "x7knUnPUf1"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1177414798,
+        "foo_bar": "1mSnvQVOsGPzVsI",
+        "foo_qux": "KYgSaHigiLjaIiQX7"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -1978260053,
+        -1589380944,
+        -531858583
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": -793744338,
+        "y": 1478188058
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -534918936,
+        "foo_bar": "jjGhUE",
+        "foo_qux": "kElV1"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        2030439962,
+        362843855
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "8CRKi"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 472316369,
+        "foo_bar": "Z1Pbn",
+        "foo_qux": "pAijX2wd4Nl6m4uaMX"
+      },
+      "bar": {
+        "bar_foo": 1428068932,
+        "bar_bar": "uu48JVdR8sF11bz0Z",
+        "bar_qux": "QE7z7m6eCfBcKkH0"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        1476421410,
+        712650320,
+        1465594530
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 595608256,
+        "foo_bar": "AoUxW2bFR5Z580y2VVV",
+        "foo_qux": "5835dSXnw84XliTGkP8"
+      },
+      "bar": {
+        "bar_foo": 1000575168,
+        "bar_bar": "NhdpW09xUPXBTU1LyR",
+        "bar_qux": "oC0WVoZniLCloo"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -381811001,
+        2061225024,
+        -1072500774
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "8veyGsw"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1802257815,
+        "foo_bar": "8iKzlDnWT7PXvj",
+        "foo_qux": "skGcrv0CDDtxT"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "opOWOQq3Mnu"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 721533086,
+        "y": -1984203295
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 982090882,
+        "foo_bar": "h5WONXx",
+        "foo_qux": "O8xBpj5"
+      },
+      "bar": {
+        "bar_foo": -1585600688,
+        "bar_bar": "8zJJAVsTj",
+        "bar_qux": "DADuLcNJqe5q"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -2096280,
+        410215726
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 1743913045,
+        "y": -2035756870
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1500902210,
+        "foo_bar": "2ihVDcrn5",
+        "foo_qux": "zSubC"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "VCYwOIKDtyEt0Pyl"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "N1Xd2mlLgHcZzZc"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1831210870,
+        "foo_bar": "JfEd1CgkdVN6Te",
+        "foo_qux": "MZRBKyR7anUwod"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        1844910921,
+        584796158
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "pGAvo83tKfWb74E"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1582415974,
+        "foo_bar": "zILS34s",
+        "foo_qux": "euae0ViPXB3vc"
+      },
+      "bar": {
+        "bar_foo": -458937130,
+        "bar_bar": "zOXDFP3x9",
+        "bar_qux": "nHOcmZT"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -2098355515,
+        -1534696867
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "ZpRZRf49li"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1048027712,
+        "foo_bar": "sysgK3kUnbqF",
+        "foo_qux": "3bi0ggqzDT7TUh"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        297365149,
+        1943853025
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "0fbRRph"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -81170711,
+        "foo_bar": "eAAjqV",
+        "foo_qux": "BPWyH5"
+      },
+      "bar": {
+        "bar_foo": 792075696,
+        "bar_bar": "w95jTakCGp4eIV90rJw",
+        "bar_qux": "ftzjnXgfelBYqHDPJ"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        -1799464812,
+        2018105166
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "U2ClbGggWB2KCE9c"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 5663547,
+        "foo_bar": "1CcJFD57VGpNRKC",
+        "foo_qux": "fIEXI9xNIH"
+      },
+      "bar": {
+        "bar_foo": -2123190868,
+        "bar_bar": "Tg1lTueXkMKDz",
+        "bar_qux": "sgavzAA"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -767114053,
+        1161329597,
+        68029311
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "R52vXUjtEvWPR6"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 831750526,
+        "foo_bar": "F1254va4c3lhfFXHUV1",
+        "foo_qux": "Chy3RfbN"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "ChangeColor": [
+        -433615130,
+        178505875,
+        -78001173
+      ]
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 1546518765,
+        "y": 791400686
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -989308589,
+        "foo_bar": "V06UGKehXHEAp5Uo",
+        "foo_qux": "Pp09DHcpaWI"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Move": [
+        816624199,
+        671076085
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "ft9stXu"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -468473932,
+        "foo_bar": "YjuV0Et",
+        "foo_qux": "EyWViY19DB0viNpGC"
+      },
+      "bar": {
+        "bar_foo": -512805676,
+        "bar_bar": "C9TNwyLMQtomgLg",
+        "bar_qux": "REWO4roQe0IRf"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "UPSCe"
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1799879302,
+        "foo_bar": "vCaTRz4plP39bYh38d",
+        "foo_qux": "CDK9fHeJ2InYliSSB4r"
+      },
+      "bar": {
+        "bar_foo": -478495894,
+        "bar_bar": "DpDYdt",
+        "bar_qux": "PmUU10YvekAzFyUNr"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "PwAoeysPB"
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "Rv29sLa8oFPx7RZ0k"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -532633172,
+        "foo_bar": "aH3UPpg49ydguPr",
+        "foo_qux": "uiK4fXspcq5i"
+      },
+      "bar": null
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "RylwGEYvBukTv8sv1cc"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 421400612,
+        "y": -1407310670
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 785073308,
+        "foo_bar": "6GMpC13xzgDj14OBUHn",
+        "foo_qux": "62yw3b6iyQHrO6"
+      },
+      "bar": {
+        "bar_foo": -858639919,
+        "bar_bar": "2ledVJycOBYzAuBz",
+        "bar_qux": "X2gSBYPlHZgwWlasQN"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "ChangeColor": [
+        -290689534,
+        2027365418,
+        -1510375262
+      ]
+    },
+    "struct_enum": "Quit"
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -1435565308,
+        "foo_bar": "hd4uzLrLzHP",
+        "foo_qux": "djt5ESU"
+      },
+      "bar": {
+        "bar_foo": -1415816663,
+        "bar_bar": "rwKXpA87Patx8r",
+        "bar_qux": "cBSfAuG2pFDtl3Pvw"
+      }
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Move": [
+        832571265,
+        -1425858520
+      ]
+    },
+    "struct_enum": {
+      "Write": {
+        "text": "1utncXbDoIE4Fn4Q"
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": -2067641904,
+        "foo_bar": "kXksW",
+        "foo_qux": "NmOXsB6u7EmIbdfKJoC"
+      },
+      "bar": {
+        "bar_foo": -834300950,
+        "bar_bar": "NYerqYmAcL",
+        "bar_qux": "gZZWT7CPDM6Vu4hX"
+      }
+    },
+    "normal_enum": "Bar",
+    "tuple_enum": {
+      "Write": "SbvQoS1gfsy2r"
+    },
+    "struct_enum": {
+      "Move": {
+        "x": 791253959,
+        "y": 809175558
+      }
+    }
+  },
+  {
+    "nested_field": {
+      "foo": {
+        "foo_foo": 1082218997,
+        "foo_bar": "To6pI78MU",
+        "foo_qux": "NGKlN0xh"
+      },
+      "bar": null
+    },
+    "normal_enum": "Foo",
+    "tuple_enum": {
+      "Write": "N0MMC5"
+    },
+    "struct_enum": "Quit"
+  }
+]

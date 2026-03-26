@@ -1,0 +1,269 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ComplexStruct2",
+  "description": "ComplexStruct2",
+  "type": "object",
+  "properties": {
+    "nested_field": {
+      "description": "A nested struct holding the primary foo/bar relationship for this record.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/SimpleNestedStruct"
+        }
+      ]
+    },
+    "normal_enum": {
+      "description": "Coarse-grained classification using the standard two-value enum.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/NormalEnum"
+        }
+      ]
+    },
+    "struct_enum": {
+      "description": "Describes a state-machine transition using a struct-style enum variant.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/StructEnum"
+        }
+      ]
+    },
+    "tuple_enum": {
+      "description": "Encodes a user action as a tuple-style enum variant with associated data.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/TupleEnum"
+        }
+      ]
+    }
+  },
+  "required": [
+    "nested_field",
+    "normal_enum",
+    "tuple_enum",
+    "struct_enum"
+  ],
+  "definitions": {
+    "BarStruct": {
+      "description": "BarStruct",
+      "type": "object",
+      "properties": {
+        "bar_bar": {
+          "description": "Descriptive label for this bar, typically a short slug or display name.",
+          "type": "string"
+        },
+        "bar_foo": {
+          "description": "Numeric rank or ordering index assigned to this bar record.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "bar_qux": {
+          "description": "Optional metadata string, often used to carry a status or source marker.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bar_foo",
+        "bar_bar",
+        "bar_qux"
+      ]
+    },
+    "FooStruct": {
+      "description": "FooStruct",
+      "type": "object",
+      "properties": {
+        "foo_bar": {
+          "description": "Human-readable name or secondary identifier for this foo entry.",
+          "type": "string"
+        },
+        "foo_foo": {
+          "description": "Unique numeric key that identifies this foo within its parent collection.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "foo_qux": {
+          "description": "Auxiliary tag providing extra context, such as a region or category code.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "foo_foo",
+        "foo_bar",
+        "foo_qux"
+      ]
+    },
+    "NormalEnum": {
+      "description": "Normal Enum",
+      "oneOf": [
+        {
+          "description": "Represents the first state or category in this two-value classification.",
+          "type": "string",
+          "const": "Foo"
+        },
+        {
+          "description": "Represents the second state; mutually exclusive with `Foo`.",
+          "type": "string",
+          "const": "Bar"
+        }
+      ]
+    },
+    "SimpleNestedStruct": {
+      "description": "SimpleNestedStruct",
+      "type": "object",
+      "properties": {
+        "bar": {
+          "description": "An optional bar attachment; absent when no bar data has been associated yet.",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BarStruct"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foo": {
+          "description": "The required foo component; every nested struct must have exactly one foo.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/FooStruct"
+            }
+          ]
+        }
+      },
+      "required": [
+        "foo"
+      ]
+    },
+    "StructEnum": {
+      "description": "struct Enum",
+      "oneOf": [
+        {
+          "description": "Signals that the current operation should terminate immediately with no payload.",
+          "type": "string",
+          "const": "Quit"
+        },
+        {
+          "description": "Requests a positional update; `x` and `y` are the target coordinates.",
+          "type": "object",
+          "properties": {
+            "Move": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "required": [
+                "x",
+                "y"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "Move"
+          ]
+        },
+        {
+          "description": "Appends the given `text` string to the current output buffer.",
+          "type": "object",
+          "properties": {
+            "Write": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "Write"
+          ]
+        }
+      ]
+    },
+    "TupleEnum": {
+      "description": "TupleEnum",
+      "oneOf": [
+        {
+          "description": "Carries a plain text message to be written to the output stream.",
+          "type": "object",
+          "properties": {
+            "Write": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "Write"
+          ]
+        },
+        {
+          "description": "Moves the cursor or entity to the given (x, y) coordinate pair.",
+          "type": "object",
+          "properties": {
+            "Move": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              ],
+              "maxItems": 2,
+              "minItems": 2
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "Move"
+          ]
+        },
+        {
+          "description": "Sets the active color using red, green, and blue channel values (0–255 each).",
+          "type": "object",
+          "properties": {
+            "ChangeColor": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              ],
+              "maxItems": 3,
+              "minItems": 3
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "ChangeColor"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -5,5 +5,5 @@
 </script>
 
 <template>
-  <span class="text-muted-foreground italic">{{ label ?? "N/A" }}</span>
+  <div class="text-muted-foreground text-center italic">{{ label ?? "N/A" }}</div>
 </template>

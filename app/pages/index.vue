@@ -2,7 +2,8 @@
   const pages = [
     { path: "/basic-table", label: "Basic Table" },
     { path: "/expandable-table", label: "Expandable Table" },
-    { path: "/render-complex", label: "Render Complex" },
+    { path: "/render-complex", label: "Render Complex1" },
+    { path: "/render-complex2", label: "Render Complex2" },
     { path: "/render-nested", label: "Render Nested" },
   ];
 </script>

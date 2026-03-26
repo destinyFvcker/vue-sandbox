@@ -29,7 +29,7 @@
             v-for="header in headerGroup.headers"
             :key="header.id"
             :colspan="header.colSpan"
-            :class="header.column.columnDef.meta?.class?.th"
+            :class="[header.column.columnDef.meta?.class?.th, 'bg-gray-200']"
             :style="getPinnedHeaderStyle(header.column)"
           >
             <template v-if="!header.isPlaceholder">
@@ -43,7 +43,7 @@
                   <div
                     v-if="header.column.getCanSort()"
                     :class="[
-                      'flex items-center gap-2',
+                      'hover:bg-accent flex items-center gap-2 rounded-sm text-black',
                       header.column.getCanSort() ? 'cursor-pointer select-none' : '',
                     ]"
                     @click="header.column.getToggleSortingHandler()?.($event)"
@@ -237,7 +237,11 @@
                 <UiTableCell :colspan="row.getVisibleCells().length" class="bg-muted/50 p-0">
                   <div
                     :class="group.pinned ? 'overflow-y-auto' : ''"
-                    :style="group.pinned ? 'max-height: var(--ui-table-expanded-row-height, 100px)' : undefined"
+                    :style="
+                      group.pinned
+                        ? 'max-height: var(--ui-table-expanded-row-height, 100px)'
+                        : undefined
+                    "
                   >
                     <slot name="expanded-row" :row="row" :table="table">
                       <div class="p-4">
@@ -700,7 +704,6 @@
     manualSorting: props.manualSorting,
     manualFiltering: props.manualFiltering,
     pageCount: props.manualPagination ? props.pageCount : undefined,
-    debugAll: true,
     ...props.tableOptions,
   });
   watch(

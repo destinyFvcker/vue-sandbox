@@ -13,66 +13,114 @@ where
     println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }
 
+pub fn get_json_schema<T>() -> String
+where
+    T: JsonSchema,
+{
+    let generator = SchemaSettings::draft07().into_generator();
+    let schema = generator.into_root_schema_for::<T>();
+    serde_json::to_string_pretty(&schema).unwrap()
+}
+
+/// ComplexStruct
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
-pub struct MyStruct {
+pub struct ComplexStruct {
+    /// The primary numeric identifier for this record. Must be a valid 32-bit signed integer.
     #[serde(rename = "myNumber")]
     pub my_int: i32,
+    /// Indicates whether this entry is currently active or has been disabled.
     pub my_bool: bool,
+    /// An optional categorization tag. When omitted, defaults to null and no category is applied.
     #[serde(default)]
     #[schemars(extend("x-shadcn-variant" = "tabs"))]
     pub my_nullable_enum: Option<MyEnum>,
 }
 
+/// MyEnum
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 #[serde(untagged)]
 pub enum MyEnum {
+    /// A plain text label used for simple string-based classification.
     StringNewType(String),
-    StructVariant { floats: Vec<f32> },
+    /// A variant carrying a list of floating-point measurements, e.g. sensor readings.
+    StructVariant { bars: Vec<f32> },
+    /// A variant carrying a list of integer counts, e.g. event frequencies.
+    StructVariant2 { foos: Vec<i32> },
 }
 
+/// ComplexStruct2
+#[derive(Deserialize, Serialize, JsonSchema)]
+pub struct ComplexStruct2 {
+    /// A nested struct holding the primary foo/bar relationship for this record.
+    pub nested_field: SimpleNestedStruct,
+    /// Coarse-grained classification using the standard two-value enum.
+    pub normal_enum: NormalEnum,
+    /// Encodes a user action as a tuple-style enum variant with associated data.
+    pub tuple_enum: TupleEnum,
+    /// Describes a state-machine transition using a struct-style enum variant.
+    pub struct_enum: StructEnum,
+}
+
+/// FooStruct
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct FooStruct {
+    /// Unique numeric key that identifies this foo within its parent collection.
     pub foo_foo: i32,
+    /// Human-readable name or secondary identifier for this foo entry.
     pub foo_bar: String,
+    /// Auxiliary tag providing extra context, such as a region or category code.
     pub foo_qux: String,
 }
 
+/// BarStruct
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct BarStruct {
+    /// Numeric rank or ordering index assigned to this bar record.
     pub bar_foo: i32,
+    /// Descriptive label for this bar, typically a short slug or display name.
     pub bar_bar: String,
+    /// Optional metadata string, often used to carry a status or source marker.
     pub bar_qux: String,
 }
 
+/// SimpleNestedStruct
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
-pub struct FooBarStruct {
+pub struct SimpleNestedStruct {
+    /// The required foo component; every nested struct must have exactly one foo.
     pub foo: FooStruct,
+    /// An optional bar attachment; absent when no bar data has been associated yet.
     pub bar: Option<BarStruct>,
 }
 
+/// Normal Enum
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
-pub struct FooBazStruct {
-    pub foos: FooStruct,
-}
-
-#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
-pub enum QuxNormalEnum {
+pub enum NormalEnum {
+    /// Represents the first state or category in this two-value classification.
     Foo,
+    /// Represents the second state; mutually exclusive with `Foo`.
     Bar,
 }
 
+/// TupleEnum
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
-pub enum QuxTupleEnum {
+pub enum TupleEnum {
+    /// Carries a plain text message to be written to the output stream.
     Write(String),
+    /// Moves the cursor or entity to the given (x, y) coordinate pair.
     Move(i32, i32),
-    ChangeColor(u8, u8, u8),
+    /// Sets the active color using red, green, and blue channel values (0–255 each).
+    ChangeColor(i32, i32, i32),
 }
 
+/// struct Enum
 #[derive(Deserialize, Serialize, JsonSchema, Dummy)]
-pub enum QuxStructEnum {
+pub enum StructEnum {
+    /// Signals that the current operation should terminate immediately with no payload.
     Quit,
+    /// Requests a positional update; `x` and `y` are the target coordinates.
     Move { x: i32, y: i32 },
+    /// Appends the given `text` string to the current output buffer.
     Write { text: String },
 }
 
@@ -83,8 +131,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn my_first_gen_schema() {
-        print_json_schema::<MyStruct>();
+    fn complex_struct_gen_schema() {
+        print_json_schema::<ComplexStruct>();
+    }
+
+    #[test]
+    fn complex_struct2_gen_schema() {
+        print_json_schema::<ComplexStruct2>();
     }
 
     #[test]
@@ -95,30 +148,4 @@ mod tests {
 
         print_json_schema::<FooVec>();
     }
-
-    #[test]
-    fn basic_nested_struct_schema() {
-        print_json_schema::<FooBarStruct>();
-    }
-
-    #[test]
-    fn test_ref_structure() {
-        print_json_schema::<FooBazStruct>();
-    }
-
-    #[test]
-    fn basic_normal_enum_schema() {
-        print_json_schema::<QuxNormalEnum>();
-    }
-
-    #[test]
-    fn basic_tuple_enum_schema() {
-        print_json_schema::<QuxTupleEnum>();
-    }
-
-    #[test]
-    fn basic_struct_enum_schema() {
-        print_json_schema::<QuxStructEnum>();
-    }
-
 }

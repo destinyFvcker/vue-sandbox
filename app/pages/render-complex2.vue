@@ -4,10 +4,13 @@
   import type { JsonSchema7 } from "@jsonforms/core";
   import type { ColumnDef } from "@tanstack/vue-table";
 
-  import data from "../../rust-schemars-gen/mock/complex_struct.json";
-  import schema from "../../rust-schemars-gen/mock/complex_struct.schema.json";
+  import data from "../../rust-schemars-gen/mock/complex_struct_2.json";
+  import schema from "../../rust-schemars-gen/mock/complex_struct_2.schema.json";
 
-  const { columns, arrayEntries } = genColumnDefs(schema as JsonSchema7, tanstackRenderers);
+  const { columns, arrayEntries } = genColumnDefs(
+    schema as unknown as JsonSchema7,
+    tanstackRenderers
+  );
 </script>
 
 <template>
