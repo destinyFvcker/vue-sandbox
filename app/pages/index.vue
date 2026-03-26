@@ -25,7 +25,7 @@
       <UiLabel for="copy-pinned">Duplicate/Keep Pinned Rows in main table</UiLabel>
     </div>
 
-    <div class="rounded-lg border p-10 [&>div]:max-h-[500px] [&>div]:overflow-y-auto">
+    <div class="rounded-lg border p-10 [&>div]:max-h-125 [&>div]:overflow-y-auto">
       <UiTanStackTable
         :data="data"
         :columns="columns"
