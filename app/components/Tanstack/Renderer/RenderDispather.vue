@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FallbackRenderer from "./FallbackRenderer.vue";
+import FallbackRenderer from "./Fallback.vue";
 import maxBy from "lodash/maxBy";
 import { rendererProps, useJsonFormsRenderer } from "@jsonforms/vue";
 
@@ -18,10 +18,7 @@ const determinedRenderer = computed(() => {
 	);
 	const rendererScore =
 		renderer?.tester(rendererState.value.uischema, rendererState.value.schema, testerContext) ?? -1;
-	if (
-		renderer === undefined ||
-		rendererScore === -1
-	) {
+	if (renderer === undefined || rendererScore === -1) {
 		return FallbackRenderer;
 	} else {
 		return renderer.renderer;

@@ -164,5 +164,5 @@ watch([dataToUse, schemaToUse, uischemaToUse, () => props.validationMode], () =>
 		:uischema="jsonforms.core.uischema"
 		path=""
 	/>
-	<span v-else class="text-muted-foreground">{{ dataToUse ?? '' }}</span>
+	<span v-else class="text-muted-foreground">{{ dataToUse ?? "" }}</span>
 </template>

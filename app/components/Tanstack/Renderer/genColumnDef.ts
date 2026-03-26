@@ -12,7 +12,7 @@ import { collectSchemaEntries, partitionSchemaEntries, type SchemaEntry } from "
 import TableTipHeader from "../table/TableTipHeader.vue";
 import TableEmptyCell from "../table/TableEmptyCell.vue";
 import { startCase } from "lodash";
-import { ChevronRight } from "lucide-vue-next";
+import { ChevronRight } from "@lucide/vue";
 import { Badge } from "~/components/ui/badge";
 
 const dumpControlElement: ControlElement = {

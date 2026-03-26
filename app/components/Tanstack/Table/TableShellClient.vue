@@ -14,11 +14,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { SchemaEntry } from "~/lib/schema-resolver";
 import type { JsonFormsRendererRegistryEntry } from "@jsonforms/core";
-import { genColumnDefs } from "~/components/tanstack/genColumnDef";
 
-import { ArrowDownWideNarrow, ArrowUpNarrowWide } from "lucide-vue-next";
+import { ArrowDownWideNarrow, ArrowUpNarrowWide } from "@lucide/vue";
 import { cn } from "~/lib/utils";
 import { startCase } from "lodash";
+import { genColumnDefs } from "../Renderer/genColumnDef";
 
 interface Props {
 	data: TData[];
@@ -63,7 +63,12 @@ function getNestedValue(obj: any, path: string): unknown {
 
 function getSubTableColumns(entry: SchemaEntry) {
 	const itemsSchema = entry.schema.items;
-	if (itemsSchema && typeof itemsSchema === "object" && !Array.isArray(itemsSchema) && (itemsSchema as any).properties) {
+	if (
+		itemsSchema &&
+		typeof itemsSchema === "object" &&
+		!Array.isArray(itemsSchema) &&
+		(itemsSchema as any).properties
+	) {
 		return genColumnDefs(itemsSchema as any, renderers).columns;
 	}
 	// Primitive array: single "Value" column
@@ -81,7 +86,12 @@ function getSubTableData(rowData: any, entry: SchemaEntry): any[] {
 	const value = getNestedValue(rowData, entry.dataPath);
 	if (!Array.isArray(value)) return [];
 	const itemsSchema = entry.schema.items;
-	if (itemsSchema && typeof itemsSchema === "object" && !Array.isArray(itemsSchema) && (itemsSchema as any).properties) {
+	if (
+		itemsSchema &&
+		typeof itemsSchema === "object" &&
+		!Array.isArray(itemsSchema) &&
+		(itemsSchema as any).properties
+	) {
 		return value;
 	}
 	// Primitive array: wrap each item for the single-column table
@@ -175,8 +185,8 @@ const table = useVueTable({
 					</TableRow>
 					<TableRow v-if="row.getIsExpanded() && arrayEntries.length > 0">
 						<TableCell :colspan="columns.length" class="p-0">
-							<div class="max-h-[300px] overflow-auto border-t bg-muted/30 p-3">
-								<Tabs :default-value="arrayEntries[0].dataPath">
+							<div class="max-h-75 overflow-auto border-t bg-muted/30 p-3">
+								<Tabs :default-value="arrayEntries[0]!.dataPath">
 									<TabsList>
 										<TabsTrigger
 											v-for="entry in arrayEntries"

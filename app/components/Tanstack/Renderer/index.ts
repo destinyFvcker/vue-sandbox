@@ -10,12 +10,12 @@ import {
 	rankWith,
 	type JsonFormsRendererRegistryEntry,
 } from "@jsonforms/core";
-import StringRenderer from "./StringRenderer.vue";
-import NumberRenderer from "./NumberRenderer.vue";
-import BooleanRenderer from "./BooleanRenderer.vue";
+import StringRenderer from "./String.vue";
+import NumberRenderer from "./Number.vue";
+import BooleanRenderer from "./Boolean.vue";
 import LayoutCell from "./LayoutCell.vue";
-import AnyOfRenderer from "./AnyOfRenderer.vue";
-import OneOfRenderer from "./OneOfRenderer.vue";
+import AnyOfRenderer from "./AnyOf.vue";
+import OneOfRenderer from "./OneOf.vue";
 
 export const tanstackRenderers: JsonFormsRendererRegistryEntry[] = [
 	{

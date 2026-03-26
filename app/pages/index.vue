@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { ColumnDef } from "@tanstack/vue-table";
 import TableShellClient from "~/components/table/TableShellClient.vue";
-import { tanstackRenderers } from "~/components/tanstack";
-import { genColumnDefs } from "~/components/tanstack/genColumnDef";
+import { tanstackRenderers } from "~/components/TanstackRenderer";
+import { genColumnDefs } from "~/components/TanstackRenderer/genColumnDef";
 
 const data = [
 	{
