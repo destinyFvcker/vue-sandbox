@@ -113,7 +113,7 @@
 </script>
 
 <template>
-  <TanstackTableShellClient
+  <TanstackTableShellForms
     :data="data"
     :columns="columns as ColumnDef<any, any>[]"
     :array-entries="arrayEntries"
