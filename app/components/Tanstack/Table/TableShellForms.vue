@@ -12,6 +12,8 @@
     columns: ColumnDef<any, any>[];
     arrayEntries?: SchemaEntry[];
     renderers?: JsonFormsRendererRegistryEntry[];
+    isLoading?: boolean;
+    innerScoll?: boolean;
   }>();
 
   function getNestedValue(obj: any, path: string): unknown {
@@ -49,15 +51,22 @@
     if (!Array.isArray(value)) return [];
     return value;
   }
+
+  const { height: windowHeight } = useWindowSize();
 </script>
 
 <template>
   <UiTanStackTable
     :data="data"
     :columns="columns"
-    :show-footer="false"
-    :initial-page-size="50"
-    :page-size-options="[50, 100, 200, 300]"
+    :initial-page-size="30"
+    :page-size-options="[30, 50, 100, 200, 300]"
+    :pagination="true"
+    :inner-scroll="innerScoll"
+    :loading="isLoading"
+    :inner-scroll-height="windowHeight"
+    :inner-scroll-header-sticky="true"
+    :keep-pinned="true"
   >
     <template v-if="arrayEntries && arrayEntries.length > 0" #expanded-row="{ row }">
       <div class="bg-muted/30 border-t p-2">

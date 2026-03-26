@@ -115,6 +115,13 @@
   };
 
   const { columns, arrayEntries } = genColumnDefs(schema, tanstackRenderers);
+
+  const isLoading = ref(true);
+  onMounted(() => {
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 1000);
+  });
 </script>
 
 <template>
@@ -125,6 +132,7 @@
           <TanstackTableShellForms
             :data="data"
             :columns="columns as ColumnDef<any, any>[]"
+            :is-loading="isLoading"
             :array-entries="arrayEntries"
             :renderers="tanstackRenderers"
           />

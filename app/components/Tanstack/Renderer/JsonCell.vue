@@ -20,6 +20,7 @@
   } from "@jsonforms/core";
   import type { MaybeReadonly } from "@jsonforms/vue";
 
+  // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   const isObject = (elem: any): elem is Object => {
     return elem && typeof elem === "object";
   };

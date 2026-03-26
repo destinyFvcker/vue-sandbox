@@ -69,6 +69,18 @@ export const collectSchemaEntries = (
     return s;
   };
 
+  // Draft-07 workaround: { description, allOf: [{ $ref }] } → merge outer meta with resolved inner
+  const unwrapSingleAllOf = (s: JsonSchema): JsonSchema => {
+    if (s?.allOf?.length === 1) {
+      const inner = resolveRef(s.allOf[0] as JsonSchema);
+      if (inner) {
+        const { allOf, ...outerMeta } = s as any;
+        return { ...inner, ...outerMeta };
+      }
+    }
+    return s;
+  };
+
   const hasNestedProperties = (s: JsonSchema): boolean => {
     if (s?.properties) return true;
     if (s?.allOf) {
@@ -107,7 +119,7 @@ export const collectSchemaEntries = (
   const collect = (current: JsonSchema, schemaPath: string, dataPath: string, depth: number) => {
     if (!current || depth > maxDepth) return;
 
-    const resolved = resolveRef(current);
+    const resolved = unwrapSingleAllOf(resolveRef(current) ?? current);
     if (!resolved) return;
 
     if (visiting.has(resolved)) return;
@@ -121,7 +133,7 @@ export const collectSchemaEntries = (
         const propSchemaPath = `${schemaPath}/properties/${encode(propName)}`;
         const propDataPath = dataPath ? `${dataPath}.${propName}` : propName;
 
-        const resolvedProp = resolveRef(allProperties[propName]!);
+        const resolvedProp = unwrapSingleAllOf(resolveRef(allProperties[propName]!) ?? allProperties[propName]!);
         if (!resolvedProp) continue;
 
         if (hasNestedProperties(resolvedProp)) {

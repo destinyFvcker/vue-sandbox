@@ -9,6 +9,76 @@
         : '',
     ]"
   >
+    <div
+      v-if="props.pagination"
+      class="flex flex-col gap-4 px-2 py-4 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="flex items-center gap-4">
+        <div v-if="showRowsPerPage" class="flex items-center gap-2">
+          <span class="text-muted-foreground text-sm whitespace-nowrap">{{ rowsPerPageText }}</span>
+          <UiSelect v-model="pageSize" class="w-17.5">
+            <UiSelectTrigger>
+              <UiSelectValue />
+            </UiSelectTrigger>
+            <UiSelectContent>
+              <UiSelectItem v-for="size in pageSizeOptions" :key="size" :value="`${size}`">
+                {{ size }}
+              </UiSelectItem>
+            </UiSelectContent>
+          </UiSelect>
+        </div>
+
+        <div v-if="showSelectedCount" class="text-muted-foreground text-sm whitespace-nowrap">
+          {{ table.getFilteredSelectedRowModel().rows.length }} of
+          {{ table.getFilteredRowModel().rows.length }} row(s) selected
+        </div>
+        <!-- </slot> -->
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- <slot name="footer-right" :table="table"> -->
+        <div v-if="showPageInfo" class="text-muted-foreground text-sm whitespace-nowrap">
+          Page {{ table.getState().pagination.pageIndex + 1 }} of
+          {{ table.getPageCount() }}
+        </div>
+
+        <div v-if="showPagination" class="flex items-center gap-1">
+          <UiButton
+            variant="outline"
+            size="icon-sm"
+            :disabled="!table.getCanPreviousPage()"
+            @click="table.setPageIndex(0)"
+          >
+            <Icon name="lucide:chevrons-left" class="size-4" />
+          </UiButton>
+          <UiButton
+            variant="outline"
+            size="icon-sm"
+            :disabled="!table.getCanPreviousPage()"
+            @click="table.previousPage()"
+          >
+            <Icon name="lucide:chevron-left" class="size-4" />
+          </UiButton>
+          <UiButton
+            variant="outline"
+            size="icon-sm"
+            :disabled="!table.getCanNextPage()"
+            @click="table.nextPage()"
+          >
+            <Icon name="lucide:chevron-right" class="size-4" />
+          </UiButton>
+          <UiButton
+            variant="outline"
+            size="icon-sm"
+            :disabled="!table.getCanNextPage()"
+            @click="table.setPageIndex(table.getPageCount() - 1)"
+          >
+            <Icon name="lucide:chevrons-right" class="size-4" />
+          </UiButton>
+        </div>
+      </div>
+    </div>
+
     <slot name="loading" :loading>
       <div
         v-if="loading"
@@ -297,7 +367,7 @@
     <slot name="footer" :table="table">
       <div class="flex items-center gap-4">
         <slot name="footer-left" :table="table">
-          <div v-if="showRowsPerPage" class="flex items-center gap-2">
+          <!-- <div v-if="showRowsPerPage" class="flex items-center gap-2">
             <span class="text-muted-foreground text-sm whitespace-nowrap">{{
               rowsPerPageText
             }}</span>
@@ -316,13 +386,13 @@
           <div v-if="showSelectedCount" class="text-muted-foreground text-sm whitespace-nowrap">
             {{ table.getFilteredSelectedRowModel().rows.length }} of
             {{ table.getFilteredRowModel().rows.length }} row(s) selected
-          </div>
+          </div> -->
         </slot>
       </div>
 
       <div class="flex items-center gap-4">
         <slot name="footer-right" :table="table">
-          <div v-if="showPageInfo" class="text-muted-foreground text-sm whitespace-nowrap">
+          <!-- <div v-if="showPageInfo" class="text-muted-foreground text-sm whitespace-nowrap">
             Page {{ table.getState().pagination.pageIndex + 1 }} of
             {{ table.getPageCount() }}
           </div>
@@ -360,7 +430,7 @@
             >
               <Icon name="lucide:chevrons-right" class="size-4" />
             </UiButton>
-          </div>
+          </div> -->
         </slot>
       </div>
     </slot>
@@ -438,6 +508,8 @@
       initialPageSize?: number;
       /** Loading state */
       loading?: boolean;
+      /** paginator */
+      pagination?: boolean;
       /** Enable manual pagination (for server-side pagination) */
       manualPagination?: boolean;
       /** Total page count (required for manual pagination) */
@@ -517,6 +589,7 @@
       pageSizeOptions: () => [10, 20, 30, 40, 50],
       initialPageSize: 10,
       loading: false,
+      pagination: false,
       manualPagination: false,
       manualSorting: false,
       manualFiltering: false,

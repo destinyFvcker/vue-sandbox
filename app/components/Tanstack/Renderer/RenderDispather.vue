@@ -4,7 +4,7 @@
 
   import FallbackRenderer from "./Fallback.vue";
 
-  let props = defineProps({
+  const props = defineProps({
     ...rendererProps(),
   });
   const { renderer: rendererState, rootSchema } = useJsonFormsRenderer(props);

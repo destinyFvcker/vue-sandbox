@@ -4,6 +4,7 @@
     { path: "/expandable-table", label: "Expandable Table" },
     { path: "/render-complex", label: "Render Complex1" },
     { path: "/render-complex2", label: "Render Complex2" },
+    { path: "/with-row-pinning-and-expand", label: "With Row Pinning and Expand" },
     { path: "/render-nested", label: "Render Nested" },
   ];
 </script>
