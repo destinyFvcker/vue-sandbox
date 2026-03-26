@@ -148,10 +148,7 @@ pub enum QuxTupleEnum {
       "properties": {
         "Move": {
           "type": "array",
-          "items": [
-            { "type": "integer" },
-            { "type": "integer" }
-          ]
+          "items": [{ "type": "integer" }, { "type": "integer" }]
         }
       },
       "required": ["Move"]

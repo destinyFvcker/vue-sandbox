@@ -60,10 +60,7 @@
 ```json
 {
   "type": "array",
-  "items": [
-    { "type": "string" },
-    { "type": "integer" }
-  ]
+  "items": [{ "type": "string" }, { "type": "integer" }]
 }
 ```
 
@@ -73,10 +70,7 @@
 
 ```json
 {
-  "oneOf": [
-    { "type": "string" },
-    { "type": "integer" }
-  ]
+  "oneOf": [{ "type": "string" }, { "type": "integer" }]
 }
 ```
 
@@ -226,9 +220,7 @@
 
 ```json
 {
-  "enum": [
-    { "type": "string" }
-  ]
+  "enum": [{ "type": "string" }]
 }
 ```
 

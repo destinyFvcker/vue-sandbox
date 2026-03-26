@@ -1,17 +1,18 @@
-import { fileURLToPath } from 'node:url'
-import { defineConfig, type Plugin } from 'vitest/config'
-import { defineVitestProject } from '@nuxt/test-utils/config'
+import { fileURLToPath } from "node:url";
+import { defineVitestProject } from "@nuxt/test-utils/config";
+import { defineConfig } from "vitest/config";
+import type { Plugin } from "vitest/config";
 
 /** Stub out .vue files so pure-logic unit tests don't need @vitejs/plugin-vue */
 function stubVuePlugin(): Plugin {
   return {
-    name: 'stub-vue',
+    name: "stub-vue",
     transform(_code, id) {
-      if (id.endsWith('.vue')) {
-        return { code: 'export default {}', map: null }
+      if (id.endsWith(".vue")) {
+        return { code: "export default {}", map: null };
       }
     },
-  }
+  };
 }
 
 export default defineConfig({
@@ -20,20 +21,20 @@ export default defineConfig({
       {
         plugins: [stubVuePlugin()],
         test: {
-          name: 'unit',
-          include: ['test/unit/*.{test,spec}.ts'],
-          environment: 'node',
+          name: "unit",
+          include: ["test/unit/*.{test,spec}.ts"],
+          environment: "node",
         },
       },
       await defineVitestProject({
         test: {
-          name: 'nuxt',
-          include: ['test/nuxt/*.{test,spec}.ts'],
-          environment: 'nuxt',
+          name: "nuxt",
+          include: ["test/nuxt/*.{test,spec}.ts"],
+          environment: "nuxt",
           environmentOptions: {
             nuxt: {
-              rootDir: fileURLToPath(new URL('.', import.meta.url)),
-              domEnvironment: 'happy-dom',
+              rootDir: fileURLToPath(new URL(".", import.meta.url)),
+              domEnvironment: "happy-dom",
             },
           },
         },
@@ -41,7 +42,7 @@ export default defineConfig({
     ],
     coverage: {
       enabled: true,
-      provider: 'v8',
+      provider: "v8",
     },
   },
-})
+});

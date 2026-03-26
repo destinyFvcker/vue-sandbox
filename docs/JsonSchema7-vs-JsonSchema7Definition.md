@@ -43,7 +43,7 @@ const schema: JsonSchema7 = {
   type: "object",
   properties: {
     name: { type: "string" },
-    age:  { type: "integer", minimum: 0 },
+    age: { type: "integer", minimum: 0 },
   },
   required: ["name"],
 };
@@ -85,7 +85,7 @@ const schema: JsonSchema7Definition = {
 ```typescript
 // @types/json-schema 的标准定义
 interface JSONSchema7 {
-  additionalProperties?: JsonSchema7Definition;  // 可以是 true/false 或对象
+  additionalProperties?: JsonSchema7Definition; // 可以是 true/false 或对象
   if?: JsonSchema7Definition;
   then?: JsonSchema7Definition;
   else?: JsonSchema7Definition;
@@ -101,7 +101,7 @@ interface JSONSchema7 {
 ```typescript
 // @jsonforms/core 的实际定义
 interface JsonSchema7 {
-  additionalProperties?: boolean | JsonSchema7;  // 内联，而非 JsonSchema7Definition
+  additionalProperties?: boolean | JsonSchema7; // 内联，而非 JsonSchema7Definition
   items?: JsonSchema7 | JsonSchema7[];
 }
 ```

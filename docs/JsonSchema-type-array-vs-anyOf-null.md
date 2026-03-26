@@ -130,10 +130,7 @@ JSON Schema 的 `type` 可以是：
 
 ```json
 {
-  "anyOf": [
-    { "type": "string" },
-    { "type": "null" }
-  ]
+  "anyOf": [{ "type": "string" }, { "type": "null" }]
 }
 ```
 
@@ -204,10 +201,7 @@ JSON Schema 的 `type` 可以是：
 
 ```json
 {
-  "anyOf": [
-    { "$ref": "#/definitions/BarStruct" },
-    { "type": "null" }
-  ]
+  "anyOf": [{ "$ref": "#/definitions/BarStruct" }, { "type": "null" }]
 }
 ```
 

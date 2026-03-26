@@ -1,42 +1,70 @@
+import tailwindcss from "@tailwindcss/vite";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	compatibilityDate: "2025-07-15",
-	devtools: { enabled: true },
+  compatibilityDate: "2025-07-15",
+  devtools: { enabled: true },
 
-	ssr: false,
+  ssr: false,
 
-	modules: [
-		"@nuxt/a11y",
-		"@nuxt/content",
-		"@nuxt/eslint",
-		"@nuxt/fonts",
-		"@nuxt/hints",
-		"@nuxt/icon",
-		"@nuxt/image",
-		"@nuxt/scripts",
-		"@nuxt/test-utils",
-		"@nuxtjs/tailwindcss",
-		"shadcn-nuxt",
-	],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/hints",
+    "@nuxt/image",
+    "@nuxt/scripts",
+    "@nuxt/test-utils",
+    "@nuxtjs/color-mode",
+    "motion-v/nuxt",
+    "@vueuse/nuxt",
+    "@nuxt/icon",
+    "@nuxt/fonts",
+  ],
 
-	shadcn: {
-		/**
-		 * Prefix for all the imported component.
-		 * @default "Ui"
-		 */
-		prefix: "",
-		/**
-		 * Directory that the component lives in.
-		 * Will respect the Nuxt aliases.
-		 * @link https://nuxt.com/docs/api/nuxt-config#alias
-		 * @default "@/components/ui"
-		 */
-		componentDir: "@/components/ui",
-	},
+  hooks: {
+    "prerender:routes"({ routes }) {
+      routes.clear(); // Do not generate any routes (except the defaults)
+    },
+  },
 
-	hooks: {
-		"prerender:routes"({ routes }) {
-			routes.clear(); // Do not generate any routes (except the defaults)
-		},
-	},
+  imports: {
+    imports: [
+      {
+        from: "tailwind-variants",
+        name: "tv",
+      },
+      {
+        from: "tailwind-variants",
+        name: "VariantProps",
+        type: true,
+      },
+      {
+        from: "vue-sonner",
+        name: "toast",
+        as: "useSonner",
+      },
+    ],
+  },
+
+  colorMode: {
+    storageKey: "vue-sandbox-color-mode",
+    classSuffix: "",
+  },
+
+  icon: {
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 0,
+    },
+
+    mode: "svg",
+    class: "shrink-0",
+    fetchTimeout: 2000,
+    serverBundle: "local",
+  },
+
+  css: ["~/assets/css/tailwind.css"],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
