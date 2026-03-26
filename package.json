@@ -18,7 +18,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@antfu/eslint-config": "^7.2.0",
+    "@faker-js/faker": "^10.4.0",
     "@jsonforms/core": "^3.7.0",
     "@jsonforms/vue": "^3.7.0",
     "@jsonforms/vue-vanilla": "^3.7.0",
@@ -36,6 +36,7 @@
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/vue-table": "^8.21.3",
+    "@types/lodash-es": "^4.17.12",
     "@unhead/vue": "^2.1.2",
     "@vueuse/core": "^14.2.0",
     "@vueuse/nuxt": "^14.2.1",
@@ -44,6 +45,7 @@
     "clsx": "^2.1.1",
     "eslint": "^9.39.2",
     "lodash": "^4.17.23",
+    "lodash-es": "^4.17.23",
     "motion-v": "^2.2.0",
     "nuxt": "^4.3.0",
     "reka-ui": "^2.8.0",
