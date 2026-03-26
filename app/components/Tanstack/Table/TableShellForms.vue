@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import { createColumnHelper } from "@tanstack/vue-table";
   import { startCase } from "lodash-es";
-  import { genColumnDefs } from "../Renderer/genColumnDef";
   import type { JsonFormsRendererRegistryEntry } from "@jsonforms/core";
   import type { ColumnDef } from "@tanstack/vue-table";
   import type { SchemaEntry } from "~/lib/schema-resolver";
+
+  import { genColumnDefs } from "../Renderer/genColumnDef";
 
   const props = defineProps<{
     data: any[];
@@ -53,13 +54,14 @@
 <template>
   <UiTanStackTable :data="data" :columns="columns" :show-footer="false">
     <template v-if="arrayEntries && arrayEntries.length > 0" #expanded-row="{ row }">
-      <div class="bg-muted/30 max-h-75 overflow-auto border-t p-3">
+      <div class="bg-muted/30 border-t p-2">
         <UiTabs :default-value="arrayEntries[0]!.dataPath">
           <UiTabsList>
             <UiTabsTrigger
               v-for="entry in arrayEntries"
               :key="entry.dataPath"
               :value="entry.dataPath"
+              class="px-2 py-0.5"
             >
               {{ startCase(entry.dataPath) }}
             </UiTabsTrigger>

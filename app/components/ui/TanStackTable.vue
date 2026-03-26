@@ -236,8 +236,8 @@
               >
                 <UiTableCell :colspan="row.getVisibleCells().length" class="bg-muted/50 p-0">
                   <div
-                    class="overflow-y-auto"
-                    style="max-height: var(--ui-table-expanded-row-height, 100px)"
+                    :class="group.pinned ? 'overflow-y-auto' : ''"
+                    :style="group.pinned ? 'max-height: var(--ui-table-expanded-row-height, 100px)' : undefined"
                   >
                     <slot name="expanded-row" :row="row" :table="table">
                       <div class="p-4">
@@ -254,7 +254,7 @@
         </template>
 
         <UiTableRow v-else>
-          <UiTableCell :colspan="table.getAllLeafColumns().length" class="h-24 text-center">
+          <UiTableCell :colspan="table.getAllLeafColumns().length" class="h-16 text-center">
             <slot name="empty">
               {{ emptyText }}
             </slot>
@@ -840,7 +840,7 @@
     }
 
     const headerOffsetVar = "var(--ui-table-header-height, 0px)";
-    const rowHeight = "var(--ui-table-row-height, 44px)";
+    const rowHeight = "var(--ui-table-row-height, 28px)";
     const expandedRowHeight = "var(--ui-table-expanded-row-height, 100px)";
 
     const offsetValue =
@@ -880,7 +880,7 @@
     }
 
     const headerOffsetVar = "var(--ui-table-header-height, 0px)";
-    const rowHeight = "var(--ui-table-row-height, 44px)";
+    const rowHeight = "var(--ui-table-row-height, 28px)";
     const expandedRowHeight = "var(--ui-table-expanded-row-height, 100px)";
 
     // Expanded row sits right after its parent row: offset = (index + 1) rows + expandedCountBefore expanded rows
@@ -948,5 +948,23 @@
     100% {
       transform: translateX(100%);
     }
+  }
+</style>
+
+<style scoped>
+  /* Dense table overrides */
+  :deep([data-slot="table"]) {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  :deep([data-slot="table-head"]) {
+    height: 2rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  :deep([data-slot="table-cell"]) {
+    padding: 0.25rem 0.5rem;
   }
 </style>

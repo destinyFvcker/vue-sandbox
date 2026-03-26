@@ -118,10 +118,40 @@
 </script>
 
 <template>
-  <TanstackTableShellForms
-    :data="data"
-    :columns="columns as ColumnDef<any, any>[]"
-    :array-entries="arrayEntries"
-    :renderers="tanstackRenderers"
-  />
+  <div class="h-screen">
+    <UiSplitter class="h-screen" direction="horizontal">
+      <UiSplitterPanel :default-size="60" :min-size="30">
+        <div class="h-full overflow-auto p-2">
+          <TanstackTableShellForms
+            :data="data"
+            :columns="columns as ColumnDef<any, any>[]"
+            :array-entries="arrayEntries"
+            :renderers="tanstackRenderers"
+          />
+        </div>
+      </UiSplitterPanel>
+      <UiSplitterHandle with-handle />
+      <UiSplitterPanel :default-size="40" :min-size="20">
+        <UiSplitter direction="vertical" class="h-full">
+          <UiSplitterPanel :default-size="50" :min-size="20">
+            <div class="bg-muted/40 h-full overflow-auto p-4">
+              <h3 class="text-muted-foreground mb-2 text-xs font-semibold tracking-wider uppercase">
+                Schema
+              </h3>
+              <pre class="text-xs leading-relaxed">{{ JSON.stringify(schema, null, 2) }}</pre>
+            </div>
+          </UiSplitterPanel>
+          <UiSplitterHandle with-handle />
+          <UiSplitterPanel :default-size="50" :min-size="20">
+            <div class="bg-primary/5 h-full overflow-auto p-4">
+              <h3 class="text-muted-foreground mb-2 text-xs font-semibold tracking-wider uppercase">
+                Data
+              </h3>
+              <pre class="text-xs leading-relaxed">{{ JSON.stringify(data, null, 2) }}</pre>
+            </div>
+          </UiSplitterPanel>
+        </UiSplitter>
+      </UiSplitterPanel>
+    </UiSplitter>
+  </div>
 </template>
