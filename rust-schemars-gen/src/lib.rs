@@ -50,7 +50,7 @@ pub enum MyEnum {
 }
 
 /// ComplexStruct2
-#[derive(Deserialize, Serialize, JsonSchema)]
+#[derive(Deserialize, Serialize, JsonSchema, Dummy)]
 pub struct ComplexStruct2 {
     /// A nested struct holding the primary foo/bar relationship for this record.
     pub nested_field: SimpleNestedStruct,
@@ -147,5 +147,100 @@ mod tests {
         pub struct FooVec(i32);
 
         print_json_schema::<FooVec>();
+    }
+
+    #[test]
+    fn tuple_eunm_with_struct() {
+        /// sss
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "FooFoo的struct!")]
+        struct FooStruct {
+            foo1: i32,
+            foo2: i32,
+            foo3: i32,
+        }
+
+        /// sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "BarBar的struct!")]
+        struct BarStruct {
+            bar1: String,
+            bar2: String,
+            bar3: String,
+        }
+
+        /// sss + sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "Foo + Bar的enum!")]
+        enum FooBarEnum {
+            Foo(FooStruct),
+            Bar(BarStruct),
+        }
+
+        print_json_schema::<FooBarEnum>();
+    }
+
+    #[test]
+    fn tuple_eunm_with_struct_tag() {
+        /// sss
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "FooFoo的struct!")]
+        struct FooStruct {
+            foo1: i32,
+            foo2: i32,
+            foo3: i32,
+        }
+
+        /// sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "BarBar的struct!")]
+        struct BarStruct {
+            bar1: String,
+            bar2: String,
+            bar3: String,
+        }
+
+        /// sss + sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "Foo + Bar的enum!")]
+        #[serde(tag = "type")]
+        enum FooBarEnum {
+            Foo(FooStruct),
+            Bar(BarStruct),
+        }
+
+        print_json_schema::<FooBarEnum>();
+    }
+
+    #[test]
+    fn tuple_eunm_with_struct_tag_and_content() {
+        /// sss
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "FooFoo的struct!")]
+        struct FooStruct {
+            foo1: i32,
+            foo2: i32,
+            foo3: i32,
+        }
+
+        /// sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "BarBar的struct!")]
+        struct BarStruct {
+            bar1: String,
+            bar2: String,
+            bar3: String,
+        }
+
+        /// sss + sssa
+        #[derive(Deserialize, Serialize, JsonSchema)]
+        #[schemars(title = "Foo + Bar的enum!")]
+        #[serde(tag = "t", content = "c")]
+        enum FooBarEnum {
+            Foo(FooStruct),
+            Bar(BarStruct),
+        }
+
+        print_json_schema::<FooBarEnum>();
     }
 }
