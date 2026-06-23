@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxt/icon",
     "@nuxt/fonts",
+    "vue-sonner/nuxt"
   ],
 
   vite: {
@@ -34,16 +35,19 @@ export default defineNuxtConfig({
         "datatables.net",
         "datatables.net-vue3",
         "jszip", // CJS
-        "datatables.net-buttons-dt",
+        "datatables.net-buttons",
         "datatables.net-buttons/js/buttons.colVis.mjs",
         "datatables.net-buttons/js/buttons.html5.mjs",
         "datatables.net-buttons/js/buttons.print.mjs",
-        "datatables.net-responsive-dt",
-        "datatables.net-searchbuilder-dt",
-        "datatables.net-select-dt",
-        "datatables.net-fixedcolumns-dt",
-        "datatables.net-fixedheader-dt",
-        "datatables.net-colreorder-dt",
+        "datatables.net-colreorder",
+        "datatables.net-fixedcolumns",
+        "datatables.net-fixedheader",
+        "datatables.net-responsive",
+        "datatables.net-searchbuilder",
+        "datatables.net-select",
+        "@faker-js/faker",
+        "@tanstack/vue-table",
+        "lodash-es",
       ],
     },
     build: {
@@ -59,17 +63,18 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    imports: [
-      {
-        from: "tailwind-variants",
-        name: "tv",
-      },
-      {
-        from: "tailwind-variants",
-        name: "VariantProps",
-        type: true,
-      },
-    ],
+    imports: [{
+      from: "tailwind-variants",
+      name: "tv",
+    }, {
+      from: "tailwind-variants",
+      name: "VariantProps",
+      type: true,
+    }, {
+      from: "vue-sonner",
+      name: "toast",
+      as: "useSonner",
+    }],
   },
 
   colorMode: {

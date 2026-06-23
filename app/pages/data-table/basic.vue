@@ -6,8 +6,12 @@
 
 <script lang="ts" setup>
   import { faker } from "@faker-js/faker";
-  import type { Config } from "datatables.net";
+  import type { Api, Config } from "datatables.net";
   import type DataTableRef from "datatables.net";
+
+  const selectAllAction = (_event: unknown, dt: Api<unknown>) => {
+    dt.rows().select();
+  };
 
   const options: Config = {
     dom: "Q<'flex flex-col lg:flex-row w-full lg:items-start lg:justify-between gap-5 mb-5 lg:pr-1'Bf><'border rounded-lg't><'flex flex-col lg:flex-row gap-5 lg:items-center lg:justify-between pt-3 p-5'li><''p>",
@@ -24,9 +28,7 @@
       "print",
       {
         text: "Select all",
-        action: function (e, dt, _, __) {
-          dt.rows().select();
-        },
+        action: selectAllAction,
       },
     ],
     columns: [
@@ -55,7 +57,7 @@
   };
 
   const users = ref(
-    Array.from({ length: 100 }, () => ({
+    Array.from({ length: 7500 }, () => ({
       id: { value: faker.string.alphanumeric(10).toUpperCase() },
       name: { first: faker.person.firstName(), last: faker.person.lastName() },
       email: faker.internet.email(),

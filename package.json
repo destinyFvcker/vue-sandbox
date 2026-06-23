@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build --prerender",
     "dev": "nuxt dev",
+    "check": "nuxt typecheck",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -28,14 +29,23 @@
     "@nuxtjs/color-mode": "^4.0.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tanstack/vue-table": "^8.21.3",
+    "@vueuse/core": "^14.3.0",
     "@vueuse/nuxt": "^14.2.1",
     "clsx": "^2.1.1",
+    "datatables.net": "^2.3.8",
+    "datatables.net-buttons": "^3.2.6",
     "datatables.net-buttons-dt": "^3.2.6",
+    "datatables.net-colreorder": "^2.1.2",
     "datatables.net-colreorder-dt": "^2.1.2",
+    "datatables.net-fixedcolumns": "^5.0.5",
     "datatables.net-fixedcolumns-dt": "^5.0.5",
+    "datatables.net-fixedheader": "^4.0.6",
     "datatables.net-fixedheader-dt": "^4.0.6",
+    "datatables.net-responsive": "^3.0.8",
     "datatables.net-responsive-dt": "^3.0.8",
+    "datatables.net-searchbuilder": "^1.8.4",
     "datatables.net-searchbuilder-dt": "^1.8.4",
+    "datatables.net-select": "^3.1.3",
     "datatables.net-select-dt": "^3.1.3",
     "datatables.net-vue3": "^3.0.4",
     "jszip": "^3.10.1",
@@ -47,7 +57,8 @@
     "tailwind-merge": "^3.5.0",
     "tailwind-variants": "^3.2.2",
     "vue": "^3.5.30",
-    "vue-router": "^5.0.3"
+    "vue-router": "^5.0.3",
+    "vue-sonner": "^2.0.9"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
@@ -64,6 +75,7 @@
     "tailwindcss": "^4.3.1",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vue-tsc": "^3.3.5"
   }
 }
