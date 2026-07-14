@@ -7,7 +7,9 @@ export default defineConfig<ConfigOptions>({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // Nuxt Test Utils starts a built preview server per worker. Keeping one worker
+  // also exercises DataTables route teardown in a deterministic sequence.
+  workers: 1,
   reporter: "html",
   use: {
     trace: "on-first-retry",

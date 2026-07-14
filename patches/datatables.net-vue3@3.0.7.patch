@@ -1,0 +1,131 @@
+diff --git a/dist/datatables.net-vue3.mjs b/dist/datatables.net-vue3.mjs
+index 2359b09d5f42b07f90e62786332966bd64226e6b..b88c8607ab7fde85d57043b13574ba453c4bdb1a 100644
+--- a/dist/datatables.net-vue3.mjs
++++ b/dist/datatables.net-vue3.mjs
+@@ -109,18 +109,21 @@ const C = {
+     function k(t) {
+       D.value = t.value ? t.value.slice() : t.slice();
+     }
+-    function y(t) {
++    function y(t, i) {
+       return function(e, a, n, r) {
+         let s = (r.settings.sTableId || r.settings.tableId) + "," + r.row + "," + r.col;
+         if (!d[s]) {
+-          let u = S("div", t({
+-            cellData: e,
+-            colIndex: r.col,
+-            rowData: n,
+-            rowIndex: r.row,
+-            type: a
+-          }));
+-          d[s] = document.createElement("div"), _(u, d[s]);
++          let u = S({
++            name: "DataTablesSlotRenderer",
++            setup: () => () => S("div", t({
++              cellData: e,
++              colIndex: r.col,
++              rowData: n,
++              rowIndex: r.row,
++              type: a
++            }))
++          });
++          u.appContext = i, d[s] = document.createElement("div"), _(u, d[s]);
+         }
+         return d[s];
+       };
+@@ -131,17 +134,19 @@ const C = {
+           let r = t[n];
+           if (typeof r.render == "string" && r.render.charAt(0) === "#") {
+             var a = r.render.replace("#", "");
+-            e.slots[a] && (r.render = y(e.slots[a]));
++            e.slots[a] && (r.render = y(e.slots[a], e.appContext));
+           } else if (typeof r.render == "object" && typeof r.render.display == "string" && r.render.display.charAt(0) === "#") {
+             var a = r.render.display.replace("#", "");
+-            e.slots[a] && (r.render.display = y(e.slots[a]));
++            e.slots[a] && (r.render.display = y(e.slots[a], e.appContext));
+           }
+         }
+     }
+     function f(t) {
++      if (!t)
++        return;
+       let e = Object.keys(d), a = t.table().node().id;
+       for (var n = 0; n < e.length; n++)
+-        e[n].indexOf(a + ",") === 0 && delete d[e[n]];
++        e[n].indexOf(a + ",") === 0 && (_(null, d[e[n]]), delete d[e[n]]);
+     }
+     return c({
+       dt: l
+diff --git a/src/DataTable.vue b/src/DataTable.vue
+index 519b69487f96a40c7d9a7c03d6d917a05765ceba..2af0786a5041a5cc225746120229c06edf20c46c 100644
+--- a/src/DataTable.vue
++++ b/src/DataTable.vue
+@@ -174,7 +174,7 @@ function saveOld(d: any) {
+  *
+  * @param slot Slot to render
+  */
+-function createRenderer(slot: any) {
++function createRenderer(slot: any, appContext: any) {
+ 	return function (
+ 		data: any,
+ 		type: string,
+@@ -185,13 +185,17 @@ function createRenderer(slot: any) {
+ 			',' + meta.row + ',' + meta.col;
+ 
+ 		if (!elements[key]) {
+-			let content = h('div', slot({
+-				cellData: data,
+-				colIndex: meta.col,
+-				rowData: row,
+-				rowIndex: meta.row,
+-				type
+-			}));
++			let content = h({
++				name: 'DataTablesSlotRenderer',
++				setup: () => () => h('div', slot({
++					cellData: data,
++					colIndex: meta.col,
++					rowData: row,
++					rowIndex: meta.row,
++					type
++				}))
++			});
++			content.appContext = appContext;
+ 
+ 			elements[key] = document.createElement('div');
+ 			render(content, elements[key]);
+@@ -220,7 +224,7 @@ function applyRenderers(columns: any[], inst: any) {
+ 			var name = col.render.replace('#', '');
+ 
+ 			if (inst!.slots[name]) {
+-				col.render = createRenderer(inst!.slots[name]);
++				col.render = createRenderer(inst!.slots[name], inst.appContext);
+ 			}
+ 		}
+ 		else if (
+@@ -232,18 +236,23 @@ function applyRenderers(columns: any[], inst: any) {
+ 			var name = col.render.display.replace('#', '');
+ 
+ 			if (inst!.slots[name]) {
+-				col.render.display = createRenderer(inst!.slots[name]);
++				col.render.display = createRenderer(inst!.slots[name], inst.appContext);
+ 			}
+ 		}
+ 	}
+ }
+ 
+-function deleteElements(dt: Api) {
++function deleteElements(dt: Api | undefined) {
++	if (!dt) {
++		return;
++	}
++
+ 	let keys = Object.keys(elements);
+ 	let id = (dt.table().node() as any).id;
+ 
+ 	for (var i = 0; i < keys.length; i++) {
+ 		if (keys[i].indexOf(id + ',') === 0) {
++			render(null, elements[keys[i]]);
+ 			delete elements[keys[i]];
+ 		}
+ 	}
