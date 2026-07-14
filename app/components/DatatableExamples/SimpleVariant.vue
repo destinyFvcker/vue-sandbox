@@ -1,5 +1,7 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   type Variant = "simple" | "no-horizontal" | "striped" | "vertical-lines";
@@ -19,25 +21,28 @@
   const options: Config = {
     dom: "t",
     ordering: false,
-    columns: [
-      { title: "ID", data: "id", visible: false },
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Location", data: "location.city" },
-      { title: "Status", data: "status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-    ],
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    id: { visible: false },
+    balance: { className: "dt-body-right" },
   };
 </script>
 
 <template>
   <div class="overflow-hidden">
-    <UiDatatable :class="tableClass" :data="rows" :options="options" />
+    <UiSchemaDatatable
+      :class="tableClass"
+      :schema="demoPersonSchema"
+      :data="rows"
+      :options="options"
+      :column-overrides="columnOverrides"
+      :column-paths="personColumnPaths.simple"
+    >
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(cellData as number) }}
+      </template>
+    </UiSchemaDatatable>
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
       <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>

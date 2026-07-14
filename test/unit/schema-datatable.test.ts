@@ -4,7 +4,7 @@ import type { ObjectColumnRender } from "datatables.net";
 
 import {
   buildSchemaDatatableModel,
-  SCHEMA_CELL_SLOT,
+  getSchemaCellSlot,
   SCHEMA_EXPAND_SLOT,
 } from "../../app/lib/schema-datatable";
 
@@ -44,7 +44,7 @@ describe("schema DataTable adapter", () => {
     expect((model.columns[0]!.render as ObjectColumnRender).display).toBe(SCHEMA_EXPAND_SLOT);
     expect(model.columns[1]).toMatchObject({ title: "Identifier", name: "id" });
     expect(model.columns[2]).toMatchObject({ title: "Display Name", name: "profile.displayName" });
-    expect((model.columns[2]!.render as ObjectColumnRender).display).toBe(SCHEMA_CELL_SLOT);
+    expect((model.columns[2]!.render as ObjectColumnRender).display).toBe(getSchemaCellSlot(1));
   });
 
   it("keeps numeric and boolean sort data orthogonal to Vue display nodes", () => {
@@ -71,6 +71,42 @@ describe("schema DataTable adapter", () => {
       name: "id",
     });
     expect(model.columns[1]!.render).toBeTruthy();
+  });
+
+  it("projects and reorders schema paths, including an explicitly displayed array", () => {
+    const model = buildSchemaDatatableModel(schema, undefined, [
+      "profile.displayName",
+      "tags",
+      "id",
+    ]);
+
+    expect(model.columns.map((column) => column.name)).toEqual([
+      "profile.displayName",
+      "tags",
+      "id",
+    ]);
+    expect(model.columnEntries.map((entry) => entry.dataPath)).toEqual([
+      "profile.displayName",
+      "tags",
+      "id",
+    ]);
+    expect(model.arrayEntries).toEqual([]);
+  });
+
+  it("allows a renderer override without allowing data or name remapping", () => {
+    const customRenderer = () => "custom";
+    const model = buildSchemaDatatableModel(schema, {
+      id: { render: customRenderer },
+    });
+
+    expect(model.columns[1]).toMatchObject({ data: null, name: "id" });
+    expect(model.columns[1]!.render).toBe(customRenderer);
+  });
+
+  it("rejects unknown projected column paths", () => {
+    expect(() => buildSchemaDatatableModel(schema, undefined, ["missing"])).toThrow(
+      "Unknown column path: missing"
+    );
   });
 
   it("supports JSON Pointer overrides for ambiguous dotted paths", () => {

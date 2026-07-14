@@ -1,6 +1,8 @@
 <script setup lang="ts">
+  import { keywordColumnPaths, keywordRowSchema } from "~/lib/datatable-example-schemas";
   import { keywordRows } from "~/lib/datatable-examples";
   import type { KeywordIntent } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   const search = ref("");
@@ -27,35 +29,13 @@
     dom: "t",
     paging: false,
     order: [[2, "desc"]],
-    columns: [
-      { title: "Keyword", data: "keyword" },
-      {
-        title: "Intent",
-        data: null,
-        render: {
-          _: "intents[, ]",
-          display: "#intents",
-        },
-      },
-      { title: "Volume", data: "volume", className: "dt-body-right" },
-      {
-        title: "CPC",
-        data: "cpc",
-        className: "dt-body-right",
-        render: (value: number) => `$${value.toFixed(2)}`,
-      },
-      { title: "Traffic", data: "traffic", className: "dt-body-right" },
-      {
-        title: "SERP",
-        data: null,
-        orderable: false,
-        searchable: false,
-        render: {
-          _: "link",
-          display: "#link",
-        },
-      },
-    ],
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    volume: { className: "dt-body-right" },
+    cpc: { className: "dt-body-right" },
+    traffic: { className: "dt-body-right" },
+    link: { orderable: false, searchable: false },
   };
 </script>
 
@@ -81,11 +61,18 @@
       </label>
     </div>
 
-    <UiDatatable class="nowrap hover row-border" :data="rows" :options="options">
-      <template #intents="{ rowData }">
+    <UiSchemaDatatable
+      class="nowrap hover row-border"
+      :schema="keywordRowSchema"
+      :data="rows"
+      :column-paths="keywordColumnPaths"
+      :column-overrides="columnOverrides"
+      :options="options"
+    >
+      <template #cell-intents="{ cellData }">
         <span class="flex flex-wrap gap-1.5">
           <span
-            v-for="intent in rowData.intents as KeywordIntent[]"
+            v-for="intent in cellData as KeywordIntent[]"
             :key="intent"
             :class="['rounded-full px-2 py-1 text-xs font-medium', intentClasses[intent]]"
           >
@@ -94,9 +81,11 @@
         </span>
       </template>
 
-      <template #link="{ rowData }">
+      <template #cell-cpc="{ cellData }"> ${{ (cellData as number).toFixed(2) }} </template>
+
+      <template #cell-link="{ cellData }">
         <a
-          :href="String(rowData.link)"
+          :href="String(cellData)"
           class="text-primary inline-flex items-center gap-1 text-sm font-medium hover:underline"
           rel="noreferrer"
           target="_blank"
@@ -105,7 +94,7 @@
           <Icon name="lucide:external-link" class="size-3.5" />
         </a>
       </template>
-    </UiDatatable>
+    </UiSchemaDatatable>
 
     <div class="text-muted-foreground border-t px-4 py-3 text-xs">
       Showing {{ rows.length }} of {{ keywordRows.length }} keywords

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   const rows = createDemoPeople(36);
@@ -15,23 +17,26 @@
       bottomStart: "info",
       bottomEnd: "paging",
     },
-    columns: [
-      { title: "Name", data: "name" },
-      { title: "Department", data: "department" },
-      { title: "Office", data: "office" },
-      { title: "Status", data: "status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-    ],
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    balance: { className: "dt-body-right" },
   };
 </script>
 
 <template>
   <div class="bg-background overflow-hidden rounded-lg border p-4">
-    <UiDatatable class="nowrap hover stripe" :data="rows" :options="options" />
+    <UiSchemaDatatable
+      class="nowrap hover stripe"
+      :schema="demoPersonSchema"
+      :data="rows"
+      :options="options"
+      :column-overrides="columnOverrides"
+      :column-paths="personColumnPaths.layout"
+    >
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(cellData as number) }}
+      </template>
+    </UiSchemaDatatable>
   </div>
 </template>

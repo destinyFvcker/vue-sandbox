@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople } from "~/lib/datatable-examples";
   import type { DemoPerson } from "~/lib/datatable-examples";
   import type { Config } from "datatables.net";
@@ -9,24 +10,6 @@
     dom: "t",
     paging: false,
     scrollY: "360px",
-    columns: [
-      { title: "Name", data: "name" },
-      {
-        title: "Status",
-        data: "status",
-        render: "#status",
-      },
-      {
-        title: "Location",
-        data: null,
-        render: {
-          _: "location.city",
-          display: "#location",
-        },
-      },
-      { title: "Position", data: "position" },
-      { title: "Last active", data: "lastActive" },
-    ],
   };
 
   function asPerson(row: DemoPerson | Record<string, unknown>): DemoPerson {
@@ -36,8 +19,14 @@
 
 <template>
   <div class="bg-background overflow-hidden rounded-lg border">
-    <UiDatatable class="nowrap hover row-border" :data="rows" :options="options">
-      <template #status="{ cellData }">
+    <UiSchemaDatatable
+      class="nowrap hover row-border"
+      :schema="demoPersonSchema"
+      :data="rows"
+      :column-paths="personColumnPaths.badgeIcons"
+      :options="options"
+    >
+      <template #cell-status="{ cellData }">
         <span
           :class="[
             'inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium',
@@ -56,7 +45,7 @@
         </span>
       </template>
 
-      <template #location="{ rowData }">
+      <template #cell-location-city="{ rowData }">
         <span class="inline-flex items-center gap-2">
           <span class="text-base" aria-hidden="true">{{ asPerson(rowData).location.flag }}</span>
           <span>
@@ -67,6 +56,6 @@
           </span>
         </span>
       </template>
-    </UiDatatable>
+    </UiSchemaDatatable>
   </div>
 </template>

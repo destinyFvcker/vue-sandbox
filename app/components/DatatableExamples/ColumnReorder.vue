@@ -1,6 +1,8 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
   import type { DemoPerson } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Api, Config } from "datatables.net";
 
   type ColReorderApi = Api<DemoPerson> & {
@@ -19,20 +21,10 @@
     dom: "<'flex items-center justify-between gap-3 border-b p-4'f><'overflow-auto't><'flex flex-col gap-3 border-t p-4 text-sm sm:flex-row sm:items-center sm:justify-between'ip>",
     pageLength: 8,
     colReorder: true,
-    columns: [
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Position", data: "position" },
-      { title: "Office", data: "office" },
-      { title: "Department", data: "department" },
-      { title: "Status", data: "status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-    ],
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    balance: { className: "dt-body-right" },
   };
 
   function onReady(api?: Api<DemoPerson>) {
@@ -95,11 +87,18 @@
         </button>
       </div>
     </div>
-    <UiDatatable
+    <UiSchemaDatatable
       class="nowrap hover stripe row-border"
+      :schema="demoPersonSchema"
       :data="rows"
       :options="options"
+      :column-overrides="columnOverrides"
+      :column-paths="personColumnPaths.columnReorder"
       @ready="onReady"
-    />
+    >
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(cellData as number) }}
+      </template>
+    </UiSchemaDatatable>
   </div>
 </template>

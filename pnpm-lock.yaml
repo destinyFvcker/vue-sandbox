@@ -50,12 +50,21 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      datatables.net:
+        specifier: ^2.3.8
+        version: 2.3.8
+      datatables.net-buttons:
+        specifier: ^3.2.6
+        version: 3.2.6
       datatables.net-buttons-dt:
         specifier: ^3.2.6
         version: 3.2.6
       datatables.net-colreorder-dt:
         specifier: ^2.1.2
         version: 2.1.2
+      datatables.net-dt:
+        specifier: ^2.3.8
+        version: 2.3.8
       datatables.net-fixedcolumns-dt:
         specifier: ^5.0.5
         version: 5.0.5

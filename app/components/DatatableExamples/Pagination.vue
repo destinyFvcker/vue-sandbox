@@ -1,7 +1,9 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
-  import DataTablesCore from "datatables.net";
+  import { createSelectRenderer } from "~/lib/datatables.client";
   import type { DemoPerson } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Api, Config } from "datatables.net";
 
   interface AjaxRequest {
@@ -10,7 +12,7 @@
     length?: number;
     search?: { value?: string };
     order?: Array<{ column: number; dir: "asc" | "desc" }>;
-    columns?: Array<{ data?: string | number | null }>;
+    columns?: Array<{ name?: string }>;
   }
 
   interface AjaxResponse {
@@ -54,29 +56,19 @@
         },
       },
     ],
-    columns: [
-      {
-        data: null,
-        searchable: false,
-        orderable: false,
-        render: DataTablesCore.render.select(),
-      },
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Position", data: "position" },
-      { title: "Office", data: "office" },
-      { title: "Status", data: "status", render: "#status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-    ],
     select: {
       style: "multi",
       selector: "td:first-child",
     },
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    __select: {
+      searchable: false,
+      orderable: false,
+      render: createSelectRenderer(),
+    },
+    balance: { className: "dt-body-right" },
   };
 
   const ajax: Config["ajax"] = (request, callback) => {
@@ -94,7 +86,7 @@
     });
 
     const order = query.order?.[0];
-    const columnKey = order ? query.columns?.[order.column]?.data : undefined;
+    const columnKey = order ? query.columns?.[order.column]?.name : undefined;
     if (order && typeof columnKey === "string") {
       filtered = [...filtered].sort((left, right) => {
         const leftValue = left[columnKey as keyof DemoPerson];
@@ -152,13 +144,16 @@
 
 <template>
   <div class="bg-background overflow-hidden rounded-lg border">
-    <UiDatatable
+    <UiSchemaDatatable
       class="nowrap hover stripe order-column"
+      :schema="demoPersonSchema"
       :ajax="ajax"
+      :column-paths="personColumnPaths.pagination"
+      :column-overrides="columnOverrides"
       :options="options"
       @ready="onReady"
     >
-      <template #status="{ cellData }">
+      <template #cell-status="{ cellData }">
         <span
           :class="[
             'rounded-full px-2 py-1 text-xs font-medium',
@@ -170,7 +165,10 @@
           {{ cellData }}
         </span>
       </template>
-    </UiDatatable>
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(Number(cellData)) }}
+      </template>
+    </UiSchemaDatatable>
 
     <Teleport to="body">
       <div

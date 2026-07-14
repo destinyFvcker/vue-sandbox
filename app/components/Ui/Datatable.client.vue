@@ -14,25 +14,21 @@
 </template>
 
 <script lang="ts">
-  import DataTablesCore from "datatables.net";
-  import type { Api, Config } from "datatables.net";
+  import { DataTablesCore } from "~/lib/datatables.client";
   import DataTable from "datatables.net-vue3";
-  import "datatables.net-buttons-dt";
-  import "datatables.net-buttons/js/buttons.colVis.mjs";
-  import "datatables.net-buttons/js/buttons.html5.mjs";
-  import "datatables.net-buttons/js/buttons.print.mjs";
-  import "datatables.net-responsive-dt";
-  import "datatables.net-searchbuilder-dt";
-  import "datatables.net-select-dt";
-  import "datatables.net-fixedcolumns-dt";
+  import type { Api, Config } from "datatables.net";
 
-  import "datatables.net-fixedcolumns-dt/css/fixedColumns.dataTables.css";
-  import "datatables.net-fixedheader-dt";
-
-  import "datatables.net-fixedheader-dt/css/fixedHeader.dataTables.css";
-  import "datatables.net-colreorder-dt";
-
+  // UiThing's component stylesheet below is the table theme, including the
+  // DataTables controls generated at runtime. Do not load the `-dt` base,
+  // Buttons, Responsive, SearchBuilder, or Select theme styles here: their
+  // more-specific selectors override the UiThing button, input, and pager
+  // styles and make those controls fall back to the DataTables default skin.
+  // These extension styles are retained because they supply positioning rules
+  // for the corresponding table extensions.
   import "datatables.net-colreorder-dt/css/colReorder.dataTables.css";
+  import "datatables.net-fixedcolumns-dt/css/fixedColumns.dataTables.css";
+  import "datatables.net-fixedheader-dt/css/fixedHeader.dataTables.css";
+
   import JSZip from "jszip";
   import type { HTMLAttributes } from "vue";
 
@@ -454,6 +450,9 @@
     white-space: nowrap;
   }
   table.dataTable {
+    --dtfc_background: var(--color-background);
+    --dtfc-thead-cell_background: var(--color-background);
+    --dtfc-tbody-cell_background: var(--color-background);
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
@@ -501,7 +500,7 @@
   table.dataTable tbody tr.selected > * {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable tbody tr.selected a {
@@ -552,14 +551,14 @@
   table.dataTable.display > tbody > tr.odd > * {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 50%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 50%, var(--color-background));
     }
   }
   table.dataTable.stripe > tbody > tr.odd.selected > *,
   table.dataTable.display > tbody > tr.odd.selected > * {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.hover > tbody > tr:hover > *,
@@ -570,7 +569,11 @@
   table.dataTable.display > tbody > tr.selected:hover > * {
     background-color: var(--color-primary) !important;
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent) !important;
+      background-color: color-mix(
+        in oklch,
+        var(--color-primary) 10%,
+        var(--color-background)
+      ) !important;
     }
   }
   table.dataTable.order-column > tbody tr > .sorting_1,
@@ -589,91 +592,95 @@
   table.dataTable.display > tbody tr.selected > .sorting_3 {
     background-color: var(--color-primary) !important;
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent) !important;
+      background-color: color-mix(
+        in oklch,
+        var(--color-primary) 10%,
+        var(--color-background)
+      ) !important;
     }
   }
   table.dataTable.display > tbody > tr.odd > .sorting_1,
   table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_1 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 50%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 50%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.odd > .sorting_2,
   table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_2 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 30%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 30%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.odd > .sorting_3,
   table.dataTable.order-column.stripe > tbody > tr.odd > .sorting_3 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 10%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.odd.selected > .sorting_1,
   table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_1 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 50%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 50%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.odd.selected > .sorting_2,
   table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_2 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 30%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 30%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.odd.selected > .sorting_3,
   table.dataTable.order-column.stripe > tbody > tr.odd.selected > .sorting_3 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 10%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even > .sorting_1,
   table.dataTable.order-column.stripe > tbody > tr.even > .sorting_1 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 50%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 50%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even > .sorting_2,
   table.dataTable.order-column.stripe > tbody > tr.even > .sorting_2 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 30%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 30%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even > .sorting_3,
   table.dataTable.order-column.stripe > tbody > tr.even > .sorting_3 {
     background-color: var(--color-muted);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-muted) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-muted) 10%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even.selected > .sorting_1,
   table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_1 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even.selected > .sorting_2,
   table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_2 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.display > tbody > tr.even.selected > .sorting_3,
   table.dataTable.order-column.stripe > tbody > tr.even.selected > .sorting_3 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.display tbody tr:hover > .sorting_1,
@@ -692,21 +699,21 @@
   table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_1 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.display tbody tr:hover.selected > .sorting_2,
   table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_2 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.display tbody tr:hover.selected > .sorting_3,
   table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_3 {
     background-color: var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklch, var(--color-primary) 10%, transparent);
+      background-color: color-mix(in oklch, var(--color-primary) 10%, var(--color-background));
     }
   }
   table.dataTable.no-footer {
@@ -1039,7 +1046,7 @@
       }
     }
   }
-  .dt-select-checkbox {
+  table.dataTable input.dt-select-checkbox {
     appearance: none;
     padding: 0;
     print-color-adjust: exact;
@@ -1100,6 +1107,11 @@
       @media (forced-colors: active) {
         appearance: auto;
       }
+    }
+    &:checked::after,
+    &:indeterminate::after {
+      display: none;
+      content: none;
     }
     &:indeterminate:hover {
       border-color: transparent;

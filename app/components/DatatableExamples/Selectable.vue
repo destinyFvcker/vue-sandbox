@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import DataTablesCore from "datatables.net";
-  import type { Config } from "datatables.net";
-
-  import "datatables.net-select-dt";
-
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import { createSelectRenderer } from "~/lib/datatables.client";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { Config } from "datatables.net";
 
   type Variant = "row-selection" | "card" | "sticky-header";
 
@@ -15,31 +14,13 @@
   const rows = createDemoPeople(props.variant === "sticky-header" ? 30 : 5);
   const total = rows.reduce((sum, row) => sum + row.balance, 0);
   const selectedCount = ref(0);
+  const columnPaths = ["__select", ...personColumnPaths.simple] as const;
 
   const options: Config = {
     dom: "t",
     ordering: false,
     paging: false,
     scrollY: props.variant === "sticky-header" ? "300px" : undefined,
-    columns: [
-      {
-        data: null,
-        searchable: false,
-        orderable: false,
-        render: DataTablesCore.render.select(),
-      },
-      { title: "ID", data: "id", visible: false },
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Location", data: "location.city" },
-      { title: "Status", data: "status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-    ],
     select: {
       style: "multi",
       selector: "td:first-child",
@@ -52,6 +33,16 @@
         selectedCount.value = table.rows({ selected: true }).count();
       },
     },
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    __select: {
+      searchable: false,
+      orderable: false,
+      render: createSelectRenderer(),
+    },
+    id: { visible: false },
+    balance: { className: "dt-body-right" },
   };
 </script>
 
@@ -66,12 +57,22 @@
     <div v-if="selectedCount" class="bg-primary/5 border-b px-4 py-2 text-sm font-medium">
       已选择 {{ selectedCount }} 行
     </div>
-    <UiDatatable
+    <UiSchemaDatatable
       class="nowrap hover demo-selectable"
+      :schema="demoPersonSchema"
       :data="rows"
+      :column-paths="columnPaths"
+      :column-overrides="columnOverrides"
       :options="options"
       data-testid="selectable-table"
-    />
+    >
+      <template #cell-status="{ cellData }">
+        {{ cellData }}
+      </template>
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(Number(cellData)) }}
+      </template>
+    </UiSchemaDatatable>
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
       <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>

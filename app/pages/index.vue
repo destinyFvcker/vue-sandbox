@@ -24,8 +24,8 @@
         </div>
         <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">DataTable 示例索引</h1>
         <p class="text-muted-foreground mt-4 text-base leading-7">
-          收录 UiThing DataTable 文档中的全部 {{ datatableExamples.length }}
-          个示例，并增加 JSON Schema 驱动的动态列、JSON Forms 单元格与数组子表。
+          基于 UiThing DataTable 文档的示例索引，另含 JSON Schema 驱动的动态列、JSON Forms
+          单元格、数组子表，以及原始 DataTable 的 10 万行压测。
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <NuxtLink
@@ -117,7 +117,7 @@
       </section>
 
       <footer class="text-muted-foreground mt-16 border-t pt-6 text-sm">
-        每个示例使用独立路由，便于单独调试 DataTables 扩展和 Vue slot 生命周期。
+        每个示例都由 UiSchemaDatatable 和 JSON Schema 生成列，并使用独立路由便于调试。
       </footer>
     </div>
   </main>

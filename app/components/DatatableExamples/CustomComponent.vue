@@ -1,7 +1,8 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople } from "~/lib/datatable-examples";
-  import type { DataTablesNamedSlotProps } from "~/components/Ui/Datatable.client.vue";
   import type { DemoPerson } from "~/lib/datatable-examples";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   const rows = createDemoPeople(80);
@@ -13,20 +14,10 @@
     responsive: true,
     select: true,
     buttons: ["copy", "csv", "excel", "print", "colvis"],
-    columns: [
-      {
-        title: "Action",
-        data: null,
-        searchable: false,
-        orderable: false,
-        render: "#actions",
-      },
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Position", data: "position" },
-      { title: "Office", data: "office" },
-      { title: "Last active", data: "lastActive" },
-    ],
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    __action: { searchable: false, orderable: false },
   };
 
   function editRow(row: DemoPerson | Record<string, unknown>) {
@@ -40,17 +31,24 @@
       <p class="font-medium">Vue cell component</p>
       <p class="text-muted-foreground" data-testid="custom-component-status">{{ lastEdited }}</p>
     </div>
-    <UiDatatable class="nowrap hover row-border" :data="rows" :options="options">
-      <template #actions="{ rowData }">
+    <UiSchemaDatatable
+      class="nowrap hover row-border"
+      :schema="demoPersonSchema"
+      :data="rows"
+      :column-paths="personColumnPaths.customComponent"
+      :column-overrides="columnOverrides"
+      :options="options"
+    >
+      <template #cell-action="{ rowData }">
         <button
           class="hover:bg-muted inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
           data-testid="edit-row-button"
           type="button"
-          @click="editRow(rowData as DataTablesNamedSlotProps<DemoPerson>['rowData'])"
+          @click="editRow(rowData as DemoPerson)"
         >
           Edit
         </button>
       </template>
-    </UiDatatable>
+    </UiSchemaDatatable>
   </div>
 </template>

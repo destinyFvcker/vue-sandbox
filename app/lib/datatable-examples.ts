@@ -19,7 +19,7 @@ export const datatableExamples: DatatableExampleDefinition[] = [
   {
     slug: "custom-component",
     title: "Custom component",
-    description: "通过 DataTables Vue named slot 在单元格内渲染 Vue 组件。",
+    description: "通过 UiSchemaDatatable 字段 slot 在单元格内渲染 Vue 组件。",
     group: "基础能力",
     icon: "lucide:component",
   },
@@ -29,6 +29,13 @@ export const datatableExamples: DatatableExampleDefinition[] = [
     description: "使用 DataTables 2 layout API 组织 SearchBuilder、按钮与分页。",
     group: "基础能力",
     icon: "lucide:layout-dashboard",
+  },
+  {
+    slug: "raw-performance",
+    title: "Raw DataTable · 100k",
+    description: "原始 UiDatatable 的 10 万行客户端 SearchBuilder 压测，每页最多 2,000 行。",
+    group: "交互与扩展",
+    icon: "lucide:gauge",
   },
   {
     slug: "simple",
@@ -96,7 +103,7 @@ export const datatableExamples: DatatableExampleDefinition[] = [
   {
     slug: "badge-icons",
     title: "Badge & Icons",
-    description: "通过 Vue slots 渲染状态徽章、国旗与组合内容。",
+    description: "通过 Schema 字段 slots 渲染状态徽章、国旗与组合内容。",
     group: "样式变体",
     icon: "lucide:badge-check",
   },

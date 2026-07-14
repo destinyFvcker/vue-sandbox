@@ -1,4 +1,8 @@
 <script setup lang="ts">
+  import {
+    programmingLanguageColumnPaths,
+    programmingLanguageSchema,
+  } from "~/lib/datatable-example-schemas";
   import { programmingLanguages } from "~/lib/datatable-examples";
   import type { Config } from "datatables.net";
 
@@ -6,25 +10,17 @@
     dom: "t",
     paging: false,
     ordering: false,
-    columns: [
-      { title: "Name", data: "name" },
-      { title: "Released", data: "releaseYear" },
-      { title: "Developer", data: "developer" },
-      { title: "Typing", data: "typing" },
-      { title: "Paradigm", data: "paradigm" },
-      { title: "Extension", data: "extension" },
-      { title: "Latest", data: "latestVersion" },
-      { title: "Popularity", data: "popularity" },
-    ],
   };
 </script>
 
 <template>
   <div class="bg-background overflow-hidden rounded-lg border">
-    <UiDatatable
+    <UiSchemaDatatable
       class="nowrap hover compact demo-dense"
+      :schema="programmingLanguageSchema"
       :data="programmingLanguages"
       :options="options"
+      :column-paths="programmingLanguageColumnPaths"
     />
   </div>
 </template>

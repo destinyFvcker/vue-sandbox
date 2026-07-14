@@ -3,12 +3,19 @@
   import SchemaArrayDetails from "~/components/SchemaDatatable/ArrayDetails.vue";
   import SchemaJsonFormsCell from "~/components/SchemaDatatable/JsonFormsCell.vue";
   import SchemaRowExpander from "~/components/SchemaDatatable/RowExpander.vue";
-  import { buildSchemaDatatableModel } from "~/lib/schema-datatable";
+  import { buildSchemaDatatableModel, getSchemaCellSlot } from "~/lib/schema-datatable";
   import { attachRootDefinitions, getValueAtPath } from "~/lib/schema-resolver";
   import type { JsonFormsRendererRegistryEntry, JsonSchema } from "@jsonforms/core";
-  import type { SchemaColumnOverrides, SchemaDatatableAjv } from "~/lib/schema-datatable";
+  import type {
+    SchemaCellSlots,
+    SchemaColumnOverrides,
+    SchemaDatatableAjv,
+  } from "~/lib/schema-datatable";
+  import type { SchemaEntry } from "~/lib/schema-resolver";
   import type { Api, Config } from "datatables.net";
   import type { HTMLAttributes } from "vue";
+
+  defineOptions({ inheritAttrs: false });
 
   interface ExpandedDetail {
     host: HTMLDivElement;
@@ -21,17 +28,22 @@
     defineProps<{
       ajv?: SchemaDatatableAjv;
       schema: JsonSchema;
-      data: readonly T[];
+      data?: readonly T[];
+      ajax?: Config["ajax"];
       options?: Config;
       class?: HTMLAttributes["class"];
       renderers?: readonly JsonFormsRendererRegistryEntry[];
       columnOverrides?: SchemaColumnOverrides;
+      columnPaths?: readonly string[];
+      cellSlots?: SchemaCellSlots;
     }>(),
     {
       options: () => ({}),
+      data: () => [],
       class: "nowrap hover order-column row-border stripe display",
       renderers: () => [],
       columnOverrides: () => ({}),
+      cellSlots: () => ({}),
     }
   );
 
@@ -46,8 +58,14 @@
   const detailSequence = ref(0);
   const expandedDetails = shallowReactive(new Map<number, ExpandedDetail>());
   const selfComponent = getCurrentInstance()!.type;
+  const slots = useSlots();
 
-  const model = computed(() => buildSchemaDatatableModel(props.schema, props.columnOverrides));
+  const model = computed(() => {
+    // datatables.net-vue3 replaces named render slots in-place; rebuild fresh
+    // column objects whenever the table instance is recreated.
+    void instanceKey.value;
+    return buildSchemaDatatableModel(props.schema, props.columnOverrides, props.columnPaths);
+  });
   const columns = computed(() => model.value.columns);
   const columnEntries = computed(() => model.value.columnEntries);
   const arrayEntries = computed(() => model.value.arrayEntries);
@@ -65,18 +83,57 @@
     }
   });
 
-  const getEntryForColumn = (columnIndex: number) =>
-    columnEntries.value[columnIndex - (arrayEntries.value.length > 0 ? 1 : 0)];
+  const toSlotSegment = (segment: string) =>
+    segment
+      .replace(/^_+/, "")
+      .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
+      .replace(/[^a-zA-Z0-9-]+/g, "-")
+      .toLowerCase();
 
-  const getCellSchema = (columnIndex: number) => {
-    const entry = getEntryForColumn(columnIndex);
-    return entry ? attachRootDefinitions(entry.schema, model.value.rootSchema) : undefined;
+  const getInternalCellSlotName = (entryIndex: number) => getSchemaCellSlot(entryIndex).slice(1);
+
+  const getAutomaticCellSlotName = (entry: SchemaEntry) =>
+    `cell-${entry.dataSegments.map((segment) => toSlotSegment(segment)).join("-")}`;
+
+  const getConfiguredCellSlotName = (entry: SchemaEntry) =>
+    props.cellSlots[entry.dataPath] ?? props.cellSlots[entry.schemaPath];
+
+  const automaticCellSlotCounts = computed(() => {
+    const counts = new Map<string, number>();
+    for (const entry of columnEntries.value) {
+      if (getConfiguredCellSlotName(entry)) continue;
+      const name = getAutomaticCellSlotName(entry);
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    return counts;
+  });
+
+  const getCellSlotName = (entry: SchemaEntry) =>
+    getConfiguredCellSlotName(entry) ?? getAutomaticCellSlotName(entry);
+
+  const hasCellSlot = (entry: SchemaEntry) => {
+    const configuredName = getConfiguredCellSlotName(entry);
+    if (configuredName) return Boolean(slots[configuredName]);
+
+    const automaticName = getAutomaticCellSlotName(entry);
+    return automaticCellSlotCounts.value.get(automaticName) === 1 && Boolean(slots[automaticName]);
   };
 
-  const getCellValue = (rowData: T, columnIndex: number) => {
-    const entry = getEntryForColumn(columnIndex);
-    return entry ? getValueAtPath(rowData, entry.dataSegments) : undefined;
-  };
+  watchEffect(() => {
+    for (const [name, count] of automaticCellSlotCounts.value) {
+      if (count > 1 && slots[name]) {
+        console.warn(
+          `[UiSchemaDatatable] Cell slot "${name}" matches multiple columns; use cellSlots to assign explicit names.`
+        );
+      }
+    }
+  });
+
+  const getCellSchema = (entry: SchemaEntry) =>
+    attachRootDefinitions(entry.schema, model.value.rootSchema);
+
+  const getCellValue = (rowData: T, entry: SchemaEntry) =>
+    getValueAtPath(rowData, entry.dataSegments);
 
   const collapseRow = (rowIndex: number) => {
     const detail = expandedDetails.get(rowIndex);
@@ -133,7 +190,15 @@
   );
 
   watch(
-    [() => props.schema, () => props.renderers, () => props.columnOverrides, () => props.options],
+    [
+      () => props.schema,
+      () => props.renderers,
+      () => props.columnOverrides,
+      () => props.columnPaths,
+      () => props.cellSlots,
+      () => props.options,
+      () => props.ajax,
+    ],
     () => {
       collapseAllRows();
       tableApi.value = undefined;
@@ -164,18 +229,36 @@
   <UiDatatable
     :key="instanceKey"
     ref="datatableRef"
+    v-bind="$attrs"
+    data-ui-schema-datatable
+    :ajax="ajax"
     :data="data as T[]"
     :columns="columns"
     :class="props.class"
     :options="resolvedOptions"
     @ready="handleReady"
   >
-    <template #schema-cell="{ colIndex, rowData }">
+    <template
+      v-for="(entry, entryIndex) in columnEntries"
+      :key="`${entry.schemaPath}-${entryIndex}`"
+      #[getInternalCellSlotName(entryIndex)]="{ colIndex, rowData, rowIndex, type }"
+    >
+      <slot
+        v-if="hasCellSlot(entry)"
+        :name="getCellSlotName(entry)"
+        :cell-data="getCellValue(rowData as T, entry)"
+        :col-index="colIndex"
+        :column-entry="entry"
+        :column-path="entry.dataPath"
+        :row-data="rowData as T"
+        :row-index="rowIndex"
+        :type="type"
+      />
       <SchemaJsonFormsCell
-        v-if="getCellSchema(colIndex)"
+        v-else
         :ajv="ajv"
-        :data="getCellValue(rowData as T, colIndex)"
-        :schema="getCellSchema(colIndex)!"
+        :data="getCellValue(rowData as T, entry)"
+        :schema="getCellSchema(entry)"
         :renderers="renderers"
       />
     </template>

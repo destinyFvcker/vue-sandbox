@@ -14,9 +14,13 @@ import {
 export const SCHEMA_CELL_SLOT = "#schema-cell";
 export const SCHEMA_EXPAND_SLOT = "#schema-expand";
 
-export type SchemaColumnOverride = Omit<Partial<ConfigColumns>, "data" | "name" | "render">;
+export const getSchemaCellSlot = (entryIndex: number) => `${SCHEMA_CELL_SLOT}-${entryIndex}`;
+
+export type SchemaColumnOverride = Omit<Partial<ConfigColumns>, "data" | "name">;
 
 export type SchemaColumnOverrides = Record<string, SchemaColumnOverride>;
+
+export type SchemaCellSlots = Record<string, string>;
 
 export type SchemaDatatableAjv = ReturnType<typeof createAjv>;
 
@@ -30,10 +34,13 @@ export interface SchemaDatatableModel {
 
 export interface SchemaDatatablePublicOptions<T extends Record<string, unknown>> {
   schema: JsonSchema;
-  data: readonly T[];
+  data?: readonly T[];
+  ajax?: Config["ajax"];
   options?: Config;
   renderers?: readonly JsonFormsRendererRegistryEntry[];
   columnOverrides?: SchemaColumnOverrides;
+  columnPaths?: readonly string[];
+  cellSlots?: SchemaCellSlots;
 }
 
 const displayValue = (value: unknown): string | number => {
@@ -62,13 +69,33 @@ const getOverride = (
 
 export const buildSchemaDatatableModel = (
   schema: JsonSchema,
-  overrides?: SchemaColumnOverrides
+  overrides?: SchemaColumnOverrides,
+  columnPaths?: readonly string[]
 ): SchemaDatatableModel => {
   const { rootSchema, rowSchema } = normalizeRowSchema(schema);
   const allEntries = collectSchemaEntries(rowSchema, rootSchema);
-  const { columnEntries, arrayEntries } = partitionSchemaEntries(allEntries);
+  const partitionedEntries = partitionSchemaEntries(allEntries);
+  let columnEntries = partitionedEntries.columnEntries;
+  let arrayEntries = partitionedEntries.arrayEntries;
 
-  const columns: ConfigColumns[] = columnEntries.map((entry) => {
+  if (columnPaths) {
+    const entriesByPath = new Map<string, SchemaEntry>();
+    for (const entry of allEntries) {
+      entriesByPath.set(entry.dataPath, entry);
+      entriesByPath.set(entry.schemaPath, entry);
+    }
+
+    columnEntries = columnPaths.map((path) => {
+      const entry = entriesByPath.get(path);
+      if (!entry) throw new Error(`[UiSchemaDatatable] Unknown column path: ${path}`);
+      return entry;
+    });
+
+    const projectedEntries = new Set(columnEntries);
+    arrayEntries = partitionedEntries.arrayEntries.filter((entry) => !projectedEntries.has(entry));
+  }
+
+  const columns: ConfigColumns[] = columnEntries.map((entry, entryIndex) => {
     const readValue = (_data: unknown, _type: string, row: unknown) =>
       getValueAtPath(row, entry.dataSegments);
     const title =
@@ -76,20 +103,24 @@ export const buildSchemaDatatableModel = (
         ? entry.schema.title
         : humanizePropertyName(entry.dataSegments.at(-1) ?? entry.dataPath);
 
+    const override = getOverride(entry, overrides);
+    const { render: customRender, ...columnOptions } = override;
+    const schemaRender: ConfigColumns["render"] = {
+      _: (_data: unknown, _type: string, row: unknown) => displayValue(readValue(null, "", row)),
+      display: getSchemaCellSlot(entryIndex),
+      filter: (_data: unknown, _type: string, row: unknown) =>
+        displayValue(readValue(null, "", row)),
+      sort: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
+      type: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
+    };
+
     return {
       title,
       defaultContent: "",
-      ...getOverride(entry, overrides),
+      ...columnOptions,
       data: null,
       name: entry.dataPath,
-      render: {
-        _: (_data: unknown, _type: string, row: unknown) => displayValue(readValue(null, "", row)),
-        display: SCHEMA_CELL_SLOT,
-        filter: (_data: unknown, _type: string, row: unknown) =>
-          displayValue(readValue(null, "", row)),
-        sort: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
-        type: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
-      },
+      render: customRender ?? schemaRender,
     };
   });
 

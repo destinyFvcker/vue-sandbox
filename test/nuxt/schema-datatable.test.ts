@@ -13,12 +13,12 @@ vi.mock("datatables.net-vue3", async () => {
       columns: { type: Array, default: () => [] },
       data: { type: Array, default: () => [] },
     },
-    setup(props, { expose, slots }) {
+    setup(props, { attrs, expose, slots }) {
       const dt = { row: vi.fn() };
       expose({ dt });
 
       return () =>
-        h("table", { class: "dataTable" }, [
+        h("table", { ...attrs, class: "dataTable" }, [
           h(
             "thead",
             h(
@@ -33,14 +33,22 @@ vi.mock("datatables.net-vue3", async () => {
             props.data.map((rowData, rowIndex) =>
               h(
                 "tr",
-                props.columns.map((column, colIndex) =>
-                  h(
+                props.columns.map((column, colIndex) => {
+                  const render = (column as { render?: unknown }).render;
+                  const display =
+                    render && typeof render === "object" && "display" in render
+                      ? (render as { display?: unknown }).display
+                      : undefined;
+                  const slotName =
+                    typeof display === "string" && display.startsWith("#")
+                      ? display.slice(1)
+                      : undefined;
+
+                  return h(
                     "td",
-                    (column as { name?: string }).name === "__schema_details"
-                      ? slots["schema-expand"]?.({ colIndex, rowData, rowIndex })
-                      : slots["schema-cell"]?.({ colIndex, rowData, rowIndex })
-                  )
-                )
+                    slotName ? slots[slotName]?.({ colIndex, rowData, rowIndex }) : undefined
+                  );
+                })
               )
             )
           ),
@@ -63,6 +71,7 @@ vi.mock("datatables.net-colreorder-dt", () => ({}));
 
 describe("UiSchemaDatatable", () => {
   it("mounts generated headers, emits the API, and reacts to local data", async () => {
+    const { h } = await import("vue");
     const { default: UiSchemaDatatable } =
       await import("../../app/components/Ui/SchemaDatatable.client.vue");
     const schema: JsonSchema = {
@@ -81,20 +90,30 @@ describe("UiSchemaDatatable", () => {
           paging: false,
           searching: false,
         },
+        cellSlots: { score: "score-value" },
+      },
+      attrs: { "data-testid": "schema-wrapper" },
+      slots: {
+        "score-value": ({ cellData }: { cellData: unknown }) =>
+          h("strong", { "data-testid": "custom-score" }, `Score: ${cellData}`),
       },
     });
 
     await flushPromises();
 
     expect(wrapper.find("table.dataTable").exists()).toBe(true);
+    expect(wrapper.find("table[data-ui-schema-datatable]").exists()).toBe(true);
+    expect(wrapper.find("table[data-testid='schema-wrapper']").exists()).toBe(true);
     expect(wrapper.text()).toContain("Person");
     expect(wrapper.text()).toContain("Ada");
+    expect(wrapper.get("[data-testid='custom-score']").text()).toBe("Score: 42");
     expect(wrapper.emitted("ready")?.[0]?.[0]).toBeTruthy();
 
     await wrapper.setProps({ data: [{ name: "Grace", score: 99 }] });
     await flushPromises();
 
     expect(wrapper.text()).toContain("Grace");
+    expect(wrapper.get("[data-testid='custom-score']").text()).toBe("Score: 99");
     expect(wrapper.text()).not.toContain("Ada");
   });
 });

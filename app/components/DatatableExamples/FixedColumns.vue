@@ -1,6 +1,8 @@
 <script setup lang="ts">
+  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
   import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
-  import DataTablesCore from "datatables.net";
+  import { createSelectRenderer } from "~/lib/datatables.client";
+  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   const rows = createDemoPeople(40);
@@ -19,29 +21,6 @@
       style: "multi",
       selector: "td:first-child",
     },
-    columns: [
-      {
-        data: null,
-        searchable: false,
-        orderable: false,
-        render: DataTablesCore.render.select(),
-      },
-      { title: "Name", data: "name" },
-      { title: "Email", data: "email" },
-      { title: "Position", data: "position" },
-      { title: "Office", data: "office" },
-      { title: "Age", data: "age", className: "dt-body-right" },
-      { title: "Start date", data: "startDate" },
-      { title: "Department", data: "department" },
-      { title: "Status", data: "status" },
-      {
-        title: "Balance",
-        data: "balance",
-        className: "dt-body-right",
-        render: (value: number) => formatCurrency(value),
-      },
-      { title: "Phone", data: "phone" },
-    ],
     on: {
       select: (_event, table) => {
         selectedCount.value = table.rows({ selected: true }).count();
@@ -50,6 +29,16 @@
         selectedCount.value = table.rows({ selected: true }).count();
       },
     },
+  };
+
+  const columnOverrides: SchemaColumnOverrides = {
+    __select: {
+      searchable: false,
+      orderable: false,
+      render: createSelectRenderer(),
+    },
+    age: { className: "dt-body-right" },
+    balance: { className: "dt-body-right" },
   };
 </script>
 
@@ -64,6 +53,20 @@
         Selected {{ selectedCount }}
       </p>
     </div>
-    <UiDatatable class="nowrap hover stripe row-border" :data="rows" :options="options" />
+    <UiSchemaDatatable
+      class="nowrap hover stripe row-border"
+      :schema="demoPersonSchema"
+      :data="rows"
+      :column-paths="personColumnPaths.fixedColumns"
+      :column-overrides="columnOverrides"
+      :options="options"
+    >
+      <template #cell-status="{ cellData }">
+        {{ cellData }}
+      </template>
+      <template #cell-balance="{ cellData }">
+        {{ formatCurrency(Number(cellData)) }}
+      </template>
+    </UiSchemaDatatable>
   </div>
 </template>

@@ -19,13 +19,46 @@ test("all catalog routes initialise and unmount cleanly", async ({ page, goto })
     await goto(`/datatable/${example.slug}`, { waitUntil: "hydration" });
     await expect(page.getByRole("heading", { name: example.title, exact: true })).toBeVisible();
     await expect(
-      page.getByTestId("datatable-example").locator("table.dataTable").first()
+      page
+        .getByTestId("datatable-example")
+        .locator("table.dataTable")
+        .first()
     ).toBeVisible();
   }
 
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "DataTable 示例索引" })).toBeVisible();
   expect(runtimeErrors).toEqual([]);
+});
+
+test("DOM-layout controls retain the UiThing skin", async ({ page, goto }) => {
+  await goto("/datatable/dom", { waitUntil: "hydration" });
+
+  const controls = await page.locator(".dt-container").evaluate((container) =>
+    [
+      ".dt-buttons .dt-button",
+      ".dt-length select",
+      ".dt-search input",
+      ".dt-paging .dt-paging-button",
+    ].map((selector) => {
+      const element = container.querySelector<HTMLElement>(selector);
+      if (!element) throw new Error(`Missing DataTables control: ${selector}`);
+
+      const style = getComputedStyle(element);
+      return {
+        backgroundImage: style.backgroundImage,
+        borderRadius: Number.parseFloat(style.borderRadius),
+        selector,
+      };
+    })
+  );
+
+  // DataTables' default skin has 2-3px rounded controls (and a gradient for
+  // buttons in light mode). UiThing controls use the shared 8px+ radius.
+  expect(controls.every(({ borderRadius }) => borderRadius >= 8)).toBe(true);
+  expect(
+    controls.find(({ selector }) => selector === ".dt-buttons .dt-button")?.backgroundImage
+  ).toBe("none");
 });
 
 test("Vue slots and external reactive search work", async ({ page, goto }) => {
@@ -47,6 +80,10 @@ test("Vue slots and external reactive search work", async ({ page, goto }) => {
 
 test("extension controls and simulated server pagination work", async ({ page, goto }) => {
   const runtimeErrors = captureRuntimeErrors(page);
+
+  await goto("/datatable/row-selection", { waitUntil: "hydration" });
+  await page.locator("tbody input.dt-select-checkbox").first().click();
+  await expect(page.getByText("已选择 1 行", { exact: true })).toBeVisible();
 
   await goto("/datatable/fixed-columns", { waitUntil: "hydration" });
   await expect(page.locator(".dtfc-fixed-start").first()).toBeVisible();
@@ -71,5 +108,83 @@ test("extension controls and simulated server pagination work", async ({ page, g
   await expect(table.locator("tbody > tr")).toHaveCount(1);
   await expect(table.locator("tbody > tr").first()).toContainText("Ada Lovelace");
 
+  expect(runtimeErrors).toEqual([]);
+});
+
+test("fixed selected columns stay opaque with a single checkbox glyph", async ({ page, goto }) => {
+  const runtimeErrors = captureRuntimeErrors(page);
+  await page.setViewportSize({ width: 900, height: 900 });
+  await goto("/datatable/fixed-columns", { waitUntil: "hydration" });
+
+  const scrollBody = page.locator(".dt-scroll-body");
+  const table = scrollBody.locator("table.dataTable");
+  const firstRow = table.locator("tbody > tr").first();
+  const checkbox = firstRow.locator("input.dt-select-checkbox");
+
+  await checkbox.click();
+  await expect(checkbox).toBeChecked();
+  await expect(firstRow).toHaveClass(/selected/);
+
+  await scrollBody.evaluate(async (element) => {
+    element.scrollLeft = element.scrollWidth - element.clientWidth;
+    element.dispatchEvent(new Event("scroll"));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+  });
+
+  const fixedCells = firstRow.locator(":scope > td.dtfc-fixed-start");
+  await expect(fixedCells).toHaveCount(2);
+
+  const geometry = await fixedCells.evaluateAll((cells) =>
+    cells.map((cell) => {
+      const style = getComputedStyle(cell);
+      const rect = cell.getBoundingClientRect();
+      const canvas = document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Canvas 2D context is unavailable");
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = "rgba(0, 0, 0, 0)";
+      context.fillStyle = style.backgroundColor;
+      context.fillRect(0, 0, 1, 1);
+
+      const topElement = document.elementFromPoint(
+        rect.left + Math.min(rect.width / 2, 8),
+        rect.top + rect.height / 2
+      );
+
+      return {
+        alpha: context.getImageData(0, 0, 1, 1).data[3] / 255,
+        isTopmost: topElement === cell || (topElement ? cell.contains(topElement) : false),
+        left: rect.left,
+        position: style.position,
+        right: rect.right,
+        zIndex: Number(style.zIndex),
+      };
+    })
+  );
+
+  expect(geometry.every(({ alpha }) => alpha === 1)).toBe(true);
+  expect(geometry.every(({ position }) => position === "sticky")).toBe(true);
+  expect(geometry.every(({ zIndex }) => zIndex >= 1)).toBe(true);
+  expect(geometry.every(({ isTopmost }) => isTopmost)).toBe(true);
+  expect(Math.abs(geometry[1]!.left - geometry[0]!.right)).toBeLessThanOrEqual(1);
+
+  const paintedCheckboxLayers = await checkbox.evaluate((input) => {
+    const elementStyle = getComputedStyle(input);
+    const beforeStyle = getComputedStyle(input, "::before");
+    const afterStyle = getComputedStyle(input, "::after");
+    const paintsContent = (style: CSSStyleDeclaration) =>
+      style.display !== "none" && !["none", "normal", '""', "''"].includes(style.content);
+
+    return [
+      elementStyle.backgroundImage !== "none",
+      paintsContent(beforeStyle),
+      paintsContent(afterStyle),
+    ].filter(Boolean).length;
+  });
+
+  expect(paintedCheckboxLayers).toBe(1);
   expect(runtimeErrors).toEqual([]);
 });
