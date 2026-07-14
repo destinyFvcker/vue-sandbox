@@ -1,9 +1,13 @@
 <script setup lang="ts">
   import type { DatatableExampleDefinition } from "~/lib/datatable-examples";
 
-  defineProps<{
+  const props = defineProps<{
     example: DatatableExampleDefinition;
   }>();
+
+  const adapterName = computed(() =>
+    props.example.slug === "raw-performance" ? "UiDatatable" : "UiSchemaDatatable"
+  );
 </script>
 
 <template>
@@ -22,7 +26,7 @@
         </div>
         <div>
           <p class="text-muted-foreground text-xs font-semibold tracking-widest uppercase">
-            {{ example.group }} · UiSchemaDatatable
+            {{ example.group }} · {{ adapterName }}
           </p>
           <h1 class="mt-1 text-3xl font-bold tracking-tight">{{ example.title }}</h1>
           <p class="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">

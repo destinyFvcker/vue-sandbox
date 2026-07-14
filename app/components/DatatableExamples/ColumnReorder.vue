@@ -24,7 +24,11 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 
   function onReady(api?: Api<DemoPerson>) {
@@ -95,10 +99,6 @@
       :column-overrides="columnOverrides"
       :column-paths="personColumnPaths.columnReorder"
       @ready="onReady"
-    >
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(cellData as number) }}
-      </template>
-    </UiSchemaDatatable>
+    />
   </div>
 </template>

@@ -4,7 +4,7 @@
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
-  const rows = createDemoPeople(36);
+  const rows = createDemoPeople(10_000);
 
   const options: Config = {
     pageLength: 8,
@@ -20,7 +20,11 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -33,10 +37,6 @@
       :options="options"
       :column-overrides="columnOverrides"
       :column-paths="personColumnPaths.layout"
-    >
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(cellData as number) }}
-      </template>
-    </UiSchemaDatatable>
+    />
   </div>
 </template>

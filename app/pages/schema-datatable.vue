@@ -1,8 +1,5 @@
 <script setup lang="ts">
-  import { and, isStringControl, rankWith, schemaMatches } from "@jsonforms/core";
-  import { rendererProps, useJsonFormsControl } from "@jsonforms/vue";
-  import { defineComponent, h } from "vue";
-  import type { ControlElement, JsonFormsRendererRegistryEntry, JsonSchema } from "@jsonforms/core";
+  import type { JsonSchema } from "@jsonforms/core";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
@@ -16,11 +13,6 @@
     amount: number;
     verified: boolean;
     note: string | number | null;
-    history: Array<{
-      date: string;
-      amount: number;
-    }>;
-    tags: string[];
   }
 
   useHead({ title: "JSON Schema DataTable Demo" });
@@ -31,7 +23,7 @@
     title: "Customer ledger",
     properties: {
       id: { type: "integer", title: "ID" },
-      profile: { $ref: "#/$defs/Profile" },
+      profile: { $ref: "#/definitions/Profile" },
       status: {
         type: "string",
         title: "Status",
@@ -44,19 +36,9 @@
         title: "Note",
         anyOf: [{ type: "string" }, { type: "integer" }, { type: "null" }],
       },
-      history: {
-        type: "array",
-        title: "History",
-        items: { $ref: "#/$defs/HistoryItem" },
-      },
-      tags: {
-        type: "array",
-        title: "Tags",
-        items: { type: "string", title: "Tag" },
-      },
     },
-    required: ["id", "profile", "status", "amount", "verified", "history", "tags"],
-    $defs: {
+    required: ["id", "profile", "status", "amount", "verified"],
+    definitions: {
       BaseProfile: {
         type: "object",
         properties: {
@@ -66,7 +48,7 @@
       },
       Profile: {
         allOf: [
-          { $ref: "#/$defs/BaseProfile" },
+          { $ref: "#/definitions/BaseProfile" },
           {
             type: "object",
             properties: {
@@ -75,14 +57,6 @@
             required: ["region"],
           },
         ],
-      },
-      HistoryItem: {
-        type: "object",
-        properties: {
-          date: { type: "string", title: "Date", format: "date" },
-          amount: { type: "number", title: "Amount" },
-        },
-        required: ["date", "amount"],
       },
     },
   };
@@ -101,46 +75,14 @@
         amount: 1250.5 + index * 317.25,
         verified: index % 2 === 0,
         note: index % 4 === 0 ? null : index % 2 === 0 ? id * 10 : `Priority ${id}`,
-        history: [
-          { date: `2026-0${(index % 9) + 1}-01`, amount: 100 + index * 10 },
-          { date: `2026-0${(index % 9) + 1}-15`, amount: 150 + index * 10 },
-        ],
-        tags: index % 2 === 0 ? ["priority", "verified"] : ["standard"],
       };
     })
   );
 
-  const StatusCell = defineComponent({
-    name: "DemoStatusCell",
-    props: {
-      ...rendererProps<ControlElement>(),
-    },
-    setup(rendererInput) {
-      const { control } = useJsonFormsControl(rendererInput);
-      return () =>
-        h(
-          "span",
-          {
-            class:
-              "inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary",
-          },
-          String(control.value.data ?? "—")
-        );
-    },
+  const currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   });
-
-  const renderers: JsonFormsRendererRegistryEntry[] = [
-    {
-      tester: rankWith(
-        5,
-        and(
-          isStringControl,
-          schemaMatches((candidate) => candidate.format === "status-badge")
-        )
-      ),
-      renderer: StatusCell,
-    },
-  ];
 
   const options: Config = {
     pageLength: 5,
@@ -151,7 +93,22 @@
 
   const columnOverrides: SchemaColumnOverrides = {
     id: { width: "4rem" },
-    amount: { className: "dt-body-right" },
+    status: {
+      render: (value: unknown, type: string) => {
+        if (type !== "display") return value;
+
+        const badge = document.createElement("span");
+        badge.className =
+          "text-primary bg-primary/10 inline-flex rounded-full px-2 py-0.5 text-xs font-semibold tracking-wide uppercase";
+        badge.textContent = String(value ?? "—");
+        return badge;
+      },
+    },
+    amount: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? currency.format(Number(value)) : value,
+    },
   };
 
   const addRow = () => {
@@ -163,8 +120,6 @@
       amount: 9999.99,
       verified: true,
       note: "Added reactively",
-      history: [{ date: "2026-07-14", amount: 9999.99 }],
-      tags: ["new", "reactive"],
     });
   };
 </script>
@@ -178,8 +133,8 @@
         </NuxtLink>
         <h1 class="mt-2 text-3xl font-bold tracking-tight">JSON Schema DataTable</h1>
         <p class="text-muted-foreground mt-2 max-w-3xl text-sm">
-          Columns and read-only Vue cells are generated from JSON Schema; DataTables owns the table
-          body, search, ordering, and pagination.
+          JSON Schema is compiled once into native DataTables columns and renderers; DataTables owns
+          the table body, search, ordering, and pagination.
         </p>
       </div>
       <UiButton data-testid="add-row" icon="lucide:plus" @click="addRow">
@@ -191,14 +146,13 @@
       <UiCardHeader>
         <UiCardTitle>Customer ledger</UiCardTitle>
         <UiCardDescription>
-          Expand a row to inspect object and primitive arrays in nested schema tables.
+          Nested fields, references, variants, and native DOM renderers without per-cell Vue roots.
         </UiCardDescription>
       </UiCardHeader>
       <UiCardContent data-testid="schema-datatable-demo">
         <UiSchemaDatatable
           :schema="schema"
           :data="rows"
-          :renderers="renderers"
           :options="options"
           :column-overrides="columnOverrides"
         />

@@ -31,7 +31,6 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         "@jsonforms/core",
-        "@jsonforms/vue",
         "@vue/devtools-core",
         "@vue/devtools-kit",
         "datatables.net",

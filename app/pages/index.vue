@@ -24,8 +24,8 @@
         </div>
         <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">DataTable 示例索引</h1>
         <p class="text-muted-foreground mt-4 text-base leading-7">
-          基于 UiThing DataTable 文档的示例索引，另含 JSON Schema 驱动的动态列、JSON Forms
-          单元格、数组子表，以及原始 DataTable 的 10 万行压测。
+          基于 UiThing DataTable 文档的示例索引，另含 JSON Schema 编译的原生列配置，以及 Raw 与
+          Schema DataTable 的 10 万行对照压测。
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <NuxtLink
@@ -61,8 +61,8 @@
               <p class="text-primary text-xs font-semibold tracking-widest uppercase">Featured</p>
               <h2 class="mt-1 text-xl font-semibold">JSON Schema DataTable</h2>
               <p class="text-muted-foreground mt-1 max-w-2xl text-sm leading-6">
-                从 JSON Schema 解析嵌套字段、组合类型和数组，生成 DataTables 列并使用 JSON Forms
-                renderer 展示只读单元格。
+                从 JSON Schema 解析嵌套字段、引用与组合类型，一次性编译原生 DataTables columns 和
+                renderer，不再为每个单元格挂载 Vue 组件。
               </p>
             </div>
           </div>
@@ -117,7 +117,7 @@
       </section>
 
       <footer class="text-muted-foreground mt-16 border-t pt-6 text-sm">
-        每个示例都由 UiSchemaDatatable 和 JSON Schema 生成列，并使用独立路由便于调试。
+        除 Raw 10 万行基线外，示例均由 UiSchemaDatatable 编译原生列配置，并使用独立路由便于调试。
       </footer>
     </div>
   </main>

@@ -48,7 +48,11 @@
     },
     id: { visible: false },
     age: { className: "dt-body-right" },
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -65,10 +69,6 @@
       :column-paths="personColumnPaths.dom"
       :column-overrides="columnOverrides"
       :options="options"
-    >
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(Number(cellData)) }}
-      </template>
-    </UiSchemaDatatable>
+    />
   </div>
 </template>

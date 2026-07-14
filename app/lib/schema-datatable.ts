@@ -1,6 +1,7 @@
 import type { SchemaEntry } from "./schema-resolver";
-import type { createAjv, JsonFormsRendererRegistryEntry, JsonSchema } from "@jsonforms/core";
+import type { JsonSchema } from "@jsonforms/core";
 import type { Config, ConfigColumns } from "datatables.net";
+import type { HTMLAttributes } from "vue";
 
 import {
   attachRootDefinitions,
@@ -11,55 +12,68 @@ import {
   partitionSchemaEntries,
 } from "./schema-resolver";
 
-export const SCHEMA_CELL_SLOT = "#schema-cell";
-export const SCHEMA_EXPAND_SLOT = "#schema-expand";
-
-export const getSchemaCellSlot = (entryIndex: number) => `${SCHEMA_CELL_SLOT}-${entryIndex}`;
-
 export type SchemaColumnOverride = Omit<Partial<ConfigColumns>, "data" | "name">;
 
 export type SchemaColumnOverrides = Record<string, SchemaColumnOverride>;
-
-export type SchemaCellSlots = Record<string, string>;
-
-export type SchemaDatatableAjv = ReturnType<typeof createAjv>;
 
 export interface SchemaDatatableModel {
   rootSchema: JsonSchema;
   rowSchema: JsonSchema;
   columns: ConfigColumns[];
   columnEntries: SchemaEntry[];
-  arrayEntries: SchemaEntry[];
 }
 
-export interface SchemaDatatablePublicOptions<T extends Record<string, unknown>> {
+export interface SchemaDatatablePublicOptions<T extends Record<string, any>> {
   schema: JsonSchema;
   data?: readonly T[];
   ajax?: Config["ajax"];
   options?: Config;
-  renderers?: readonly JsonFormsRendererRegistryEntry[];
+  class?: HTMLAttributes["class"];
   columnOverrides?: SchemaColumnOverrides;
   columnPaths?: readonly string[];
-  cellSlots?: SchemaCellSlots;
 }
 
-const displayValue = (value: unknown): string | number => {
-  if (value == null) return "";
-  if (typeof value === "number" || typeof value === "string") return value;
-  if (typeof value === "boolean") return value ? "true" : "false";
+const escapeHtml = (value: string): string =>
+  value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character]!
+  );
 
+const serializeCompositeValue = (value: object): string => {
   try {
-    return JSON.stringify(value);
+    return JSON.stringify(value) ?? String(value);
   } catch {
     return String(value);
   }
 };
 
-const sortValue = (value: unknown): string | number => {
-  if (value == null) return "";
-  if (typeof value === "number" || typeof value === "string") return value;
-  if (typeof value === "boolean") return value ? 1 : 0;
-  return displayValue(value);
+/**
+ * DataTables writes string display values through `innerHTML`. Escape only the
+ * display channel while preserving primitive values for native search, sort,
+ * and type detection.
+ */
+export const renderSchemaValue = (value: unknown, type: string): unknown => {
+  if (value == null) return type === "display" ? "" : value;
+  if (typeof value === "number" || typeof value === "boolean") return value;
+
+  const text = typeof value === "string" ? value : serializeCompositeValue(value as object);
+  return type === "display" ? escapeHtml(text) : text;
+};
+
+const requiresAccessor = (segments: readonly string[]): boolean =>
+  segments.some((segment) => segment.length === 0 || /[.[\]\\()]/.test(segment));
+
+const compileColumnData = (entry: SchemaEntry): ConfigColumns["data"] => {
+  if (!requiresAccessor(entry.dataSegments)) return entry.dataSegments.join(".");
+  const segments = [...entry.dataSegments];
+  return (row: unknown) => getValueAtPath(row, segments);
 };
 
 const getOverride = (
@@ -74,9 +88,8 @@ export const buildSchemaDatatableModel = (
 ): SchemaDatatableModel => {
   const { rootSchema, rowSchema } = normalizeRowSchema(schema);
   const allEntries = collectSchemaEntries(rowSchema, rootSchema);
-  const partitionedEntries = partitionSchemaEntries(allEntries);
-  let columnEntries = partitionedEntries.columnEntries;
-  let arrayEntries = partitionedEntries.arrayEntries;
+  const { columnEntries: scalarEntries } = partitionSchemaEntries(allEntries);
+  let columnEntries = scalarEntries;
 
   if (columnPaths) {
     const entriesByPath = new Map<string, SchemaEntry>();
@@ -90,65 +103,31 @@ export const buildSchemaDatatableModel = (
       if (!entry) throw new Error(`[UiSchemaDatatable] Unknown column path: ${path}`);
       return entry;
     });
-
-    const projectedEntries = new Set(columnEntries);
-    arrayEntries = partitionedEntries.arrayEntries.filter((entry) => !projectedEntries.has(entry));
   }
 
-  const columns: ConfigColumns[] = columnEntries.map((entry, entryIndex) => {
-    const readValue = (_data: unknown, _type: string, row: unknown) =>
-      getValueAtPath(row, entry.dataSegments);
-    const title =
+  const columns: ConfigColumns[] = columnEntries.map((entry) => {
+    const title = escapeHtml(
       typeof entry.schema.title === "string"
         ? entry.schema.title
-        : humanizePropertyName(entry.dataSegments.at(-1) ?? entry.dataPath);
-
+        : humanizePropertyName(entry.dataSegments.at(-1) ?? entry.dataPath)
+    );
     const override = getOverride(entry, overrides);
     const { render: customRender, ...columnOptions } = override;
-    const schemaRender: ConfigColumns["render"] = {
-      _: (_data: unknown, _type: string, row: unknown) => displayValue(readValue(null, "", row)),
-      display: getSchemaCellSlot(entryIndex),
-      filter: (_data: unknown, _type: string, row: unknown) =>
-        displayValue(readValue(null, "", row)),
-      sort: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
-      type: (_data: unknown, _type: string, row: unknown) => sortValue(readValue(null, "", row)),
-    };
 
     return {
       title,
       defaultContent: "",
+      render: customRender ?? renderSchemaValue,
       ...columnOptions,
-      data: null,
+      data: compileColumnData(entry),
       name: entry.dataPath,
-      render: customRender ?? schemaRender,
     };
   });
-
-  if (arrayEntries.length > 0) {
-    columns.unshift({
-      className: "schema-datatable-control",
-      data: null,
-      defaultContent: "",
-      name: "__schema_details",
-      orderable: false,
-      searchable: false,
-      title: "",
-      width: "1%",
-      render: {
-        _: () => "",
-        display: SCHEMA_EXPAND_SLOT,
-        filter: () => "",
-        sort: () => "",
-        type: () => "",
-      },
-    });
-  }
 
   return {
     rootSchema,
     rowSchema: attachRootDefinitions(rowSchema, rootSchema),
     columns,
     columnEntries,
-    arrayEntries,
   };
 };

@@ -10,7 +10,7 @@ const captureRuntimeErrors = (page: Page) => {
   return errors;
 };
 
-test("schema table supports search, sorting, and custom cells", async ({ page, goto }) => {
+test("schema table supports search, sorting, and native renderers", async ({ page, goto }) => {
   const runtimeErrors = captureRuntimeErrors(page);
   await goto("/schema-datatable", { waitUntil: "hydration" });
 
@@ -32,29 +32,17 @@ test("schema table supports search, sorting, and custom cells", async ({ page, g
   await search.clear();
   await table.getByRole("columnheader", { name: /Amount/ }).click();
   const amountTexts = await table.locator("tbody > tr > td.dt-body-right").allTextContents();
-  const amounts = amountTexts.map((value) => Number(value.replaceAll(",", "")));
+  const amounts = amountTexts.map((value) => Number(value.replace(/[^\d.-]/g, "")));
   expect(amounts).toEqual([...amounts].sort((left, right) => left - right));
   expect(runtimeErrors).toEqual([]);
 });
 
-test("array child rows and reactive local updates work", async ({ page, goto }) => {
+test("reactive local updates work without Vue cell mounts", async ({ page, goto }) => {
   const runtimeErrors = captureRuntimeErrors(page);
   await goto("/schema-datatable", { waitUntil: "hydration" });
 
   const demo = page.getByTestId("schema-datatable-demo");
   const table = demo.locator("table.dataTable").first();
-  const expand = table.getByRole("button", { name: "Expand row details" }).first();
-
-  await expand.click();
-  const details = demo.getByRole("region", { name: "Row array details" });
-  await expect(details).toBeVisible();
-  await expect(details.getByRole("tab", { name: /History/ })).toBeVisible();
-  await details.getByRole("tab", { name: /Tags/ }).click();
-  await expect(details.locator("table.dataTable")).toContainText("priority");
-
-  await table.getByRole("button", { name: "Collapse row details" }).click();
-  await expect(details).toHaveCount(0);
-
   await page.getByTestId("add-row").click();
   const search = demo.locator(".dt-search input").first();
   await search.fill("Added Customer 13");

@@ -32,10 +32,50 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
+    intents: {
+      render: (value: unknown, type: string) => {
+        const intents = Array.isArray(value) ? (value as KeywordIntent[]) : [];
+        if (type !== "display") return intents.join(" ");
+
+        const wrapper = document.createElement("span");
+        wrapper.className = "flex flex-wrap gap-1.5";
+        for (const intent of intents) {
+          const badge = document.createElement("span");
+          badge.className = `rounded-full px-2 py-1 text-xs font-medium ${intentClasses[intent]}`;
+          badge.textContent = intent;
+          wrapper.append(badge);
+        }
+        return wrapper;
+      },
+    },
     volume: { className: "dt-body-right" },
-    cpc: { className: "dt-body-right" },
+    cpc: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? `$${Number(value).toFixed(2)}` : value,
+    },
     traffic: { className: "dt-body-right" },
-    link: { orderable: false, searchable: false },
+    link: {
+      orderable: false,
+      searchable: false,
+      render: (value: unknown, type: string) => {
+        if (type !== "display") return value;
+
+        const link = document.createElement("a");
+        link.href = String(value);
+        link.className =
+          "text-primary inline-flex items-center gap-1 text-sm font-medium hover:underline";
+        link.rel = "noreferrer";
+        link.target = "_blank";
+        link.append(document.createTextNode("Open"));
+        const icon = document.createElement("span");
+        icon.className = "text-xs";
+        icon.ariaHidden = "true";
+        icon.textContent = "↗";
+        link.append(icon);
+        return link;
+      },
+    },
   };
 </script>
 
@@ -68,33 +108,7 @@
       :column-paths="keywordColumnPaths"
       :column-overrides="columnOverrides"
       :options="options"
-    >
-      <template #cell-intents="{ cellData }">
-        <span class="flex flex-wrap gap-1.5">
-          <span
-            v-for="intent in cellData as KeywordIntent[]"
-            :key="intent"
-            :class="['rounded-full px-2 py-1 text-xs font-medium', intentClasses[intent]]"
-          >
-            {{ intent }}
-          </span>
-        </span>
-      </template>
-
-      <template #cell-cpc="{ cellData }"> ${{ (cellData as number).toFixed(2) }} </template>
-
-      <template #cell-link="{ cellData }">
-        <a
-          :href="String(cellData)"
-          class="text-primary inline-flex items-center gap-1 text-sm font-medium hover:underline"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Open
-          <Icon name="lucide:external-link" class="size-3.5" />
-        </a>
-      </template>
-    </UiSchemaDatatable>
+    />
 
     <div class="text-muted-foreground border-t px-4 py-3 text-xs">
       Showing {{ rows.length }} of {{ keywordRows.length }} keywords

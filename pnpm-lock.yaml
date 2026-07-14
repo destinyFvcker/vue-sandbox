@@ -14,9 +14,6 @@ importers:
       '@jsonforms/core':
         specifier: ^3.8.0
         version: 3.8.0
-      '@jsonforms/vue':
-        specifier: ^3.8.0
-        version: 3.8.0(@jsonforms/core@3.8.0)(vue@3.5.30(typescript@5.9.3))
       '@nuxt/eslint':
         specifier: 1.15.2
         version: 1.15.2(@typescript-eslint/utils@8.57.1(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3))(@vue/compiler-sfc@3.5.30)(eslint@10.0.3(jiti@2.6.1))(magicast@0.5.2)(typescript@5.9.3)(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.1)(yaml@2.8.2))
@@ -803,12 +800,6 @@ packages:
 
   '@jsonforms/core@3.8.0':
     resolution: {integrity: sha512-XSvaZuQSs/MceG5nDDcrE879onPHkGBy0xEuLeZMUkSM/M8wc1dEUrJtMOZVNSITocm9YXFY1qQ5gnsPP38zAg==}
-
-  '@jsonforms/vue@3.8.0':
-    resolution: {integrity: sha512-Uy42bMvJVnKtYpfSK890S2tSGG/7GVh5WoENb9YyCL0d4bx+0jePaq2/163at0Ixdhsq+2UiFYbrgBGssZplAA==}
-    peerDependencies:
-      '@jsonforms/core': 3.8.0
-      vue: ^3.5.0
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
@@ -5916,12 +5907,6 @@ snapshots:
       ajv: 8.18.0
       ajv-formats: 2.1.1(ajv@8.18.0)
       lodash: 4.17.23
-
-  '@jsonforms/vue@3.8.0(@jsonforms/core@3.8.0)(vue@3.5.30(typescript@5.9.3))':
-    dependencies:
-      '@jsonforms/core': 3.8.0
-      lodash: 4.17.23
-      vue: 3.5.30(typescript@5.9.3)
 
   '@kwsites/file-exists@1.1.1':
     dependencies:

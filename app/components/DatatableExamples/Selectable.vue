@@ -42,7 +42,11 @@
       render: createSelectRenderer(),
     },
     id: { visible: false },
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -65,14 +69,7 @@
       :column-overrides="columnOverrides"
       :options="options"
       data-testid="selectable-table"
-    >
-      <template #cell-status="{ cellData }">
-        {{ cellData }}
-      </template>
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(Number(cellData)) }}
-      </template>
-    </UiSchemaDatatable>
+    />
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
       <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>

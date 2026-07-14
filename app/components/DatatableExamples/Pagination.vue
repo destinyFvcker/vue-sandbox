@@ -68,7 +68,26 @@
       orderable: false,
       render: createSelectRenderer(),
     },
-    balance: { className: "dt-body-right" },
+    status: {
+      render: (value: unknown, type: string) => {
+        if (type !== "display") return value;
+
+        const status = String(value);
+        const badge = document.createElement("span");
+        badge.className = `rounded-full px-2 py-1 text-xs font-medium ${
+          status === "Active"
+            ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+            : "bg-slate-500/10 text-slate-600 dark:text-slate-300"
+        }`;
+        badge.textContent = status;
+        return badge;
+      },
+    },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 
   const ajax: Config["ajax"] = (request, callback) => {
@@ -109,8 +128,8 @@
     window.setTimeout(() => callback(response), 120);
   };
 
-  function onReady(api?: Api<DemoPerson>) {
-    table.value = api;
+  function onReady(api?: Api<Record<string, any>>) {
+    table.value = api as unknown as Api<DemoPerson> | undefined;
   }
 
   function addUser() {
@@ -138,7 +157,7 @@
     showDialog.value = false;
     draft.name = "";
     draft.email = "";
-    table.value?.ajax.reload(null, false);
+    table.value?.ajax.reload(undefined, false);
   }
 </script>
 
@@ -152,23 +171,7 @@
       :column-overrides="columnOverrides"
       :options="options"
       @ready="onReady"
-    >
-      <template #cell-status="{ cellData }">
-        <span
-          :class="[
-            'rounded-full px-2 py-1 text-xs font-medium',
-            cellData === 'Active'
-              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-              : 'bg-slate-500/10 text-slate-600 dark:text-slate-300',
-          ]"
-        >
-          {{ cellData }}
-        </span>
-      </template>
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(Number(cellData)) }}
-      </template>
-    </UiSchemaDatatable>
+    />
 
     <Teleport to="body">
       <div

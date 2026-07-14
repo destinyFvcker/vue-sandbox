@@ -15,7 +15,36 @@
 
   const columnOverrides: SchemaColumnOverrides = {
     id: { visible: false },
-    balance: { className: "dt-body-right" },
+    name: {
+      render: (value: unknown, type: string, row: unknown) => {
+        if (type !== "display") return value;
+
+        const person = row as DemoPerson;
+        const wrapper = document.createElement("div");
+        wrapper.className = "flex items-center gap-3";
+
+        const image = document.createElement("img");
+        image.alt = person.name;
+        image.className = "size-10 rounded-full object-cover";
+        image.src = person.image;
+
+        const copy = document.createElement("div");
+        const name = document.createElement("p");
+        name.className = "font-medium";
+        name.textContent = person.name;
+        const username = document.createElement("p");
+        username.className = "text-muted-foreground text-xs";
+        username.textContent = `@${person.username}`;
+        copy.append(name, username);
+        wrapper.append(image, copy);
+        return wrapper;
+      },
+    },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -28,25 +57,7 @@
       :column-paths="personColumnPaths.simple"
       :column-overrides="columnOverrides"
       :options="options"
-    >
-      <template #cell-name="{ rowData }">
-        <div class="flex items-center gap-3">
-          <img
-            :alt="(rowData as DemoPerson).name"
-            class="size-10 rounded-full object-cover"
-            :src="(rowData as DemoPerson).image"
-          />
-          <div>
-            <p class="font-medium">{{ (rowData as DemoPerson).name }}</p>
-            <p class="text-muted-foreground text-xs">@{{ (rowData as DemoPerson).username }}</p>
-          </div>
-        </div>
-      </template>
-
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(cellData as number) }}
-      </template>
-    </UiSchemaDatatable>
+    />
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
       <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>

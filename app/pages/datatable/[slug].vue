@@ -10,6 +10,7 @@
   import Layout from "~/components/DatatableExamples/Layout.vue";
   import Pagination from "~/components/DatatableExamples/Pagination.vue";
   import RawPerformance from "~/components/DatatableExamples/RawPerformance.vue";
+  import SchemaPerformance from "~/components/DatatableExamples/SchemaPerformance.vue";
   import SearchSort from "~/components/DatatableExamples/SearchSort.vue";
   import Selectable from "~/components/DatatableExamples/Selectable.vue";
   import SimpleVariant from "~/components/DatatableExamples/SimpleVariant.vue";
@@ -26,6 +27,7 @@
     "custom-component": { component: CustomComponent },
     layout: { component: Layout },
     "raw-performance": { component: RawPerformance },
+    "schema-performance": { component: SchemaPerformance },
     simple: { component: SimpleVariant, props: { variant: "simple" } },
     image: { component: Image },
     "no-horizontal": { component: SimpleVariant, props: { variant: "no-horizontal" } },

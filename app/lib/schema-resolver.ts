@@ -301,11 +301,3 @@ export const attachRootDefinitions = (schema: JsonSchema, rootSchema: JsonSchema
     ? { $defs: (rootSchema as JsonSchema & { $defs?: Record<string, JsonSchema> }).$defs }
     : {}),
 });
-
-export const resolveArrayItemSchema = (
-  arraySchema: JsonSchema,
-  rootSchema: JsonSchema
-): JsonSchema => {
-  if (!isSchemaObject(arraySchema.items)) return {};
-  return attachRootDefinitions(dereferenceSchema(arraySchema.items, rootSchema), rootSchema);
-};

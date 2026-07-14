@@ -38,7 +38,11 @@
       render: createSelectRenderer(),
     },
     age: { className: "dt-body-right" },
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -60,13 +64,6 @@
       :column-paths="personColumnPaths.fixedColumns"
       :column-overrides="columnOverrides"
       :options="options"
-    >
-      <template #cell-status="{ cellData }">
-        {{ cellData }}
-      </template>
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(Number(cellData)) }}
-      </template>
-    </UiSchemaDatatable>
+    />
   </div>
 </template>

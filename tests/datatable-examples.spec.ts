@@ -19,10 +19,7 @@ test("all catalog routes initialise and unmount cleanly", async ({ page, goto })
     await goto(`/datatable/${example.slug}`, { waitUntil: "hydration" });
     await expect(page.getByRole("heading", { name: example.title, exact: true })).toBeVisible();
     await expect(
-      page
-        .getByTestId("datatable-example")
-        .locator("table.dataTable")
-        .first()
+      page.getByTestId("datatable-example").locator("table.dataTable").first()
     ).toBeVisible();
   }
 
@@ -61,7 +58,7 @@ test("DOM-layout controls retain the UiThing skin", async ({ page, goto }) => {
   ).toBe("none");
 });
 
-test("Vue slots and external reactive search work", async ({ page, goto }) => {
+test("native renderers and external reactive search work", async ({ page, goto }) => {
   const runtimeErrors = captureRuntimeErrors(page);
 
   await goto("/datatable/custom-component", { waitUntil: "hydration" });

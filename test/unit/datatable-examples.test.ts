@@ -20,6 +20,7 @@ describe("datatable example catalog", () => {
       "custom-component",
       "layout",
       "raw-performance",
+      "schema-performance",
       "simple",
       "image",
       "no-horizontal",

@@ -17,7 +17,22 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    __action: { searchable: false, orderable: false },
+    __action: {
+      searchable: false,
+      orderable: false,
+      render: (value: unknown, type: string, row: unknown) => {
+        if (type !== "display") return value;
+
+        const button = document.createElement("button");
+        button.className =
+          "hover:bg-muted inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium";
+        button.dataset.testid = "edit-row-button";
+        button.type = "button";
+        button.textContent = "Edit";
+        button.addEventListener("click", () => editRow(row as DemoPerson));
+        return button;
+      },
+    },
   };
 
   function editRow(row: DemoPerson | Record<string, unknown>) {
@@ -28,7 +43,7 @@
 <template>
   <div class="bg-background overflow-hidden rounded-lg border">
     <div class="flex items-center justify-between gap-4 border-b px-4 py-3 text-sm">
-      <p class="font-medium">Vue cell component</p>
+      <p class="font-medium">Native DataTables cell renderer</p>
       <p class="text-muted-foreground" data-testid="custom-component-status">{{ lastEdited }}</p>
     </div>
     <UiSchemaDatatable
@@ -38,17 +53,6 @@
       :column-paths="personColumnPaths.customComponent"
       :column-overrides="columnOverrides"
       :options="options"
-    >
-      <template #cell-action="{ rowData }">
-        <button
-          class="hover:bg-muted inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
-          data-testid="edit-row-button"
-          type="button"
-          @click="editRow(rowData as DemoPerson)"
-        >
-          Edit
-        </button>
-      </template>
-    </UiSchemaDatatable>
+    />
   </div>
 </template>

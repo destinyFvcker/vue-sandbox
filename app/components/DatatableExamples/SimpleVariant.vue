@@ -25,7 +25,11 @@
 
   const columnOverrides: SchemaColumnOverrides = {
     id: { visible: false },
-    balance: { className: "dt-body-right" },
+    balance: {
+      className: "dt-body-right",
+      render: (value: unknown, type: string) =>
+        type === "display" ? formatCurrency(Number(value)) : value,
+    },
   };
 </script>
 
@@ -38,11 +42,7 @@
       :options="options"
       :column-overrides="columnOverrides"
       :column-paths="personColumnPaths.simple"
-    >
-      <template #cell-balance="{ cellData }">
-        {{ formatCurrency(cellData as number) }}
-      </template>
-    </UiSchemaDatatable>
+    />
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
       <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>
