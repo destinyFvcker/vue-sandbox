@@ -1,11 +1,14 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople } from "~/lib/datatable-examples";
-  import type { DemoPerson } from "~/lib/datatable-examples";
+  import {
+    actionableComplexStruct2Schema,
+    complexStruct2ColumnPaths,
+  } from "~/lib/datatable-example-schemas";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
+  import type { ComplexStruct2 } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
-  const rows = createDemoPeople(80);
+  const rows = createComplexStruct2Rows(80);
   const lastEdited = ref("No row selected");
 
   const options: Config = {
@@ -29,14 +32,14 @@
         button.dataset.testid = "edit-row-button";
         button.type = "button";
         button.textContent = "Edit";
-        button.addEventListener("click", () => editRow(row as DemoPerson));
+        button.addEventListener("click", () => editRow(row as ComplexStruct2));
         return button;
       },
     },
   };
 
-  function editRow(row: DemoPerson | Record<string, unknown>) {
-    lastEdited.value = `Editing ${(row as DemoPerson).name}`;
+  function editRow(row: ComplexStruct2 | Record<string, unknown>) {
+    lastEdited.value = `Editing ${(row as ComplexStruct2).nested_field.foo.foo_bar}`;
   }
 </script>
 
@@ -48,9 +51,9 @@
     </div>
     <UiSchemaDatatable
       class="nowrap hover row-border"
-      :schema="demoPersonSchema"
+      :schema="actionableComplexStruct2Schema"
       :data="rows"
-      :column-paths="personColumnPaths.customComponent"
+      :column-paths="complexStruct2ColumnPaths.actionable"
       :column-overrides="columnOverrides"
       :options="options"
     />

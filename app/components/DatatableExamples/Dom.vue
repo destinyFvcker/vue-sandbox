@@ -1,11 +1,15 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import {
+    complexStruct2ColumnPaths,
+    selectableComplexStruct2Schema,
+  } from "~/lib/datatable-example-schemas";
+  import { formatNumber } from "~/lib/datatable-examples";
   import { createSelectRenderer } from "~/lib/datatables.client";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
-  const rows = createDemoPeople(100);
+  const rows = createComplexStruct2Rows(100);
   const selectedCount = ref(0);
 
   const options: Config = {
@@ -46,12 +50,10 @@
       orderable: false,
       render: createSelectRenderer(),
     },
-    id: { visible: false },
-    age: { className: "dt-body-right" },
-    balance: {
+    "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
-        type === "display" ? formatCurrency(Number(value)) : value,
+        type === "display" ? formatNumber(Number(value)) : value,
     },
   };
 </script>
@@ -64,9 +66,9 @@
     </div>
     <UiSchemaDatatable
       class="nowrap hover stripe order-column"
-      :schema="demoPersonSchema"
+      :schema="selectableComplexStruct2Schema"
       :data="rows"
-      :column-paths="personColumnPaths.dom"
+      :column-paths="complexStruct2ColumnPaths.selectableNested"
       :column-overrides="columnOverrides"
       :options="options"
     />

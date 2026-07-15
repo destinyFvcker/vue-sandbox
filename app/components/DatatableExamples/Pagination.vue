@@ -1,8 +1,13 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import {
+    complexStruct2ColumnPaths,
+    selectableComplexStruct2Schema,
+  } from "~/lib/datatable-example-schemas";
+  import { formatNumber } from "~/lib/datatable-examples";
   import { createSelectRenderer } from "~/lib/datatables.client";
-  import type { DemoPerson } from "~/lib/datatable-examples";
+  import { complexStruct2Rows, createComplexStruct2Rows } from "~/lib/generated-mocks";
+  import { getValueAtPath } from "~/lib/schema-resolver";
+  import type { ComplexStruct2 } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Api, Config } from "datatables.net";
 
@@ -19,13 +24,12 @@
     draw: number;
     recordsTotal: number;
     recordsFiltered: number;
-    data: DemoPerson[];
+    data: ComplexStruct2[];
   }
 
-  const allRows = ref(createDemoPeople(120));
-  const table = shallowRef<Api<DemoPerson>>();
-  const showDialog = ref(false);
-  const draft = reactive({ name: "", email: "", office: "Shanghai" });
+  const allRows = ref(createComplexStruct2Rows(99));
+  const table = shallowRef<Api<ComplexStruct2>>();
+  let nextGeneratedIndex = 99;
 
   const options: Config = {
     serverSide: true,
@@ -37,8 +41,8 @@
     language: {
       search: "Filter:",
       lengthMenu: "Show _MENU_",
-      info: "Showing _START_ to _END_ of _TOTAL_ people",
-      processing: "Loading people…",
+      info: "Showing _START_ to _END_ of _TOTAL_ generated records",
+      processing: "Loading generated records…",
       paginate: {
         first: "First",
         previous: "Previous",
@@ -50,10 +54,8 @@
       "colvis",
       "print",
       {
-        text: "Add user",
-        action: () => {
-          showDialog.value = true;
-        },
+        text: "Add generated row",
+        action: () => addGeneratedRow(),
       },
     ],
     select: {
@@ -68,27 +70,35 @@
       orderable: false,
       render: createSelectRenderer(),
     },
-    status: {
+    normal_enum: {
       render: (value: unknown, type: string) => {
         if (type !== "display") return value;
 
-        const status = String(value);
         const badge = document.createElement("span");
-        badge.className = `rounded-full px-2 py-1 text-xs font-medium ${
-          status === "Active"
-            ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-            : "bg-slate-500/10 text-slate-600 dark:text-slate-300"
-        }`;
-        badge.textContent = status;
+        badge.className =
+          value === "Foo"
+            ? "rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300"
+            : "rounded-full bg-slate-500/10 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300";
+        badge.textContent = String(value);
         return badge;
       },
     },
-    balance: {
+    "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
-        type === "display" ? formatCurrency(Number(value)) : value,
+        type === "display" ? formatNumber(Number(value)) : value,
     },
   };
+
+  const searchableValues = (row: ComplexStruct2): unknown[] => [
+    row.nested_field.foo.foo_foo,
+    row.nested_field.foo.foo_bar,
+    row.nested_field.foo.foo_qux,
+    row.nested_field.bar?.bar_foo,
+    row.nested_field.bar?.bar_bar,
+    row.nested_field.bar?.bar_qux,
+    row.normal_enum,
+  ];
 
   const ajax: Config["ajax"] = (request, callback) => {
     const query = request as AjaxRequest;
@@ -98,22 +108,20 @@
 
     let filtered = allRows.value.filter((row) => {
       if (!search) return true;
-      return [row.name, row.email, row.position, row.office, row.status]
-        .join(" ")
-        .toLowerCase()
-        .includes(search);
+      return searchableValues(row).join(" ").toLowerCase().includes(search);
     });
 
     const order = query.order?.[0];
     const columnKey = order ? query.columns?.[order.column]?.name : undefined;
     if (order && typeof columnKey === "string") {
+      const segments = columnKey.split(".");
       filtered = [...filtered].sort((left, right) => {
-        const leftValue = left[columnKey as keyof DemoPerson];
-        const rightValue = right[columnKey as keyof DemoPerson];
+        const leftValue = getValueAtPath(left, segments);
+        const rightValue = getValueAtPath(right, segments);
         const result =
           typeof leftValue === "number" && typeof rightValue === "number"
             ? leftValue - rightValue
-            : String(leftValue).localeCompare(String(rightValue));
+            : String(leftValue ?? "").localeCompare(String(rightValue ?? ""));
         return order.dir === "asc" ? result : -result;
       });
     }
@@ -129,34 +137,13 @@
   };
 
   function onReady(api?: Api<Record<string, any>>) {
-    table.value = api as unknown as Api<DemoPerson> | undefined;
+    table.value = api as unknown as Api<ComplexStruct2> | undefined;
   }
 
-  function addUser() {
-    const name = draft.name.trim();
-    const email = draft.email.trim();
-    if (!name || !email) return;
-
-    const id = Math.max(...allRows.value.map((row) => row.id)) + 1;
-    allRows.value = [
-      {
-        ...createDemoPeople(1)[0]!,
-        id,
-        name,
-        username: email.split("@")[0] ?? name.toLowerCase().replaceAll(" ", "."),
-        email,
-        office: draft.office,
-        location: {
-          city: draft.office,
-          country: draft.office === "Shanghai" ? "China" : "Singapore",
-          flag: draft.office === "Shanghai" ? "🇨🇳" : "🇸🇬",
-        },
-      },
-      ...allRows.value,
-    ];
-    showDialog.value = false;
-    draft.name = "";
-    draft.email = "";
+  function addGeneratedRow() {
+    const row = complexStruct2Rows[nextGeneratedIndex % complexStruct2Rows.length]!;
+    nextGeneratedIndex += 1;
+    allRows.value = [row, ...allRows.value];
     table.value?.ajax.reload(undefined, false);
   }
 </script>
@@ -165,89 +152,12 @@
   <div class="bg-background overflow-hidden rounded-lg border">
     <UiSchemaDatatable
       class="nowrap hover stripe order-column"
-      :schema="demoPersonSchema"
+      :schema="selectableComplexStruct2Schema"
       :ajax="ajax"
-      :column-paths="personColumnPaths.pagination"
+      :column-paths="complexStruct2ColumnPaths.selectable"
       :column-overrides="columnOverrides"
       :options="options"
       @ready="onReady"
     />
-
-    <Teleport to="body">
-      <div
-        v-if="showDialog"
-        class="fixed inset-0 z-50 grid place-items-center bg-black/45 p-4"
-        data-testid="add-user-modal"
-        @click.self="showDialog = false"
-      >
-        <form
-          class="bg-background w-full max-w-md rounded-xl border p-6 shadow-2xl"
-          @submit.prevent="addUser"
-        >
-          <div class="mb-5 flex items-start justify-between gap-4">
-            <div>
-              <h2 class="text-lg font-semibold">Add user</h2>
-              <p class="text-muted-foreground text-sm">新增后通过 Ajax 协议刷新当前页。</p>
-            </div>
-            <button
-              aria-label="Close dialog"
-              class="hover:bg-muted rounded-md p-1.5"
-              type="button"
-              @click="showDialog = false"
-            >
-              <Icon name="lucide:x" class="size-4" />
-            </button>
-          </div>
-
-          <div class="space-y-4">
-            <label class="block space-y-1.5 text-sm">
-              <span class="font-medium">Name</span>
-              <input
-                v-model="draft.name"
-                required
-                class="focus:ring-ring h-10 w-full rounded-md border bg-transparent px-3 outline-none focus:ring-2"
-                placeholder="Ada Lovelace"
-              />
-            </label>
-            <label class="block space-y-1.5 text-sm">
-              <span class="font-medium">Email</span>
-              <input
-                v-model="draft.email"
-                required
-                type="email"
-                class="focus:ring-ring h-10 w-full rounded-md border bg-transparent px-3 outline-none focus:ring-2"
-                placeholder="ada@example.com"
-              />
-            </label>
-            <label class="block space-y-1.5 text-sm">
-              <span class="font-medium">Office</span>
-              <select
-                v-model="draft.office"
-                class="bg-background focus:ring-ring h-10 w-full rounded-md border px-3 outline-none focus:ring-2"
-              >
-                <option>Shanghai</option>
-                <option>Singapore</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="mt-6 flex justify-end gap-2">
-            <button
-              class="hover:bg-muted h-9 rounded-md border px-4 text-sm font-medium"
-              type="button"
-              @click="showDialog = false"
-            >
-              Cancel
-            </button>
-            <button
-              class="bg-primary text-primary-foreground h-9 rounded-md px-4 text-sm font-medium hover:opacity-90"
-              type="submit"
-            >
-              Create user
-            </button>
-          </div>
-        </form>
-      </div>
-    </Teleport>
   </div>
 </template>

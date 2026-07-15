@@ -3,11 +3,13 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
+import { datatableExampleGroups, datatableExamples } from "../../app/lib/datatable-examples";
 import {
-  createDemoPeople,
-  datatableExampleGroups,
-  datatableExamples,
-} from "../../app/lib/datatable-examples";
+  complexStruct2Rows,
+  complexStructRows,
+  createComplexStruct2Rows,
+  createComplexStructRows,
+} from "../../app/lib/generated-mocks";
 
 describe("datatable example catalog", () => {
   const examplesDirectory = fileURLToPath(
@@ -47,10 +49,12 @@ describe("datatable example catalog", () => {
     ).toBe(true);
   });
 
-  it("creates deterministic demo records", () => {
-    expect(createDemoPeople(3)).toEqual(createDemoPeople(3));
-    expect(createDemoPeople(3)).toHaveLength(3);
-    expect(createDemoPeople(3)[0]).toMatchObject({ id: 1, name: "Amelia Chen" });
+  it("reads demo records from the committed Rust-generated fixtures", () => {
+    expect(createComplexStructRows(3)).toEqual(complexStructRows.slice(0, 3));
+    expect(createComplexStruct2Rows(3)).toEqual(complexStruct2Rows.slice(0, 3));
+    expect(createComplexStruct2Rows(complexStruct2Rows.length + 1).at(-1)).toBe(
+      complexStruct2Rows[0]
+    );
   });
 
   it("uses the raw DataTable adapter only for the dedicated performance comparison", () => {

@@ -1,20 +1,21 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
-  import type { DemoPerson } from "~/lib/datatable-examples";
+  import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
+  import { formatNumber } from "~/lib/datatable-examples";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
+  import type { ComplexStruct2 } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Api, Config } from "datatables.net";
 
-  type ColReorderApi = Api<DemoPerson> & {
+  type ColReorderApi = Api<ComplexStruct2> & {
     colReorder: {
-      disable: () => Api<DemoPerson>;
-      enable: () => Api<DemoPerson>;
-      reset: () => Api<DemoPerson>;
+      disable: () => Api<ComplexStruct2>;
+      enable: () => Api<ComplexStruct2>;
+      reset: () => Api<ComplexStruct2>;
     };
   };
 
-  const rows = createDemoPeople(24);
-  const table = shallowRef<Api<DemoPerson>>();
+  const rows = createComplexStruct2Rows(24);
+  const table = shallowRef<Api<ComplexStruct2>>();
   const reorderEnabled = ref(true);
 
   const options: Config = {
@@ -24,14 +25,14 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    balance: {
+    "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
-        type === "display" ? formatCurrency(Number(value)) : value,
+        type === "display" ? formatNumber(Number(value)) : value,
     },
   };
 
-  function onReady(api?: Api<DemoPerson>) {
+  function onReady(api?: Api<ComplexStruct2>) {
     table.value = api;
   }
 
@@ -93,11 +94,11 @@
     </div>
     <UiSchemaDatatable
       class="nowrap hover stripe row-border"
-      :schema="demoPersonSchema"
+      :schema="complexStruct2Schema"
       :data="rows"
       :options="options"
       :column-overrides="columnOverrides"
-      :column-paths="personColumnPaths.columnReorder"
+      :column-paths="complexStruct2ColumnPaths.nested"
       @ready="onReady"
     />
   </div>

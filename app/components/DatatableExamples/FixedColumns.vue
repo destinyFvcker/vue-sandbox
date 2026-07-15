@@ -1,11 +1,15 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import {
+    complexStruct2ColumnPaths,
+    selectableComplexStruct2Schema,
+  } from "~/lib/datatable-example-schemas";
+  import { formatNumber } from "~/lib/datatable-examples";
   import { createSelectRenderer } from "~/lib/datatables.client";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
-  const rows = createDemoPeople(40);
+  const rows = createComplexStruct2Rows(40);
   const selectedCount = ref(0);
 
   const options: Config = {
@@ -37,11 +41,10 @@
       orderable: false,
       render: createSelectRenderer(),
     },
-    age: { className: "dt-body-right" },
-    balance: {
+    "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
-        type === "display" ? formatCurrency(Number(value)) : value,
+        type === "display" ? formatNumber(Number(value)) : value,
     },
   };
 </script>
@@ -50,8 +53,8 @@
   <div class="bg-background overflow-hidden rounded-lg border">
     <div class="flex items-center justify-between border-b px-4 py-3 text-sm">
       <div>
-        <p class="font-medium">Wide employee dataset</p>
-        <p class="text-muted-foreground text-xs">横向滚动时固定复选框与 Name 列</p>
+        <p class="font-medium">Wide generated dataset</p>
+        <p class="text-muted-foreground text-xs">横向滚动时固定复选框与 Foo Foo 列</p>
       </div>
       <p class="text-muted-foreground" data-testid="fixed-columns-selection">
         Selected {{ selectedCount }}
@@ -59,9 +62,9 @@
     </div>
     <UiSchemaDatatable
       class="nowrap hover stripe row-border"
-      :schema="demoPersonSchema"
+      :schema="selectableComplexStruct2Schema"
       :data="rows"
-      :column-paths="personColumnPaths.fixedColumns"
+      :column-paths="complexStruct2ColumnPaths.selectableNested"
       :column-overrides="columnOverrides"
       :options="options"
     />

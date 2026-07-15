@@ -1,9 +1,6 @@
 <script setup lang="ts">
-  import {
-    programmingLanguageColumnPaths,
-    programmingLanguageSchema,
-  } from "~/lib/datatable-example-schemas";
-  import { programmingLanguages } from "~/lib/datatable-examples";
+  import { complexStructColumnPaths, complexStructSchema } from "~/lib/datatable-example-schemas";
+  import { createComplexStructRows } from "~/lib/generated-mocks";
   import type { Config } from "datatables.net";
 
   const options: Config = {
@@ -11,16 +8,17 @@
     paging: false,
     ordering: false,
   };
+  const rows = createComplexStructRows(12);
 </script>
 
 <template>
   <div class="bg-background overflow-hidden rounded-lg border">
     <UiSchemaDatatable
       class="nowrap hover compact demo-dense"
-      :schema="programmingLanguageSchema"
-      :data="programmingLanguages"
+      :schema="complexStructSchema"
+      :data="rows"
       :options="options"
-      :column-paths="programmingLanguageColumnPaths"
+      :column-paths="complexStructColumnPaths"
     />
   </div>
 </template>

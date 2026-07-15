@@ -1,7 +1,12 @@
+import { readFileSync } from "node:fs";
 import { expect, test } from "@nuxt/test-utils/playwright";
 import type { Page } from "@playwright/test";
 
 import { datatableExamples } from "../app/lib/datatable-examples";
+
+const complexStruct2Rows = JSON.parse(
+  readFileSync(new URL("../rust-schemars-gen/mock/complex_struct_2.json", import.meta.url), "utf8")
+) as Array<{ nested_field: { foo: { foo_bar: string } } }>;
 
 const captureRuntimeErrors = (page: Page) => {
   const errors: string[] = [];
@@ -67,10 +72,10 @@ test("native renderers and external reactive search work", async ({ page, goto }
 
   await goto("/datatable/search-sort", { waitUntil: "hydration" });
   const table = page.getByTestId("datatable-example").locator("table.dataTable").first();
-  await page.getByTestId("keyword-search").fill("json schema");
+  const searchValue = complexStruct2Rows[0]!.nested_field.foo.foo_bar;
+  await page.getByTestId("generated-search").fill(searchValue);
   await expect(table.locator("tbody > tr")).toHaveCount(1);
-  await expect(table.locator("tbody > tr").first()).toContainText("json schema table");
-  await expect(table.getByRole("link", { name: "Open" })).toBeVisible();
+  await expect(table.locator("tbody > tr").first()).toContainText(searchValue);
 
   expect(runtimeErrors).toEqual([]);
 });
@@ -94,16 +99,11 @@ test("extension controls and simulated server pagination work", async ({ page, g
   await goto("/datatable/pagination", { waitUntil: "hydration" });
   const table = page.getByTestId("datatable-example").locator("table.dataTable").first();
   await expect(table.locator("tbody > tr")).toHaveCount(5);
-  await page.getByRole("button", { name: "Add user" }).click();
-  const modal = page.getByTestId("add-user-modal");
-  await expect(modal).toBeVisible();
-  await modal.getByRole("textbox", { name: "Name", exact: true }).fill("Ada Lovelace");
-  await modal.getByRole("textbox", { name: "Email", exact: true }).fill("ada@example.com");
-  await modal.getByRole("button", { name: "Create user" }).click();
-  await expect(page.getByTestId("add-user-modal")).toHaveCount(0);
-  await page.getByLabel("Filter:").fill("ada@example.com");
+  const addedValue = complexStruct2Rows[99]!.nested_field.foo.foo_bar;
+  await page.getByRole("button", { name: "Add generated row" }).click();
+  await page.getByLabel("Filter:").fill(addedValue);
   await expect(table.locator("tbody > tr")).toHaveCount(1);
-  await expect(table.locator("tbody > tr").first()).toContainText("Ada Lovelace");
+  await expect(table.locator("tbody > tr").first()).toContainText(addedValue);
 
   expect(runtimeErrors).toEqual([]);
 });

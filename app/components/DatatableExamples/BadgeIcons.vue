@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople } from "~/lib/datatable-examples";
-  import type { DemoPerson } from "~/lib/datatable-examples";
+  import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
-  const rows = createDemoPeople(30);
+  const rows = createComplexStruct2Rows(30);
 
   const options: Config = {
     dom: "t",
@@ -14,45 +13,39 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    status: {
+    normal_enum: {
       render: (value: unknown, type: string) => {
         if (type !== "display") return value;
 
         const status = String(value);
         const badge = document.createElement("span");
         badge.className = `inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium ${
-          status === "Active"
+          status === "Foo"
             ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
             : "bg-slate-500/10 text-slate-600 dark:text-slate-300"
         }`;
         const dot = document.createElement("span");
         dot.className = `size-1.5 rounded-full ${
-          status === "Active" ? "bg-emerald-500" : "bg-slate-400"
+          status === "Foo" ? "bg-emerald-500" : "bg-slate-400"
         }`;
         badge.append(dot, document.createTextNode(status));
         return badge;
       },
     },
-    "location.city": {
-      render: (value: unknown, type: string, row: unknown) => {
+    "nested_field.foo.foo_bar": {
+      render: (value: unknown, type: string) => {
         if (type !== "display") return value;
 
-        const person = row as DemoPerson;
         const wrapper = document.createElement("span");
         wrapper.className = "inline-flex items-center gap-2";
-        const flag = document.createElement("span");
-        flag.className = "text-base";
-        flag.ariaHidden = "true";
-        flag.textContent = person.location.flag;
+        const icon = document.createElement("span");
+        icon.className = "bg-primary/10 text-primary grid size-7 place-items-center rounded-full";
+        icon.ariaHidden = "true";
+        icon.textContent = "ƒ";
         const copy = document.createElement("span");
-        const city = document.createElement("span");
-        city.className = "block font-medium";
-        city.textContent = person.location.city;
-        const country = document.createElement("span");
-        country.className = "text-muted-foreground block text-xs";
-        country.textContent = person.location.country;
-        copy.append(city, country);
-        wrapper.append(flag, copy);
+        copy.className = "font-medium";
+        copy.textContent = String(value);
+        wrapper.append(icon, copy);
         return wrapper;
       },
     },
@@ -63,9 +56,9 @@
   <div class="bg-background overflow-hidden rounded-lg border">
     <UiSchemaDatatable
       class="nowrap hover row-border"
-      :schema="demoPersonSchema"
+      :schema="complexStruct2Schema"
       :data="rows"
-      :column-paths="personColumnPaths.badgeIcons"
+      :column-paths="complexStruct2ColumnPaths.compact"
       :column-overrides="columnOverrides"
       :options="options"
     />

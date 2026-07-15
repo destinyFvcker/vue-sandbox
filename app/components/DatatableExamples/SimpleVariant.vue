@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { demoPersonSchema, personColumnPaths } from "~/lib/datatable-example-schemas";
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
+  import { formatNumber } from "~/lib/datatable-examples";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
@@ -10,8 +11,8 @@
     variant: Variant;
   }>();
 
-  const rows = createDemoPeople(5);
-  const total = rows.reduce((sum, row) => sum + row.balance, 0);
+  const rows = createComplexStruct2Rows(5);
+  const total = rows.reduce((sum, row) => sum + row.nested_field.foo.foo_foo, 0);
   const tableClass = computed(() => {
     const classes = ["nowrap", "hover", `demo-${props.variant}`];
     if (props.variant === "vertical-lines") classes.push("cell-border");
@@ -24,11 +25,10 @@
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    id: { visible: false },
-    balance: {
+    "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
-        type === "display" ? formatCurrency(Number(value)) : value,
+        type === "display" ? formatNumber(Number(value)) : value,
     },
   };
 </script>
@@ -37,15 +37,15 @@
   <div class="overflow-hidden">
     <UiSchemaDatatable
       :class="tableClass"
-      :schema="demoPersonSchema"
+      :schema="complexStruct2Schema"
       :data="rows"
       :options="options"
       :column-overrides="columnOverrides"
-      :column-paths="personColumnPaths.simple"
+      :column-paths="complexStruct2ColumnPaths.compact"
     />
     <div class="flex items-center justify-between border-t px-4 py-5 text-sm md:px-6">
       <p class="text-muted-foreground">Total</p>
-      <p class="font-semibold tabular-nums">{{ formatCurrency(total) }}</p>
+      <p class="font-semibold tabular-nums">{{ formatNumber(total) }}</p>
     </div>
   </div>
 </template>

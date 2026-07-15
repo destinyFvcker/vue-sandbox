@@ -1,81 +1,49 @@
 <script setup lang="ts">
-  import { keywordColumnPaths, keywordRowSchema } from "~/lib/datatable-example-schemas";
-  import { keywordRows } from "~/lib/datatable-examples";
-  import type { KeywordIntent } from "~/lib/datatable-examples";
+  import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
   import type { Config } from "datatables.net";
 
   const search = ref("");
   const normalizedSearch = computed(() => search.value.trim().toLowerCase());
+  const generatedRows = createComplexStruct2Rows();
   const rows = computed(() => {
-    if (!normalizedSearch.value) return keywordRows;
+    if (!normalizedSearch.value) return generatedRows;
 
-    return keywordRows.filter((row) =>
-      [row.keyword, ...row.intents, row.volume, row.cpc, row.traffic]
+    return generatedRows.filter((row) =>
+      [
+        row.nested_field.foo.foo_foo,
+        row.nested_field.foo.foo_bar,
+        row.nested_field.foo.foo_qux,
+        row.normal_enum,
+      ]
         .join(" ")
         .toLowerCase()
         .includes(normalizedSearch.value)
     );
   });
 
-  const intentClasses: Record<KeywordIntent, string> = {
-    Informational: "bg-blue-500/10 text-blue-700 dark:text-blue-300",
-    Navigational: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
-    Commercial: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
-    Transactional: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-  };
-
   const options: Config = {
     dom: "t",
     paging: false,
-    order: [[2, "desc"]],
+    order: [[0, "desc"]],
   };
 
   const columnOverrides: SchemaColumnOverrides = {
-    intents: {
-      render: (value: unknown, type: string) => {
-        const intents = Array.isArray(value) ? (value as KeywordIntent[]) : [];
-        if (type !== "display") return intents.join(" ");
-
-        const wrapper = document.createElement("span");
-        wrapper.className = "flex flex-wrap gap-1.5";
-        for (const intent of intents) {
-          const badge = document.createElement("span");
-          badge.className = `rounded-full px-2 py-1 text-xs font-medium ${intentClasses[intent]}`;
-          badge.textContent = intent;
-          wrapper.append(badge);
-        }
-        return wrapper;
-      },
-    },
-    volume: { className: "dt-body-right" },
-    cpc: {
-      className: "dt-body-right",
-      render: (value: unknown, type: string) =>
-        type === "display" ? `$${Number(value).toFixed(2)}` : value,
-    },
-    traffic: { className: "dt-body-right" },
-    link: {
-      orderable: false,
-      searchable: false,
+    normal_enum: {
       render: (value: unknown, type: string) => {
         if (type !== "display") return value;
 
-        const link = document.createElement("a");
-        link.href = String(value);
-        link.className =
-          "text-primary inline-flex items-center gap-1 text-sm font-medium hover:underline";
-        link.rel = "noreferrer";
-        link.target = "_blank";
-        link.append(document.createTextNode("Open"));
-        const icon = document.createElement("span");
-        icon.className = "text-xs";
-        icon.ariaHidden = "true";
-        icon.textContent = "↗";
-        link.append(icon);
-        return link;
+        const badge = document.createElement("span");
+        badge.className =
+          value === "Foo"
+            ? "rounded-full bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300"
+            : "rounded-full bg-violet-500/10 px-2 py-1 text-xs font-medium text-violet-700 dark:text-violet-300";
+        badge.textContent = String(value);
+        return badge;
       },
     },
+    "nested_field.foo.foo_foo": { className: "dt-body-right" },
   };
 </script>
 
@@ -83,7 +51,7 @@
   <div class="bg-background overflow-hidden rounded-lg border">
     <div class="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
-        <p class="text-sm font-medium">Keyword performance</p>
+        <p class="text-sm font-medium">Generated FooStruct records</p>
         <p class="text-muted-foreground text-xs">点击表头可按数值列排序</p>
       </div>
       <label class="relative block sm:w-72">
@@ -93,9 +61,9 @@
         />
         <input
           v-model="search"
-          data-testid="keyword-search"
+          data-testid="generated-search"
           class="focus:ring-ring h-9 w-full rounded-md border bg-transparent pr-3 pl-9 text-sm outline-none focus:ring-2"
-          placeholder="Search keywords or intent…"
+          placeholder="Search generated fields…"
           type="search"
         />
       </label>
@@ -103,15 +71,15 @@
 
     <UiSchemaDatatable
       class="nowrap hover row-border"
-      :schema="keywordRowSchema"
+      :schema="complexStruct2Schema"
       :data="rows"
-      :column-paths="keywordColumnPaths"
+      :column-paths="complexStruct2ColumnPaths.compact"
       :column-overrides="columnOverrides"
       :options="options"
     />
 
     <div class="text-muted-foreground border-t px-4 py-3 text-xs">
-      Showing {{ rows.length }} of {{ keywordRows.length }} keywords
+      Showing {{ rows.length }} of {{ generatedRows.length }} generated records
     </div>
   </div>
 </template>

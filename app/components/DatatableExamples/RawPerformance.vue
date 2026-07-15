@@ -1,11 +1,12 @@
 <script setup lang="ts">
-  import { createDemoPeople, formatCurrency } from "~/lib/datatable-examples";
+  import { formatNumber } from "~/lib/datatable-examples";
+  import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { Config } from "datatables.net";
 
   // Keep this data set client-side to compare the raw Vue DataTables adapter
   // with the schema-driven wrapper under the same SearchBuilder workload.
   const startedAt = globalThis.performance.now();
-  const rows = createDemoPeople(100_000);
+  const rows = createComplexStruct2Rows(100_000);
   const ready = ref(false);
   const readyMs = ref(0);
 
@@ -22,16 +23,17 @@
       bottomEnd: "paging",
     },
     columns: [
-      { title: "Name", data: "name" },
-      { title: "Department", data: "department" },
-      { title: "Office", data: "office" },
-      { title: "Status", data: "status" },
       {
-        title: "Balance",
-        data: "balance",
+        title: "Foo Foo",
+        data: "nested_field.foo.foo_foo",
         className: "dt-body-right",
-        render: (value: number, type: string) =>
-          type === "display" ? formatCurrency(value) : value,
+        render: (value: number, type: string) => (type === "display" ? formatNumber(value) : value),
+      },
+      { title: "Foo Bar", data: "nested_field.foo.foo_bar" },
+      { title: "Foo Qux", data: "nested_field.foo.foo_qux" },
+      {
+        title: "Normal Enum",
+        data: "normal_enum",
       },
     ],
   };

@@ -24,8 +24,8 @@
         </div>
         <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">DataTable 示例索引</h1>
         <p class="text-muted-foreground mt-4 text-base leading-7">
-          基于 UiThing DataTable 文档的示例索引，另含 JSON Schema 编译的原生列配置，以及 Raw 与
-          Schema DataTable 的 10 万行对照压测。
+          基于 UiThing DataTable 文档的示例索引，schema 与数据统一来自 Rust schemars 生成结果，另含
+          Raw 与 Schema DataTable 的 10 万行对照压测。
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <NuxtLink
@@ -33,7 +33,7 @@
             class="bg-primary text-primary-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 text-sm font-medium transition-opacity hover:opacity-90"
           >
             <Icon name="lucide:braces" class="size-4" />
-            JSON Schema DataTable
+            Generated JSON Schema DataTable
           </NuxtLink>
           <a
             href="https://uithing.com/components/datatable"
@@ -59,10 +59,10 @@
             </div>
             <div>
               <p class="text-primary text-xs font-semibold tracking-widest uppercase">Featured</p>
-              <h2 class="mt-1 text-xl font-semibold">JSON Schema DataTable</h2>
+              <h2 class="mt-1 text-xl font-semibold">Generated JSON Schema DataTable</h2>
               <p class="text-muted-foreground mt-1 max-w-2xl text-sm leading-6">
-                从 JSON Schema 解析嵌套字段、引用与组合类型，一次性编译原生 DataTables columns 和
-                renderer，不再为每个单元格挂载 Vue 组件。
+                直接读取 rust-schemars-gen/mock 下配套的 schema 与数据，解析稳定可展示的嵌套标量和
+                枚举，一次性编译原生 DataTables columns 与 renderer。
               </p>
             </div>
           </div>
