@@ -1,0 +1,747 @@
+[
+  {
+    "myNumber": 1130463402,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -750676951,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -166503862,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 755775274,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 2008058815,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -432341872,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -141952634,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.43417662,
+        0.44446295,
+        0.6581423,
+        0.1497336,
+        0.7170661,
+        0.3849843
+      ]
+    }
+  },
+  {
+    "myNumber": -70004745,
+    "myBool": false,
+    "myNullableEnum": "so7SMLV3tV9sfyaNdIB"
+  },
+  {
+    "myNumber": 1176425209,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -327374103,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1345421025,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        -795256674,
+        301772757,
+        -1783033808
+      ]
+    }
+  },
+  {
+    "myNumber": -1750479545,
+    "myBool": true,
+    "myNullableEnum": "Fn4hEm4PekZMSjjc"
+  },
+  {
+    "myNumber": -1144276635,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 317785782,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.8029012,
+        0.56094706,
+        0.67928463,
+        0.5408056,
+        0.07134098,
+        0.5719583,
+        0.58069116,
+        0.4775687
+      ]
+    }
+  },
+  {
+    "myNumber": -413554105,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -324010420,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -533312585,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -2093520326,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        -2034565340,
+        -1797735908,
+        -1323680446,
+        1156072448,
+        488204066,
+        1110415298,
+        1182990656,
+        -374359247,
+        1133862415
+      ]
+    }
+  },
+  {
+    "myNumber": -519470060,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 939397981,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.33047652,
+        0.1016286,
+        0.00881815,
+        0.53150517
+      ]
+    }
+  },
+  {
+    "myNumber": 1712469021,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1767808893,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.08240068,
+        0.098623335,
+        0.3753838,
+        0.35351616,
+        0.8621802,
+        0.10824025,
+        0.86744756,
+        0.8302063
+      ]
+    }
+  },
+  {
+    "myNumber": 505885983,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1927736544,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        -581869302,
+        1988887752,
+        -777405463,
+        354051907,
+        922186618,
+        179353397,
+        -1960957303
+      ]
+    }
+  },
+  {
+    "myNumber": -431892639,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": []
+    }
+  },
+  {
+    "myNumber": -1580679392,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 758782455,
+    "myBool": true,
+    "myNullableEnum": {
+      "foos": [
+        1221146888,
+        -1461303875,
+        -2095235657
+      ]
+    }
+  },
+  {
+    "myNumber": -98906553,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.040409386,
+        0.79903835,
+        0.45543945,
+        0.23938918
+      ]
+    }
+  },
+  {
+    "myNumber": -19716483,
+    "myBool": true,
+    "myNullableEnum": "REw9apFd40PmSINZ"
+  },
+  {
+    "myNumber": 880572661,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 2089693618,
+    "myBool": true,
+    "myNullableEnum": "jqVCbs4IVHw"
+  },
+  {
+    "myNumber": 618293964,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1126917638,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -682228185,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.43125063,
+        0.365943,
+        0.8783786,
+        0.079835,
+        0.30856293,
+        0.066505134,
+        0.542851
+      ]
+    }
+  },
+  {
+    "myNumber": -842843458,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        1670840443,
+        -1891024760,
+        575221186
+      ]
+    }
+  },
+  {
+    "myNumber": 1242589037,
+    "myBool": true,
+    "myNullableEnum": "ALVQNbzCF0v7ndjebzd"
+  },
+  {
+    "myNumber": 630527336,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.2387864,
+        0.05148518,
+        0.04436201,
+        0.8051625,
+        0.14779979,
+        0.5964555
+      ]
+    }
+  },
+  {
+    "myNumber": -1753024554,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1148486869,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.6379076,
+        0.22324634,
+        0.9866447,
+        0.9769053,
+        0.89819264,
+        0.031327903,
+        0.29142612,
+        0.18379366
+      ]
+    }
+  },
+  {
+    "myNumber": 1000545198,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -491449625,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        -1056937456,
+        -936408628,
+        -359019273,
+        -1815072388,
+        100912677,
+        1943174691,
+        1436750809,
+        -627576786
+      ]
+    }
+  },
+  {
+    "myNumber": -392928524,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 833673599,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.43175977,
+        0.3043748
+      ]
+    }
+  },
+  {
+    "myNumber": -819558633,
+    "myBool": true,
+    "myNullableEnum": {
+      "foos": [
+        846231855,
+        -592647990,
+        -810230959,
+        347001673,
+        560698895,
+        470848729
+      ]
+    }
+  },
+  {
+    "myNumber": -1050401040,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -273010006,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.3729872,
+        0.39211428,
+        0.8388204
+      ]
+    }
+  },
+  {
+    "myNumber": -499457239,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -615073868,
+    "myBool": true,
+    "myNullableEnum": {
+      "foos": [
+        -1018985035,
+        129693931,
+        -372487262,
+        1755003147
+      ]
+    }
+  },
+  {
+    "myNumber": 568034669,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        1786877422,
+        183285958,
+        -1044416431,
+        566085631,
+        21912791,
+        1853481003,
+        1399295383,
+        -559391153
+      ]
+    }
+  },
+  {
+    "myNumber": -1152502036,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -150287528,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.39007252,
+        0.7231612,
+        0.1255635,
+        0.30324018,
+        0.17545027
+      ]
+    }
+  },
+  {
+    "myNumber": -840110495,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1176728652,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 494069622,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        455808007,
+        1243478855,
+        -289350029
+      ]
+    }
+  },
+  {
+    "myNumber": 1668959859,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 100187073,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -62506587,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -14766433,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1460835196,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1608226468,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 2103813553,
+    "myBool": true,
+    "myNullableEnum": "pKmAmJsEN3kONGtvE"
+  },
+  {
+    "myNumber": 1760895320,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 236201753,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -300445635,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1142155713,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.27735025,
+        0.9548373,
+        0.08668852,
+        0.1840679,
+        0.27732128,
+        0.7838818,
+        0.41994387,
+        0.088451505,
+        0.4315874
+      ]
+    }
+  },
+  {
+    "myNumber": -129574362,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1685027791,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 656345972,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -553304241,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        2061325223,
+        1681191615,
+        -2054738782,
+        358093622
+      ]
+    }
+  },
+  {
+    "myNumber": -1390489203,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1910092057,
+    "myBool": true,
+    "myNullableEnum": {
+      "foos": [
+        -731847315,
+        -460225449,
+        -1254488127,
+        2071666666,
+        618143453,
+        -2025575869
+      ]
+    }
+  },
+  {
+    "myNumber": -1480295352,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1117646150,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1559717792,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 896470207,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1641133056,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.83906,
+        0.12380892
+      ]
+    }
+  },
+  {
+    "myNumber": 1024601026,
+    "myBool": false,
+    "myNullableEnum": "zvOOo2nXp1Zvq"
+  },
+  {
+    "myNumber": -1355072567,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1239501462,
+    "myBool": false,
+    "myNullableEnum": {
+      "bars": [
+        0.0014445782,
+        0.9765891
+      ]
+    }
+  },
+  {
+    "myNumber": 504621896,
+    "myBool": true,
+    "myNullableEnum": {
+      "bars": [
+        0.03734529
+      ]
+    }
+  },
+  {
+    "myNumber": 1746192993,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -2128743409,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        656197275,
+        -963740839,
+        -423526624,
+        -1561987278
+      ]
+    }
+  },
+  {
+    "myNumber": 1249273527,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1883362592,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1628060739,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1433345142,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -803052056,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1423617763,
+    "myBool": false,
+    "myNullableEnum": "dlRFIFO97iwUt357W"
+  },
+  {
+    "myNumber": -1744938072,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1012884465,
+    "myBool": true,
+    "myNullableEnum": {
+      "foos": [
+        2012113990,
+        -16266102,
+        -715696363,
+        -650204280,
+        1316064571,
+        1623907164,
+        154702464,
+        2125673290,
+        -1566758884
+      ]
+    }
+  },
+  {
+    "myNumber": -1667820989,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 1396501436,
+    "myBool": false,
+    "myNullableEnum": {
+      "foos": [
+        -233338499
+      ]
+    }
+  },
+  {
+    "myNumber": 594958689,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1524175000,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -1225586730,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": -776982850,
+    "myBool": false,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 583190507,
+    "myBool": true,
+    "myNullableEnum": null
+  },
+  {
+    "myNumber": 116697834,
+    "myBool": true,
+    "myNullableEnum": "dneshIb4by5a9ou2R"
+  },
+  {
+    "myNumber": -657430204,
+    "myBool": true,
+    "myNullableEnum": "Dbmoubd5X"
+  },
+  {
+    "myNumber": -168835471,
+    "myBool": false,
+    "myNullableEnum": null
+  }
+]

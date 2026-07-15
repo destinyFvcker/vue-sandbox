@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ComplexStruct",
+  "description": "ComplexStruct",
+  "type": "object",
+  "properties": {
+    "myBool": {
+      "description": "Indicates whether this entry is currently active or has been disabled.",
+      "type": "boolean"
+    },
+    "myNullableEnum": {
+      "description": "An optional categorization tag. When omitted, defaults to null and no category is applied.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/MyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-shadcn-variant": "tabs"
+    },
+    "myNumber": {
+      "description": "The primary numeric identifier for this record. Must be a valid 32-bit signed integer.",
+      "type": "integer",
+      "format": "int32"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "myNumber",
+    "myBool"
+  ],
+  "definitions": {
+    "MyEnum": {
+      "description": "MyEnum",
+      "anyOf": [
+        {
+          "description": "A plain text label used for simple string-based classification.",
+          "type": "string"
+        },
+        {
+          "description": "A variant carrying a list of floating-point measurements, e.g. sensor readings.",
+          "type": "object",
+          "properties": {
+            "bars": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "format": "float"
+              }
+            }
+          },
+          "required": [
+            "bars"
+          ]
+        },
+        {
+          "description": "A variant carrying a list of integer counts, e.g. event frequencies.",
+          "type": "object",
+          "properties": {
+            "foos": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          "required": [
+            "foos"
+          ]
+        }
+      ]
+    }
+  }
+}
