@@ -1,6 +1,7 @@
 import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
+import { h, nextTick } from "vue";
 import type { JsonSchema } from "@jsonforms/core";
 
 vi.mock("datatables.net", () => ({ default: vi.fn() }));
@@ -17,6 +18,23 @@ vi.mock("datatables.net-vue3", async () => {
     }, row);
   };
 
+  const renderValue = (
+    renderer: unknown,
+    value: unknown,
+    type: string,
+    row: Record<string, unknown>,
+    meta: Record<string, unknown>
+  ) => {
+    const selectedRenderer =
+      renderer !== null && typeof renderer === "object" && !Array.isArray(renderer)
+        ? ((renderer as Record<string, unknown>)[type] ?? (renderer as Record<string, unknown>)._)
+        : renderer;
+
+    return typeof selectedRenderer === "function"
+      ? selectedRenderer(value, type, row, meta)
+      : value;
+  };
+
   const FakeDataTable = defineComponent({
     name: "FakeDataTable",
     inheritAttrs: false,
@@ -26,7 +44,9 @@ vi.mock("datatables.net-vue3", async () => {
       options: { type: Object, default: () => ({}) },
     },
     setup(props, { attrs, expose }) {
-      const dt = { row: vi.fn() };
+      const dt = { row: vi.fn(), on: vi.fn(), off: vi.fn() };
+      dt.on.mockReturnValue(dt);
+      dt.off.mockReturnValue(dt);
       expose({ dt });
 
       return () => {
@@ -56,12 +76,23 @@ vi.mock("datatables.net-vue3", async () => {
                   "tr",
                   columns.map((column, colIndex) => {
                     const value = readValue(column, row);
-                    const render = column.render;
-                    const displayed =
-                      typeof render === "function"
-                        ? render(value, "display", row, { row: rowIndex, col: colIndex })
-                        : value;
-                    return h("td", displayed == null ? "" : String(displayed));
+                    const displayed = renderValue(column.render, value, "display", row, {
+                      row: rowIndex,
+                      col: colIndex,
+                      settings: { sTableId: "fake-schema-table" },
+                    });
+                    const isNode = displayed instanceof Node;
+
+                    return h(
+                      "td",
+                      {
+                        ref: (element) => {
+                          if (!(element instanceof HTMLTableCellElement) || !isNode) return;
+                          if (displayed.parentNode !== element) element.replaceChildren(displayed);
+                        },
+                      },
+                      isNode || displayed == null ? undefined : String(displayed)
+                    );
                   })
                 );
               })
@@ -160,5 +191,97 @@ describe("UiSchemaDatatable", () => {
     expect(wrapper.vm.columns.map((column) => column.name)).toEqual(["score", "name"]);
     expect(wrapper.findAll("th").map((header) => header.text())).toEqual(["Score", "Person"]);
     expect(wrapper.emitted("ready")).toHaveLength(2);
+  });
+
+  it("matches displayed fields to leaf-name slots and preserves orthogonal renderers", async () => {
+    const { default: UiSchemaDatatable } =
+      await import("../../app/components/Ui/SchemaDatatable.client.vue");
+    const slotCalls: Array<Record<string, unknown>> = [];
+    const hiddenSlot = vi.fn(() => h("span", "hidden"));
+    const statusRender = vi.fn((value: unknown, type: string) =>
+      type === "filter" ? `search:${value}` : `native:${value}`
+    );
+    const slottedSchema: JsonSchema = {
+      type: "object",
+      properties: {
+        status: { type: "string" },
+        profile: {
+          type: "object",
+          properties: {
+            status: { type: "string" },
+            name: { type: "string" },
+          },
+        },
+        hidden: { type: "string" },
+      },
+    };
+    const firstRow = {
+      status: "active",
+      profile: { status: "pending", name: "Ada" },
+      hidden: "not projected",
+    };
+    const wrapper = await mountSuspended(UiSchemaDatatable, {
+      props: {
+        schema: slottedSchema,
+        data: [firstRow],
+        columnPaths: ["status", "profile.status", "profile.name"],
+        columnOverrides: { status: { render: statusRender } },
+      },
+      slots: {
+        status: (slotProps: any) => {
+          slotCalls.push(slotProps);
+          return h(
+            "button",
+            { "data-testid": `slot-${String(slotProps.columnPath)}` },
+            String(slotProps.fieldValue)
+          );
+        },
+        hidden: hiddenSlot,
+      },
+    });
+
+    await flushPromises();
+    await nextTick();
+
+    expect(wrapper.get("[data-testid='slot-status']").text()).toBe("active");
+    expect(wrapper.get("[data-testid='slot-profile.status']").text()).toBe("pending");
+    expect(wrapper.text()).toContain("Ada");
+    expect(hiddenSlot).not.toHaveBeenCalled();
+
+    const statusCall = slotCalls.find((call) => call.columnPath === "status");
+    const nestedCall = slotCalls.find((call) => call.columnPath === "profile.status");
+    expect(statusCall).toMatchObject({
+      cellData: firstRow,
+      fieldValue: "active",
+      rowData: firstRow,
+      rowIndex: 0,
+      type: "display",
+    });
+    expect(nestedCall).toMatchObject({ fieldValue: "pending", rowData: firstRow });
+
+    const statusColumn = wrapper.vm.columns[0] as {
+      render: { _: (value: unknown, type: string) => unknown; display: unknown };
+    };
+    expect(typeof statusColumn.render.display).toBe("function");
+    expect(statusColumn.render._("active", "filter")).toBe("search:active");
+    expect(typeof wrapper.vm.columns[2]!.render).toBe("function");
+
+    const oldButton = wrapper.get("[data-testid='slot-status']").element;
+    await wrapper.setProps({
+      data: [
+        {
+          status: "inactive",
+          profile: { status: "approved", name: "Grace" },
+          hidden: "still not projected",
+        },
+      ],
+    });
+    await flushPromises();
+    await nextTick();
+
+    expect(oldButton.isConnected).toBe(false);
+    expect(wrapper.get("[data-testid='slot-status']").text()).toBe("inactive");
+    expect(wrapper.get("[data-testid='slot-profile.status']").text()).toBe("approved");
+    expect(wrapper.text()).toContain("Grace");
   });
 });

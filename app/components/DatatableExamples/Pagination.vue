@@ -70,19 +70,6 @@
       orderable: false,
       render: createSelectRenderer(),
     },
-    normal_enum: {
-      render: (value: unknown, type: string) => {
-        if (type !== "display") return value;
-
-        const badge = document.createElement("span");
-        badge.className =
-          value === "Foo"
-            ? "rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300"
-            : "rounded-full bg-slate-500/10 px-2 py-1 text-xs font-medium text-slate-600 dark:text-slate-300";
-        badge.textContent = String(value);
-        return badge;
-      },
-    },
     "nested_field.foo.foo_foo": {
       className: "dt-body-right",
       render: (value: unknown, type: string) =>
@@ -158,6 +145,20 @@
       :column-overrides="columnOverrides"
       :options="options"
       @ready="onReady"
-    />
+    >
+      <template #normal_enum="{ fieldValue }">
+        <span
+          :class="[
+            'rounded-full px-2 py-1 text-xs font-medium',
+            fieldValue === 'Foo'
+              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+              : 'bg-slate-500/10 text-slate-600 dark:text-slate-300',
+          ]"
+          data-testid="server-enum-badge"
+        >
+          {{ fieldValue }}
+        </span>
+      </template>
+    </UiSchemaDatatable>
   </div>
 </template>

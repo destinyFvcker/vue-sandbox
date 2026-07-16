@@ -71,7 +71,7 @@ export const withUtilityColumns = (
     utilityProperties.__select = { type: "boolean", title: "", readOnly: true };
   }
   if (columns === "action" || columns === "select-and-action") {
-    utilityProperties.__action = { type: "string", title: "Action", readOnly: true };
+    utilityProperties.actions = { type: "string", title: "Action", readOnly: true };
   }
 
   return {

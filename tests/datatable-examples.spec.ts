@@ -63,12 +63,18 @@ test("DOM-layout controls retain the UiThing skin", async ({ page, goto }) => {
   ).toBe("none");
 });
 
-test("native renderers and external reactive search work", async ({ page, goto }) => {
+test("Vue field slots and external reactive search work", async ({ page, goto }) => {
   const runtimeErrors = captureRuntimeErrors(page);
 
   await goto("/datatable/custom-component", { waitUntil: "hydration" });
-  await page.getByTestId("edit-row-button").first().click();
+  const editButton = page.getByTestId("edit-row-button").first();
+  const actionRow = editButton.locator("xpath=ancestor::tr");
+  await editButton.click();
   await expect(page.getByTestId("custom-component-status")).toContainText("Editing");
+  await expect(actionRow).not.toHaveClass(/selected/);
+
+  await page.locator(".dt-paging-button.next").click();
+  await expect(page.getByTestId("edit-row-button")).toHaveCount(8);
 
   await goto("/datatable/search-sort", { waitUntil: "hydration" });
   const table = page.getByTestId("datatable-example").locator("table.dataTable").first();
@@ -99,11 +105,13 @@ test("extension controls and simulated server pagination work", async ({ page, g
   await goto("/datatable/pagination", { waitUntil: "hydration" });
   const table = page.getByTestId("datatable-example").locator("table.dataTable").first();
   await expect(table.locator("tbody > tr")).toHaveCount(5);
+  await expect(page.getByTestId("server-enum-badge")).toHaveCount(5);
   const addedValue = complexStruct2Rows[99]!.nested_field.foo.foo_bar;
   await page.getByRole("button", { name: "Add generated row" }).click();
   await page.getByLabel("Filter:").fill(addedValue);
   await expect(table.locator("tbody > tr")).toHaveCount(1);
   await expect(table.locator("tbody > tr").first()).toContainText(addedValue);
+  await expect(page.getByTestId("server-enum-badge")).toHaveCount(1);
 
   expect(runtimeErrors).toEqual([]);
 });

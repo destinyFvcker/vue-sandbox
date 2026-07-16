@@ -41,7 +41,7 @@ export const complexStruct2ColumnPaths = {
     "normal_enum",
   ],
   actionable: [
-    "__action",
+    "actions",
     "nested_field.foo.foo_foo",
     "nested_field.foo.foo_bar",
     "nested_field.foo.foo_qux",

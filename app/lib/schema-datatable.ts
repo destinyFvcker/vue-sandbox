@@ -16,6 +16,25 @@ export type SchemaColumnOverride = Omit<Partial<ConfigColumns>, "data" | "name">
 
 export type SchemaColumnOverrides = Record<string, SchemaColumnOverride>;
 
+export interface SchemaDatatableCellSlotProps<T extends Record<string, any>> {
+  /** Complete row data, matching UiDatatable's component-slot convention. */
+  cellData: T;
+  /** The zero-based DataTables column index. */
+  colIndex: number;
+  /** Resolved schema metadata for the matched column. */
+  columnEntry: SchemaEntry;
+  /** Full data path for the matched column. */
+  columnPath: string;
+  /** Resolved value for this schema field. */
+  fieldValue: unknown;
+  /** Complete row data. */
+  rowData: T;
+  /** DataTables row index, not the current display position. */
+  rowIndex: number;
+  /** DataTables orthogonal render type. Field slots are mounted for display only. */
+  type: string;
+}
+
 export interface SchemaDatatableModel {
   rootSchema: JsonSchema;
   rowSchema: JsonSchema;
