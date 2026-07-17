@@ -6,9 +6,9 @@
   import { formatNumber } from "~/lib/datatable-examples";
   import { createSelectRenderer } from "~/lib/datatables.client";
   import { complexStruct2Rows, createComplexStruct2Rows } from "~/lib/generated-mocks";
-  import { getValueAtPath } from "~/lib/schema-resolver";
+  import { getValueAtPath } from "~/lib/dt-schema-resolver";
   import type { ComplexStruct2 } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Api, Config } from "datatables.net";
 
   interface AjaxRequest {

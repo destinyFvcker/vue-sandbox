@@ -5,7 +5,7 @@
   } from "~/lib/datatable-example-schemas";
   import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { ComplexStruct2 } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides, SchemaDatatableCellSlotProps } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides, SchemaDatatableCellSlotProps } from "~/lib/dt-schema-datatable";
   import type { Config } from "datatables.net";
 
   type ActionCell = SchemaDatatableCellSlotProps<ComplexStruct2>;

@@ -3,7 +3,7 @@
   import { formatNumber } from "~/lib/datatable-examples";
   import { complexStruct2Rows, createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { ComplexStruct2 } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Config } from "datatables.net";
 
   useHead({ title: "Generated JSON Schema DataTable Demo" });

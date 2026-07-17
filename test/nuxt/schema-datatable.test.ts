@@ -2,7 +2,7 @@ import { mountSuspended } from "@nuxt/test-utils/runtime";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { h, nextTick } from "vue";
-import type { JsonSchema } from "@jsonforms/core";
+import type { JsonSchema7 } from "@jsonforms/core";
 
 vi.mock("datatables.net", () => ({ default: vi.fn() }));
 vi.mock("datatables.net-vue3", async () => {
@@ -117,7 +117,7 @@ vi.mock("datatables.net-fixedheader-dt", () => ({}));
 vi.mock("datatables.net-colreorder-dt", () => ({}));
 
 describe("UiSchemaDatatable", () => {
-  const schema: JsonSchema = {
+  const schema: JsonSchema7 = {
     type: "object",
     properties: {
       name: { type: "string", title: "Person" },
@@ -201,7 +201,7 @@ describe("UiSchemaDatatable", () => {
     const statusRender = vi.fn((value: unknown, type: string) =>
       type === "filter" ? `search:${value}` : `native:${value}`
     );
-    const slottedSchema: JsonSchema = {
+    const slottedSchema: JsonSchema7 = {
       type: "object",
       properties: {
         status: { type: "string" },

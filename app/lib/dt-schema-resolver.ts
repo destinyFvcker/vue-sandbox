@@ -1,9 +1,10 @@
+/** JSON Schema traversal helpers used by the DataTables adapter. */
 import { encode, resolveSchema } from "@jsonforms/core";
-import type { JsonSchema } from "@jsonforms/core";
+import type { JsonSchema7 } from "@jsonforms/core";
 
 export interface SchemaEntry {
   /** Resolved schema used to render this field. */
-  schema: JsonSchema;
+  schema: JsonSchema7;
   /** JSON Pointer to the first schema declaration for this field. */
   schemaPath: string;
   /** Human-readable path used by column overrides. */
@@ -13,8 +14,8 @@ export interface SchemaEntry {
 }
 
 export interface NormalizedRowSchema {
-  rootSchema: JsonSchema;
-  rowSchema: JsonSchema;
+  rootSchema: JsonSchema7;
+  rowSchema: JsonSchema7;
 }
 
 export interface PartitionedSchemaEntries {
@@ -22,15 +23,18 @@ export interface PartitionedSchemaEntries {
   arrayEntries: SchemaEntry[];
 }
 
-const isSchemaObject = (value: unknown): value is JsonSchema =>
+const isSchemaObject = (value: unknown): value is JsonSchema7 =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
-const resolveReference = (schema: JsonSchema, rootSchema: JsonSchema): JsonSchema | undefined => {
+const resolveReference = (
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7
+): JsonSchema7 | undefined => {
   if (!schema.$ref) return schema;
-  return resolveSchema(rootSchema, schema.$ref, rootSchema);
+  return resolveSchema(rootSchema, schema.$ref, rootSchema) as JsonSchema7 | undefined;
 };
 
-const dereferenceSchema = (schema: JsonSchema, rootSchema: JsonSchema): JsonSchema => {
+const dereferenceSchema = (schema: JsonSchema7, rootSchema: JsonSchema7): JsonSchema7 => {
   if (!schema.$ref) return schema;
 
   const resolved = resolveReference(schema, rootSchema);
@@ -41,8 +45,8 @@ const dereferenceSchema = (schema: JsonSchema, rootSchema: JsonSchema): JsonSche
 };
 
 const schemaHasObjectShape = (
-  schema: JsonSchema,
-  rootSchema: JsonSchema,
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7,
   visitedRefs = new Set<string>()
 ): boolean => {
   if (schema.$ref) {
@@ -54,11 +58,7 @@ const schemaHasObjectShape = (
 
   if (schema.type === "object" || schema.properties) return true;
 
-  const branches = [
-    ...((schema.allOf ?? []) as JsonSchema[]),
-    ...((schema.oneOf ?? []) as JsonSchema[]),
-    ...((schema.anyOf ?? []) as JsonSchema[]),
-  ];
+  const branches = [...(schema.allOf ?? []), ...(schema.oneOf ?? []), ...(schema.anyOf ?? [])];
 
   return branches.some(
     (branch) => isSchemaObject(branch) && schemaHasObjectShape(branch, rootSchema, visitedRefs)
@@ -66,10 +66,10 @@ const schemaHasObjectShape = (
 };
 
 const collectProperties = (
-  schema: JsonSchema,
-  rootSchema: JsonSchema,
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7,
   visitedRefs = new Set<string>()
-): Record<string, JsonSchema> => {
+): Record<string, JsonSchema7> => {
   let current = schema;
   let nextRefs = visitedRefs;
 
@@ -79,13 +79,13 @@ const collectProperties = (
     current = dereferenceSchema(schema, rootSchema);
   }
 
-  const properties: Record<string, JsonSchema> = {};
+  const properties: Record<string, JsonSchema7> = {};
 
   for (const [name, propertySchema] of Object.entries(current.properties ?? {})) {
     if (isSchemaObject(propertySchema)) properties[name] = propertySchema;
   }
 
-  for (const member of (current.allOf ?? []) as JsonSchema[]) {
+  for (const member of current.allOf ?? []) {
     if (!isSchemaObject(member)) continue;
     Object.assign(properties, collectProperties(member, rootSchema, nextRefs));
   }
@@ -94,10 +94,10 @@ const collectProperties = (
 };
 
 const findArraySchema = (
-  schema: JsonSchema,
-  rootSchema: JsonSchema,
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7,
   visitedRefs = new Set<string>()
-): JsonSchema | undefined => {
+): JsonSchema7 | undefined => {
   let current = schema;
   let nextRefs = visitedRefs;
 
@@ -109,10 +109,7 @@ const findArraySchema = (
 
   if (current.type === "array") return current;
 
-  const branches = [
-    ...((current.oneOf ?? []) as JsonSchema[]),
-    ...((current.anyOf ?? []) as JsonSchema[]),
-  ];
+  const branches = [...(current.oneOf ?? []), ...(current.anyOf ?? [])];
 
   for (const branch of branches) {
     if (!isSchemaObject(branch)) continue;
@@ -129,9 +126,9 @@ const findArraySchema = (
   return undefined;
 };
 
-const schemaSignature = (schema: JsonSchema): string => JSON.stringify(schema);
+const schemaSignature = (schema: JsonSchema7): string => JSON.stringify(schema);
 
-const mergeVariantSchemas = (left: JsonSchema, right: JsonSchema): JsonSchema => {
+const mergeVariantSchemas = (left: JsonSchema7, right: JsonSchema7): JsonSchema7 => {
   if (schemaSignature(left) === schemaSignature(right)) return left;
 
   const candidates = [left, right];
@@ -158,7 +155,7 @@ const mergeVariantSchemas = (left: JsonSchema, right: JsonSchema): JsonSchema =>
   };
 };
 
-const mergeArraySchemas = (left: JsonSchema, right: JsonSchema): JsonSchema => {
+const mergeArraySchemas = (left: JsonSchema7, right: JsonSchema7): JsonSchema7 => {
   if (schemaSignature(left) === schemaSignature(right)) return left;
 
   const leftItems = isSchemaObject(left.items) ? left.items : {};
@@ -174,7 +171,7 @@ const mergeArraySchemas = (left: JsonSchema, right: JsonSchema): JsonSchema => {
 /**
  * Accept an object schema for a row, or a homogeneous top-level array schema.
  */
-export const normalizeRowSchema = (schema: JsonSchema): NormalizedRowSchema => {
+export const normalizeRowSchema = (schema: JsonSchema7): NormalizedRowSchema => {
   const rootSchema = schema;
   const resolvedRoot = dereferenceSchema(schema, rootSchema);
   const arraySchema = findArraySchema(resolvedRoot, rootSchema);
@@ -193,8 +190,8 @@ export const normalizeRowSchema = (schema: JsonSchema): NormalizedRowSchema => {
  * Collect scalar leaves and arrays while flattening nested object schemas.
  */
 export const collectSchemaEntries = (
-  schema: JsonSchema,
-  rootSchema: JsonSchema = schema
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7 = schema
 ): SchemaEntry[] => {
   const entries = new Map<string, SchemaEntry>();
 
@@ -213,7 +210,7 @@ export const collectSchemaEntries = (
   };
 
   const visit = (
-    current: JsonSchema,
+    current: JsonSchema7,
     schemaPath: string,
     dataSegments: string[],
     activeRefs: Set<string>
@@ -250,7 +247,7 @@ export const collectSchemaEntries = (
     }
 
     for (const keyword of ["oneOf", "anyOf"] as const) {
-      const branches = (resolved[keyword] ?? []) as JsonSchema[];
+      const branches = resolved[keyword] ?? [];
       branches.forEach((branch, index) => {
         if (!isSchemaObject(branch) || !schemaHasObjectShape(branch, rootSchema, nextRefs)) return;
         visit(branch, `${schemaPath}/${keyword}/${index}`, dataSegments, nextRefs);
@@ -294,10 +291,10 @@ export const humanizePropertyName = (name: string): string => {
   return spaced ? spaced.replace(/\b\w/g, (letter) => letter.toUpperCase()) : name;
 };
 
-export const attachRootDefinitions = (schema: JsonSchema, rootSchema: JsonSchema): JsonSchema => ({
+export const attachRootDefinitions = (
+  schema: JsonSchema7,
+  rootSchema: JsonSchema7
+): JsonSchema7 => ({
   ...schema,
   ...(rootSchema.definitions ? { definitions: rootSchema.definitions } : {}),
-  ...((rootSchema as JsonSchema & { $defs?: Record<string, JsonSchema> }).$defs
-    ? { $defs: (rootSchema as JsonSchema & { $defs?: Record<string, JsonSchema> }).$defs }
-    : {}),
 });

@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import type { JsonSchema } from "@jsonforms/core";
+import type { JsonSchema7 } from "@jsonforms/core";
 import type { ConfigColumns, FunctionColumnRender } from "datatables.net";
 
-import { buildSchemaDatatableModel, renderSchemaValue } from "../../app/lib/schema-datatable";
+import { buildSchemaDatatableModel, renderSchemaValue } from "../../app/lib/dt-schema-datatable";
 
 const readColumn = (column: ConfigColumns, row: Record<string, unknown>): unknown => {
   if (typeof column.data === "function") {
@@ -27,7 +27,7 @@ const renderColumn = (
 };
 
 describe("schema DataTable config compiler", () => {
-  const schema: JsonSchema = {
+  const schema: JsonSchema7 = {
     type: "object",
     properties: {
       id: { type: "integer", title: "Identifier" },
@@ -84,7 +84,7 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("uses a precompiled accessor for DataTables-special property names", () => {
-    const dottedSchema: JsonSchema = {
+    const dottedSchema: JsonSchema7 = {
       type: "object",
       properties: {
         "first.name": { type: "string" },
@@ -103,7 +103,7 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("escapes schema-derived titles while leaving explicit DataTables overrides in control", () => {
-    const unsafeTitleSchema: JsonSchema = {
+    const unsafeTitleSchema: JsonSchema7 = {
       type: "object",
       properties: {
         name: { type: "string", title: '<img src=x onerror="alert(1)">' },
@@ -181,19 +181,19 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("resolves $ref and allOf fields into native columns", () => {
-    const referencedSchema: JsonSchema = {
+    const referencedSchema: JsonSchema7 = {
       type: "object",
       properties: {
-        profile: { $ref: "#/$defs/Profile" },
+        profile: { $ref: "#/definitions/Profile" },
       },
-      $defs: {
+      definitions: {
         Base: {
           type: "object",
           properties: { name: { type: "string", title: "Customer" } },
         },
         Profile: {
           allOf: [
-            { $ref: "#/$defs/Base" },
+            { $ref: "#/definitions/Base" },
             { type: "object", properties: { region: { type: "string" } } },
           ],
         },
@@ -207,7 +207,7 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("collects oneOf and anyOf object fields without duplicate columns", () => {
-    const variantSchema: JsonSchema = {
+    const variantSchema: JsonSchema7 = {
       type: "object",
       oneOf: [
         { type: "object", properties: { shared: { type: "string" }, left: { type: "number" } } },
@@ -232,7 +232,7 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("keeps schema descriptions as metadata only", () => {
-    const describedSchema: JsonSchema = {
+    const describedSchema: JsonSchema7 = {
       type: "object",
       properties: {
         code: { type: "string", title: "Code", description: "Internal-only explanation" },
@@ -246,7 +246,7 @@ describe("schema DataTable config compiler", () => {
   });
 
   it("normalizes a top-level array schema and rejects unknown projections", () => {
-    const arraySchema: JsonSchema = { type: "array", items: schema };
+    const arraySchema: JsonSchema7 = { type: "array", items: schema };
     expect(buildSchemaDatatableModel(arraySchema).columns[0]).toMatchObject({ data: "id" });
     expect(() => buildSchemaDatatableModel(schema, undefined, ["missing"])).toThrow(
       "Unknown column path: missing"

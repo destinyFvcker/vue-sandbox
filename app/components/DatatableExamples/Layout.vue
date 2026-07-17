@@ -2,7 +2,7 @@
   import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
   import { formatNumber } from "~/lib/datatable-examples";
   import { createComplexStruct2Rows } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Config } from "datatables.net";
 
   const rows = createComplexStruct2Rows(10_000);

@@ -3,7 +3,7 @@
   import { formatNumber } from "~/lib/datatable-examples";
   import { createComplexStruct2Rows } from "~/lib/generated-mocks";
   import type { ComplexStruct2 } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Api, Config } from "datatables.net";
 
   type ColReorderApi = Api<ComplexStruct2> & {

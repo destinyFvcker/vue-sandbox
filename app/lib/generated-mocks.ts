@@ -1,4 +1,4 @@
-import type { JsonSchema } from "@jsonforms/core";
+import type { JsonSchema7 } from "@jsonforms/core";
 
 import complexStruct2Data from "../../rust-schemars-gen/mock/complex_struct_2.json";
 import complexStruct2SchemaData from "../../rust-schemars-gen/mock/complex_struct_2.schema.json";
@@ -35,8 +35,8 @@ export interface ComplexStruct2 {
   struct_enum: unknown;
 }
 
-export const complexStructSchema = complexStructSchemaData as unknown as JsonSchema;
-export const complexStruct2Schema = complexStruct2SchemaData as unknown as JsonSchema;
+export const complexStructSchema = complexStructSchemaData as unknown as JsonSchema7;
+export const complexStruct2Schema = complexStruct2SchemaData as unknown as JsonSchema7;
 
 export const complexStructRows = complexStructData as ComplexStruct[];
 export const complexStruct2Rows = complexStruct2Data as ComplexStruct2[];
@@ -63,9 +63,9 @@ export const createComplexStruct2Rows = (count = complexStruct2Rows.length): Com
   repeatRows(complexStruct2Rows, count);
 
 export const withUtilityColumns = (
-  schema: JsonSchema,
+  schema: JsonSchema7,
   columns: "select" | "action" | "select-and-action"
-): JsonSchema => {
+): JsonSchema7 => {
   const utilityProperties: Record<string, unknown> = {};
   if (columns === "select" || columns === "select-and-action") {
     utilityProperties.__select = { type: "boolean", title: "", readOnly: true };
@@ -80,5 +80,5 @@ export const withUtilityColumns = (
       ...utilityProperties,
       ...(schema.properties ?? {}),
     },
-  } as unknown as JsonSchema;
+  } as unknown as JsonSchema7;
 };

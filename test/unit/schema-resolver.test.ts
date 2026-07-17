@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import type { JsonSchema } from "@jsonforms/core";
+import type { JsonSchema7 } from "@jsonforms/core";
 
 import {
   collectSchemaEntries,
   getValueAtPath,
   normalizeRowSchema,
   partitionSchemaEntries,
-} from "../../app/lib/schema-resolver";
+} from "../../app/lib/dt-schema-resolver";
 
 describe("schema resolver", () => {
   it("flattens nested objects while retaining exact property segments", () => {
-    const schema: JsonSchema = {
+    const schema: JsonSchema7 = {
       type: "object",
       properties: {
         profile: {
@@ -36,20 +36,20 @@ describe("schema resolver", () => {
     );
   });
 
-  it("resolves $defs and merges allOf properties", () => {
-    const schema: JsonSchema = {
+  it("resolves definitions and merges allOf properties", () => {
+    const schema: JsonSchema7 = {
       type: "object",
       properties: {
-        profile: { $ref: "#/$defs/Profile" },
+        profile: { $ref: "#/definitions/Profile" },
       },
-      $defs: {
+      definitions: {
         Base: {
           type: "object",
           properties: { name: { type: "string" } },
         },
         Profile: {
           allOf: [
-            { $ref: "#/$defs/Base" },
+            { $ref: "#/definitions/Base" },
             { type: "object", properties: { region: { type: "string" } } },
           ],
         },
@@ -63,7 +63,7 @@ describe("schema resolver", () => {
   });
 
   it("unions duplicate paths from object variants without duplicating columns", () => {
-    const schema: JsonSchema = {
+    const schema: JsonSchema7 = {
       oneOf: [
         { type: "object", properties: { value: { type: "string" } } },
         { type: "object", properties: { value: { type: "number" }, extra: { type: "boolean" } } },
@@ -77,7 +77,7 @@ describe("schema resolver", () => {
   });
 
   it("separates direct and nullable array fields", () => {
-    const schema: JsonSchema = {
+    const schema: JsonSchema7 = {
       type: "object",
       properties: {
         name: { type: "string" },
@@ -98,7 +98,7 @@ describe("schema resolver", () => {
   });
 
   it("stops circular references while retaining reachable scalar fields", () => {
-    const schema: JsonSchema = {
+    const schema: JsonSchema7 = {
       type: "object",
       properties: { node: { $ref: "#/definitions/Node" } },
       definitions: {
@@ -116,7 +116,7 @@ describe("schema resolver", () => {
   });
 
   it("accepts a homogeneous top-level array schema", () => {
-    const schema: JsonSchema = {
+    const schema: JsonSchema7 = {
       type: "array",
       items: {
         type: "object",

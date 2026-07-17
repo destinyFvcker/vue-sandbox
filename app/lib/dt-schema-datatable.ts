@@ -1,5 +1,5 @@
-import type { SchemaEntry } from "./schema-resolver";
-import type { JsonSchema } from "@jsonforms/core";
+import type { SchemaEntry } from "./dt-schema-resolver";
+import type { JsonSchema7 } from "@jsonforms/core";
 import type { Config, ConfigColumns } from "datatables.net";
 import type { HTMLAttributes } from "vue";
 
@@ -10,7 +10,7 @@ import {
   humanizePropertyName,
   normalizeRowSchema,
   partitionSchemaEntries,
-} from "./schema-resolver";
+} from "./dt-schema-resolver";
 
 export type SchemaColumnOverride = Omit<Partial<ConfigColumns>, "data" | "name">;
 
@@ -36,14 +36,14 @@ export interface SchemaDatatableCellSlotProps<T extends Record<string, any>> {
 }
 
 export interface SchemaDatatableModel {
-  rootSchema: JsonSchema;
-  rowSchema: JsonSchema;
+  rootSchema: JsonSchema7;
+  rowSchema: JsonSchema7;
   columns: ConfigColumns[];
   columnEntries: SchemaEntry[];
 }
 
 export interface SchemaDatatablePublicOptions<T extends Record<string, any>> {
-  schema: JsonSchema;
+  schema: JsonSchema7;
   data?: readonly T[];
   ajax?: Config["ajax"];
   options?: Config;
@@ -101,7 +101,7 @@ const getOverride = (
 ): SchemaColumnOverride => overrides?.[entry.dataPath] ?? overrides?.[entry.schemaPath] ?? {};
 
 export const buildSchemaDatatableModel = (
-  schema: JsonSchema,
+  schema: JsonSchema7,
   overrides?: SchemaColumnOverrides,
   columnPaths?: readonly string[]
 ): SchemaDatatableModel => {

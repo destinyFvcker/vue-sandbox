@@ -12,7 +12,7 @@ import {
   createComplexStruct2Rows,
   createComplexStructRows,
 } from "../../app/lib/generated-mocks";
-import { buildSchemaDatatableModel } from "../../app/lib/schema-datatable";
+import { buildSchemaDatatableModel } from "../../app/lib/dt-schema-datatable";
 
 describe("Rust-generated mock fixtures", () => {
   it("exposes both generated schemas with their matching rows", () => {

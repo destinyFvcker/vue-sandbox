@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
   import { createComplexStruct2Rows } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Config } from "datatables.net";
 
   const rows = createComplexStruct2Rows(30);

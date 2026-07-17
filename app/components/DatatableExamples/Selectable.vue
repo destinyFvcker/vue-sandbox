@@ -6,7 +6,7 @@
   import { formatNumber } from "~/lib/datatable-examples";
   import { createSelectRenderer } from "~/lib/datatables.client";
   import { createComplexStruct2Rows } from "~/lib/generated-mocks";
-  import type { SchemaColumnOverrides } from "~/lib/schema-datatable";
+  import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
   import type { Config } from "datatables.net";
 
   type Variant = "row-selection" | "card" | "sticky-header";

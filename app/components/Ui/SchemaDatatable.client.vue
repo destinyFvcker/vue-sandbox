@@ -1,8 +1,8 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-  import { buildSchemaDatatableModel } from "~/lib/schema-datatable";
-  import type { JsonSchema } from "@jsonforms/core";
-  import type { SchemaColumnOverrides, SchemaDatatableCellSlotProps } from "~/lib/schema-datatable";
-  import type { SchemaEntry } from "~/lib/schema-resolver";
+  import { buildSchemaDatatableModel } from "~/lib/dt-schema-datatable";
+  import type { JsonSchema7 } from "@jsonforms/core";
+  import type { SchemaColumnOverrides, SchemaDatatableCellSlotProps } from "~/lib/dt-schema-datatable";
+  import type { SchemaEntry } from "~/lib/dt-schema-resolver";
   import type {
     Api,
     CellMetaSettings,
@@ -16,7 +16,7 @@
 
   const props = withDefaults(
     defineProps<{
-      schema: JsonSchema;
+      schema: JsonSchema7;
       data?: readonly T[];
       ajax?: Config["ajax"];
       options?: Config;
