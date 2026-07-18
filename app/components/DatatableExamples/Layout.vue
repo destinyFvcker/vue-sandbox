@@ -15,7 +15,7 @@
       top1: "searchBuilder",
       topStart: "buttons",
       topEnd: "search",
-      bottomStart: "info",
+      bottomStart: ["pageLength", "info"],
       bottomEnd: "paging",
     },
   };

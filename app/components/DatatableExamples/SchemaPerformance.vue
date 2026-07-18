@@ -17,9 +17,9 @@
     buttons: ["copy", "csv", "excel", "print"],
     layout: {
       top1: "searchBuilder",
-      topStart: ["pageLength", "buttons"],
+      topStart: "buttons",
       topEnd: "search",
-      bottomStart: "info",
+      bottomStart: ["pageLength", "info"],
       bottomEnd: "paging",
     },
   };

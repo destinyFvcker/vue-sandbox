@@ -2,8 +2,8 @@
   import { complexStruct2ColumnPaths, complexStruct2Schema } from "~/lib/datatable-example-schemas";
   import { formatNumber } from "~/lib/datatable-examples";
   import { complexStruct2Rows, createComplexStruct2Rows } from "~/lib/generated-mocks";
-  import type { ComplexStruct2 } from "~/lib/generated-mocks";
   import type { SchemaColumnOverrides } from "~/lib/dt-schema-datatable";
+  import type { ComplexStruct2 } from "~/lib/generated-mocks";
   import type { Config } from "datatables.net";
 
   useHead({ title: "Generated JSON Schema DataTable Demo" });
@@ -16,6 +16,13 @@
     lengthMenu: [5, 10, 25],
     order: [[0, "asc"]],
     responsive: false,
+    scrollX: true,
+    layout: {
+      topStart: null,
+      topEnd: "search",
+      bottomStart: ["pageLength", "info"],
+      bottomEnd: "paging",
+    },
   };
 
   const columnOverrides: SchemaColumnOverrides = {

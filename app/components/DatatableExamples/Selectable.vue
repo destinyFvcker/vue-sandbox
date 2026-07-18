@@ -86,8 +86,4 @@
     cursor: pointer;
     border-radius: 0.25rem;
   }
-
-  :deep(.dt-scroll-body table thead tr) {
-    visibility: collapse;
-  }
 </style>
